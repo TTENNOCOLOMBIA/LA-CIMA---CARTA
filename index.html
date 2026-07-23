@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Cima Restaurante - Carta Digital</title>
     
-    <!-- Librerías externas CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
@@ -52,17 +51,12 @@
             margin-bottom: 15px;
         }
 
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
+        .logo-img {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            font-weight: bold;
-            color: var(--dark);
+            object-fit: cover;
+            border: 3px solid var(--primary);
         }
 
         h1 {
@@ -183,10 +177,6 @@
             margin: 20px auto;
         }
 
-        .qr-download-btn {
-            margin-top: 15px;
-        }
-
         /* ===== FILTROS ===== */
         .filters {
             display: flex;
@@ -230,9 +220,16 @@
             color: var(--dark);
             border-bottom: 3px solid var(--primary);
             padding-bottom: 10px;
-            margin: 40px 0 20px 0;
+            margin: 40px 0 10px 0;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        .category-description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
         }
 
         .menu-grid {
@@ -265,6 +262,15 @@
             justify-content: center;
             font-size: 3rem;
             color: var(--dark);
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .dish-image-placeholder {
+            color: #999;
+            font-size: 1rem;
+            font-weight: normal;
         }
 
         .dish-content {
@@ -471,23 +477,13 @@
                 margin: 0 10px;
             }
         }
-
-        @media print {
-            header, .toolbar, .filters, .edit-mode {
-                display: none !important;
-            }
-
-            body {
-                background: white;
-            }
-        }
     </style>
 </head>
 <body>
     <!-- HEADER -->
     <header>
         <div class="logo-container">
-            <div class="logo-icon">🏔️</div>
+            <img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="Logo La Cima" class="logo-img">
             <div>
                 <h1>LA CIMA</h1>
                 <p class="subtitle">Restaurante · Esto es Colombia</p>
@@ -510,7 +506,6 @@
     <div class="toolbar">
         <button class="btn-primary" onclick="toggleEditMode()">✏️ Modo Edición</button>
         <button class="btn-secondary" onclick="toggleQR()">📱 Ver QR</button>
-        <button class="btn-success" onclick="exportPDF()">⬇️ Descargar PDF</button>
         <button class="btn-secondary" onclick="addDish()">➕ Nuevo Plato</button>
         <button class="btn-primary" onclick="resetMenu()">🔄 Restaurar Menú</button>
     </div>
@@ -522,7 +517,7 @@
         <p style="margin-top: 15px; color: var(--dark);">
             Escanea para acceder a la carta digital desde cualquier dispositivo
         </p>
-        <button class="btn-secondary qr-download-btn" onclick="downloadQR()">
+        <button class="btn-secondary" style="margin-top: 15px;" onclick="downloadQR()">
             ⬇️ Descargar QR
         </button>
     </div>
@@ -530,11 +525,15 @@
     <!-- FILTROS -->
     <div class="filters">
         <button class="filter-btn active" onclick="filterMenu('all')">Todos</button>
+        <button class="filter-btn" onclick="filterMenu('entradas')">Entradas</button>
+        <button class="filter-btn" onclick="filterMenu('infantil')">Infantil</button>
+        <button class="filter-btn" onclick="filterMenu('diaria')">Menú Diaria</button>
         <button class="filter-btn" onclick="filterMenu('parrilla')">Parrilla</button>
-        <button class="filter-btn" onclick="filterMenu('mar')">D'Mar</button>
+        <button class="filter-btn" onclick="filterMenu('chuletás')">Chuletas</button>
+        <button class="filter-btn" onclick="filterMenu('cimar')">CI-MAR</button>
         <button class="filter-btn" onclick="filterMenu('tipicos')">Típicos</button>
         <button class="filter-btn" onclick="filterMenu('bebidas')">Bebidas</button>
-        <button class="filter-btn" onclick="filterMenu('postres')">Postres</button>
+        <button class="filter-btn" onclick="filterMenu('eventos')">Eventos</button>
     </div>
 
     <!-- MENÚ PRINCIPAL -->
@@ -545,6 +544,10 @@
         <div class="modal-content">
             <h3 id="modalTitle">Editar Plato</h3>
             <form id="dishForm">
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingresa contraseña" required>
+                </div>
                 <div class="form-group">
                     <label>Nombre del Plato</label>
                     <input type="text" id="dishName" required>
@@ -560,16 +563,24 @@
                 <div class="form-group">
                     <label>Categoría</label>
                     <select id="dishCategory" required>
-                        <option value="parrilla">Parrilla y Chuletas</option>
-                        <option value="mar">D'Mar</option>
+                        <option value="entradas">Entradas</option>
+                        <option value="infantil">Menú Infantil</option>
+                        <option value="diaria">Menú Diaria</option>
+                        <option value="parrilla">Parrilla</option>
+                        <option value="chuletás">Chuletas</option>
+                        <option value="cimar">CI-MAR</option>
                         <option value="tipicos">Típicos</option>
-                        <option value="bebidas">Bebidas</option>
+                        <option value="pastas">Pastas</option>
+                        <option value="hamburguesas">Hamburguesas</option>
+                        <option value="ensaladas">Ensaladas</option>
                         <option value="postres">Postres</option>
+                        <option value="calientes">Bebidas Calientes</option>
+                        <option value="frias">Bebidas Frías</option>
+                        <option value="naturales">Bebidas Naturales</option>
+                        <option value="sodas">Sodas Frutales</option>
+                        <option value="licores">Licores</option>
+                        <option value="eventos">Eventos</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label>Emoji/Ícono</label>
-                    <input type="text" id="dishIcon" maxlength="2" value="🍽️">
                 </div>
                 <div class="modal-actions">
                     <button type="submit" class="btn-success">💾 Guardar</button>
@@ -603,76 +614,180 @@
     </footer>
 
     <script>
-        // ===== DATOS INICIALES =====
+        const ADMIN_PASSWORD = "lacima2024";
+
         const defaultMenu = {
-            parrilla: [
-                {name: "Chuleta Gratinada de Cerdo", desc: "Cerdo apanado, queso, huevo, papa, ensalada y salsas", price: 35000, icon: "🐷"},
-                {name: "Chuleta Gratinada de Pollo", desc: "Pechuga apanada, queso, huevo, papa, ensalada y salsas", price: 32000, icon: "🍗"},
-                {name: "Churrasco Ranchero", desc: "Res, queso, huevo, papa, chorizo, maduro, ensalada y salsas", price: 39500, icon: "🥩"},
-                {name: "Chuletón", desc: "Chuletón de cerdo, queso, papa, yuca, ensalada, salsas", price: 37000, icon: "🐷"},
-                {name: "Picada Familiar (6 Personas)", desc: "Churrasco, costilla ahumada, cerdo a la parrilla, chorizos, pechuga, chicharrón, papas, yuca y salsas", price: 135000, icon: "🍖"},
-                {name: "Bandeja Paisa´na", desc: "Fríjoles, maduro, huevo, aguacate, chorizo, morcilla, carne de res, chicharrón, arroz, arepa y papa", price: 39000, icon: "🍘"}
+            entradas: [
+                {name: "Chunchullo", desc: "Disfrútalo con papa criolla, salsa y limón", price: 18000, icon: "🍠"},
+                {name: "Chorizo pa' Picar", desc: "Chorizo de Cerdo, Papa, Arepa, Queso, Limó y Salsas", price: 12000, icon: "🌶️"},
+                {name: "Palitos de queso x4", desc: "Palitos de queso artesanal", price: 8500, icon: "🧀"},
+                {name: "Empanadas x4", desc: "Empanadas tradicionales colombianas", price: 8500, icon: "🥟"}
             ],
-            mar: [
-                {name: "Ceviche de Camarones", desc: "Camarones marinado en jugo de limón y condimentos con hierbas y especias, acompañado con chips de plátano", price: 27000, icon: "🦐"},
+            infantil: [
+                {name: "Cima Ranchera", desc: "Aguapanela, papas, chorizo ahumado de cerdo y salsas", price: 14000, icon: "👶"},
+                {name: "Cima Alitas", desc: "Alitas broaster y salsas", price: 16000, icon: "🍗"},
+                {name: "Papicono Ranchera", desc: "Aguapanela, papas, chorizo ahumado de cerdo y salsas", price: 14000, icon: "🥙"},
+                {name: "Papicono Alitas", desc: "Alitas broaster y salsas", price: 16000, icon: "🍗"}
+            ],
+            diaria: [
+                {name: "Menú del Día", desc: "Sopa del día, proteína a elección, arroz, ensalada, papa, plátano, jugo natural y postre. Incluye opción a escoger", price: 23000, icon: "🍲"}
+            ],
+            parrilla: [
+                {name: "Churrasco Ranchero", desc: "Res, queso, huevo, papa, chorizo, maduro, ensalada y salsas", price: 39500, icon: "🥩"},
+                {name: "Cerdo a La Parrilla", desc: "Cerdo apanado, queso, huevo, papa, ensalada y salsas", price: 35000, icon: "🐷"},
+                {name: "Pechuga a La Parrilla", desc: "Pechuga apanada, queso, huevo, papa, ensalada y salsas", price: 32000, icon: "🍗"},
+                {name: "Chuletón", desc: "Chuletón de cerdo, queso, papa, yuca, ensalada, salsas", price: 37000, icon: "🐷"},
+                {name: "Picada Familiar (6 Personas)", desc: "Churrasco, costilla ahumada, cerdo a la parrilla, chorizos, pechuga, chicharrón, papas, yuca y salsas", price: 135000, icon: "🍖"}
+            ],
+            chuletás: [
+                {name: "Chuleta Gratinada de Cerdo", desc: "Cerdo apanado, queso, huevo, papa, ensalada y salsas", price: 35000, icon: "🐷"},
+                {name: "Chuleta Gratinada de Pollo", desc: "Pechuga apanada, queso, huevo, papa, ensalada y salsas", price: 32000, icon: "🍗"}
+            ],
+            cimar: [
+                {name: "Coctel de Camarones", desc: "Camarones marinado en jugo de limón y condimentos con hierbas y especias, acompañado con chips del plátano", price: 25000, icon: "🦐"},
+                {name: "Ceviche de Camarones", desc: "Camarones marinado en jugo de limón y condimentos con hierbas y especias", price: 27000, icon: "🦐"},
                 {name: "Cima de Camarón", desc: "Camarones, tilapia en cubitos apanados, arroz amarillo, papas a la francesa, chips de plátano, ensalada y salsas", price: 42000, icon: "🦐"},
                 {name: "Trucha Gratinada", desc: "Trucha cocida en salsa al ajillo cubierta con queso gratinado, pimentón y cebolla", price: 42000, icon: "🐟"},
-                {name: "Trucha Marinera", desc: "Trucha, camarones y mariscos cocidos en salsa al ajillo, servida con patacones crocantes", price: 52000, icon: "🐟"},
-                {name: "Picada Mar y Tierra (2 Personas)", desc: "Camarones apanados, tilapia, chorizos de cerdo ahumado, papa, chips de plátano y salsas", price: 59000, icon: "🌊"}
+                {name: "Trucha Marinera", desc: "Trucha, camarones y mariscos cocidos en salsa al ajillo, servida con patacones crocantes", price: 52000, icon: "🐟"}
             ],
             tipicos: [
                 {name: "Fritada", desc: "Porción de frito de cerdo, papa y crispetas", price: 22000, icon: "🍟"},
-                {name: "Fritada con Queso y Choclo", desc: "Porción de frito de cerdo, papa, crispetas, choclo y queso", price: 28000, icon: "🌽"},
-                {name: "Menú del día LA CIMA", desc: "Sopa del día, proteína a elección, arroz, ensalada, papa, plátano, jugo natural y postre", price: 23000, icon: "🍲"},
-                {name: "Empanadas x4", desc: "Empanadas tradicionales colombianas recién hechas", price: 8500, icon: "🥟"},
-                {name: "Chunchullo", desc: "Disfrútalo con papa criolla, salsa y limón", price: 18000, icon: "🍠"}
+                {name: "Bandeja Paisana", desc: "Fríjoles, maduro, huevo, aguacate, chorizo, morcilla, carne de res, chicharrón, arroz, arepa y papa", price: 39000, icon: "🍘"}
             ],
-            bebidas: [
-                {name: "Jugo Natural en Agua", desc: "Tamarindo, Fresa, Mora, Guanábana, Maracuyá o Mango", price: 6500, icon: "🧃"},
-                {name: "Aguapanela Fría", desc: "Refrescante bebida tradicional colombiana", price: 2500, icon: "🥤"},
-                {name: "Cerveza Poker", desc: "Cerveza fría servida en vaso", price: 6500, icon: "🍺"},
-                {name: "Limonada (16 oz)", desc: "Limonada natural recién preparada", price: 6500, icon: "🍋"},
-                {name: "Café en Leche", desc: "Café con leche (9 oz)", price: 3000, icon: "☕"}
+            pastas: [
+                {name: "Fettuccine Suprema de Pollo", desc: "Fettuccine en emulsión cremosa de ajillo y mantequilla, acompañado de tiernos bocados de pechuga de pollo sellados a la perfección", price: 30000, icon: "🍝"},
+                {name: "Fettuccine Mar de Altura", desc: "Cintas de fettuccine bañadas en emulsión cremosa de ajillo y mantequilla, realzadas con el umami de nuestra selección de frutos del mar", price: 39000, icon: "🍝"}
+            ],
+            hamburguesas: [
+                {name: "Reina de la Casa", desc: "Carne 100% de res novillo jugosa y en su punto, pan sellado a la parrilla, una fresca rodaja de tomate, lechuga crespa orgánica", price: 24000, icon: "🍔"},
+                {name: "Ahumada del Galeras", desc: "Intensa y diferente carne de costillitas desmechadas de cerdo ahumada al barril, pan sellado a la parrilla, una fresca rodaja de tomate, lechuga crespa", price: 27000, icon: "🍔"},
+                {name: "Cumbre Ranchera", desc: "Chorizo artesanal de cerdo con un toque ahumado, pan sellado a la parrilla, una fresca rodaja de tomate, lechuga crespa orgánica", price: 26000, icon: "🍔"},
+                {name: "Pico del Cumbal", desc: "Pechuga de pollo molida y sazonada con textura suave y en su punto, pan sellado a la parrilla, una fresca rodaja de tomate, lechuga crespa", price: 23500, icon: "🍔"}
+            ],
+            ensaladas: [
+                {name: "Cima Verde Premium (Vegetariana)", desc: "Una mezcla vibrante de vegetales, lechuga crespa, tomate, cebolla, aguacate, aceitunas y queso, seleccionados por su frescura", price: 19000, icon: "🥗"},
+                {name: "Cima Verde Premium con Pollo", desc: "Cima Verde Premium con Pollo", price: 25000, icon: "🥗"},
+                {name: "Cima Verde Premium con Cerdo", desc: "Cima Verde Premium con Cerdo", price: 26000, icon: "🥗"}
             ],
             postres: [
-                {name: "Brownie Tropical", desc: "Brownie caliente cubierto con salsa de maracuyá, queso rallado y frutos rojos", price: 12000, icon: "🍫"},
-                {name: "Biscochito Tropical", desc: "Biscochito con salsa de maracuyá, crema de leche, queso rallado y frutos rojos", price: 9000, icon: "🍰"},
+                {name: "Brownie Tropical", desc: "Brownie caliente cubierto con salsa de maracuyá suavizada con crema de leche, queso rallado y frutos rojos", price: 12000, icon: "🍫"},
+                {name: "Biscochito Tropical", desc: "Biscochito cubierto con salsa de maracuyá suavizada con crema de leche, queso rallado y frutos rojos", price: 9000, icon: "🍰"},
+                {name: "Dulce Maracuyá-Mango", desc: "Dulce de maracuyá y mango con queso campesino", price: 4500, icon: "🥭"},
                 {name: "Dulce Kiwi-Lulo", desc: "Dulce de Kiwi y Lulo con queso campesino", price: 5500, icon: "🥝"},
-                {name: "Dulce Frutos Rojos", desc: "Dulce de frutos rojos con queso campesino", price: 6500, icon: "🍓"},
-                {name: "Dulce Maracu-Mango", desc: "Dulce de maracuyá y mango con queso campesino", price: 4500, icon: "🥭"}
+                {name: "Dulce Frutos Rojos", desc: "Dulce de frutos rojos con queso campesino", price: 6500, icon: "🍓"}
+            ],
+            calientes: [
+                {name: "Aromática", desc: "Bebida tradicional colombiana", price: 2500, icon: "☕"},
+                {name: "Café en Leche - 9 oz", desc: "Café con leche", price: 3000, icon: "☕"},
+                {name: "Tinto - 7 oz", desc: "Café tinto pequeño", price: 2500, icon: "☕"},
+                {name: "Chocolate Abuelita - 9 oz", desc: "Chocolate caliente", price: 7000, icon: "🍫"},
+                {name: "MILO - 9 oz", desc: "Bebida de malta", price: 7000, icon: "🥛"},
+                {name: "Milo Frío - 16 oz", desc: "MILO frío", price: 8500, icon: "🥛"},
+                {name: "Chocolate ENRUANADO - 9 oz", desc: "Chocolate enruanado", price: 9500, icon: "🍫"},
+                {name: "Empanada", desc: "Acompañante", price: 2500, icon: "🥟"},
+                {name: "Palito de queso", desc: "Acompañante", price: 2500, icon: "🧀"},
+                {name: "Pan de queso gratinado", desc: "Acompañante", price: 3000, icon: "🍞"},
+                {name: "Combo Café y 2 empanadas", desc: "Café negro, Café en leche o Aromática", price: 6500, icon: "☕"},
+                {name: "Combo Café y Pan de queso", desc: "Café negro, Café en leche o Aromática", price: 5000, icon: "☕"}
+            ],
+            frias: [
+                {name: "Aguapanela Fría", desc: "Refrescante bebida tradicional colombiana", price: 2500, icon: "🥤"},
+                {name: "Refrescos", desc: "Refrescos varios", price: 5000, icon: "🧋"},
+                {name: "Cerveza Poker", desc: "Cerveza fría", price: 6500, icon: "🍺"},
+                {name: "Michelada", desc: "Cerveza con jugo", price: 7000, icon: "🍺"}
+            ],
+            naturales: [
+                {name: "Jugo Natural en Agua", desc: "Tamarindo, Fresa, Mora, Guanábana, Maracuyá o Mango", price: 6500, icon: "🧃"},
+                {name: "Jugo Natural en Agua JARRA 1.5 Lt", desc: "Limonada, Tamarindo, Fresa, Mora, Guanábana, Maracuyá, Mango", price: 16000, icon: "🧃"},
+                {name: "Jugo Natural en Leche", desc: "Fresa, Mora, Guanábana, Maracuyá, Mango", price: 9500, icon: "🥛"},
+                {name: "Jugo Natural en Leche JARRA 1.5 Lt", desc: "Fresa, Mora, Guanábana, Maracuyá, Mango", price: 23000, icon: "🥛"},
+                {name: "Granizado", desc: "Tamarindo, Fresa, Mora, Guanábana, Maracuyá, Mango, Limonada", price: 10000, icon: "🍧"},
+                {name: "Limonada (Vaso 16 oz)", desc: "Limonada natural", price: 6500, icon: "🍋"},
+                {name: "Limonada JARRA 1.5 Lt", desc: "Limonada natural", price: 16000, icon: "🍋"},
+                {name: "Cerezada (Vaso 16 oz)", desc: "Bebida de cereza", price: 10500, icon: "🍒"},
+                {name: "Cerezada JARRA 1.5 Lt", desc: "Bebida de cereza", price: 29000, icon: "🍒"}
+            ],
+            sodas: [
+                {name: "Soda Frutos Rojos", desc: "Soda artesanal frutal", price: 16000, icon: "🍓"},
+                {name: "Soda Kiwi-Lulo", desc: "Soda artesanal frutal", price: 14000, icon: "🥝"},
+                {name: "Soda Maracuyá-Mango", desc: "Soda artesanal frutal", price: 12000, icon: "🥭"}
+            ],
+            licores: [
+                {name: "Aguardiente Nariño", desc: "Aguardiente de Nariño", price: 105000, icon: "🍷"},
+                {name: "Aguardiente Amarillo", desc: "Aguardiente Amarillo", price: 105000, icon: "🍷"},
+                {name: "Ron Viejo de Caldas", desc: "Ron Premium", price: 110000, icon: "🍷"},
+                {name: "Brandy Domeco", desc: "Brandy", price: 110000, icon: "🍷"},
+                {name: "Jose Cuervo (Reposado)", desc: "Tequila", price: 170000, icon: "🍷"},
+                {name: "Olmeca", desc: "Tequila", price: 170000, icon: "🍷"},
+                {name: "Jimador (Reposado)", desc: "Tequila", price: 230000, icon: "🍷"},
+                {name: "Buchanan's", desc: "Whisky", price: 300000, icon: "🍷"},
+                {name: "OldParr", desc: "Whisky", price: 290000, icon: "🍷"},
+                {name: "Chivas", desc: "Whisky", price: 260000, icon: "🍷"},
+                {name: "Poker", desc: "Cerveza", price: 6500, icon: "🍺"},
+                {name: "Club Colombia", desc: "Cerveza", price: 7000, icon: "🍺"},
+                {name: "Corona", desc: "Cerveza", price: 9000, icon: "🍺"},
+                {name: "Michelada Poker", desc: "Cerveza con jugo", price: 10500, icon: "🍺"},
+                {name: "Michelada Club Colombia", desc: "Cerveza con jugo", price: 11000, icon: "🍺"},
+                {name: "Michelada Corona", desc: "Cerveza con jugo", price: 13000, icon: "🍺"}
+            ],
+            eventos: [
+                {name: "PLATO FUERTE", desc: "Mixto de Cerdo y Pechuga a la parrilla - Elige: Salsa (Maracuyá/BBQ/Agridulce), Acompañamientos y Ensalada. Incluye jarra de jugo personal", price: 35000, icon: "🎉"},
+                {name: "+ ENTRADA LA CIMA", desc: "Elige: Consomé pollo + papa fosforito o Crema de pollo", price: 40000, icon: "🎉"},
+                {name: "+ POSTRE", desc: "Elige: Maracuyá o Durazno", price: 43000, icon: "🎉"}
             ]
         };
 
         let menu = JSON.parse(localStorage.getItem('lacimaMenu')) || defaultMenu;
         let editingId = null;
+        let isPasswordVerified = false;
 
-        // ===== INICIALIZACIÓN =====
         document.addEventListener('DOMContentLoaded', () => {
             renderMenu('all');
             generateQR();
         });
 
-        // ===== RENDER MENÚ =====
         function renderMenu(category = 'all') {
             const container = document.getElementById('menuContainer');
             container.innerHTML = '';
 
             const categoriesToShow = category === 'all' ? Object.keys(menu) : [category];
-            const categoryNames = {
-                parrilla: '🔥 Parrilla y Chuletas',
-                mar: '🌊 D\'Mar',
-                tipicos: '🇨🇴 Típicos Colombianos',
-                bebidas: '🥤 Bebidas',
-                postres: '🍰 Postres'
+            const categoryInfo = {
+                entradas: {title: '🍽️ ENTRADAS o PA\' PICAR', desc: 'Abre tu paladar con nuestras delicias crujientes y sabrosas'},
+                infantil: {title: '👶 MENÚ INFANTIL', desc: 'Porciones perfectas para los más pequeños, llenas de sabor'},
+                diaria: {title: '📅 MENÚ DEL DÍA', desc: 'La mejor opción diaria - Proteína, acompañamientos y postre'},
+                parrilla: {title: '🔥 PARRILLA', desc: 'Lo mejor de la carne a la brasa - Jugosa, tierna y al punto'},
+                tipicos: {title: '🇨🇴 TÍPICOS COLOMBIANOS', desc: 'Sabor tradicional que te transporta a lo mejor de Colombia'},
+                chuletás: {title: '🍖 CHULETAS', desc: 'Chuletas gratinadas - Crujientes por fuera, jugosas por dentro'},
+                cimar: {title: '🌊 CI-MAR - MARISCOS Y TRUCHAS', desc: 'Frescura del mar en cada bocado - Mariscos y truchas de primera'},
+                pastas: {title: '🍝 PASTAS', desc: 'Fettuccine exquisitas con salsas de autor - Sabor italiano con toque colombiano'},
+                salteados: {title: '🥘 SALTEADOS AL WOK', desc: 'Vegetales y proteína en punto perfecto - Recetas orientales con sabor local'},
+                hamburguesas: {title: '🍔 HAMBURGUESAS', desc: 'Hamburguesas artesanales con carne 100% premium - Deliciosas y abundantes'},
+                ensaladas: {title: '🥗 ENSALADAS LA CIMA', desc: 'Frescas, coloridas y nutritivas - La opción saludable sin sacrificar sabor'},
+                postres: {title: '🍰 POSTRES', desc: 'Dulces momentos - Brownie, biscochito y dulces artesanales para endulzar tu día'},
+                calientes: {title: '☕ BEBIDAS CALIENTES', desc: 'Reconforta tu alma con nuestras bebidas calientes y acompañantes irresistibles'},
+                frias: {title: '🧊 BEBIDAS FRÍAS', desc: 'Refresca tu paladar - Opciones clásicas que nunca fallan'},
+                naturales: {title: '🧃 BEBIDAS NATURALES', desc: 'Jugos naturales frescos - Frutas frescas cada día para tu energía'},
+                sodas: {title: '🥤 SODAS FRUTALES', desc: 'Burbujas de sabor - Sodas artesanales con frutas tropicales'},
+                licores: {title: '🍷 LICORES (Botella)', desc: 'Aguardientes, Rones y Whisky - Para celebrar con estilo'},
+                eventos: {title: '🎉 CIMA EVENTOS', desc: 'Paquetes personalizables para tus eventos especiales'}
             };
 
             categoriesToShow.forEach(cat => {
                 if (menu[cat].length === 0) return;
 
-                const title = document.createElement('h2');
-                title.className = 'category-title';
-                title.textContent = categoryNames[cat];
-                container.appendChild(title);
+                const info = categoryInfo[cat] || {title: cat.toUpperCase(), desc: ''};
+                
+                const titleEl = document.createElement('h2');
+                titleEl.className = 'category-title';
+                titleEl.textContent = info.title;
+                container.appendChild(titleEl);
+
+                if (info.desc) {
+                    const descEl = document.createElement('p');
+                    descEl.className = 'category-description';
+                    descEl.textContent = info.desc;
+                    container.appendChild(descEl);
+                }
 
                 const grid = document.createElement('div');
                 grid.className = 'menu-grid';
@@ -681,7 +796,10 @@
                     const card = document.createElement('div');
                     card.className = 'dish-card';
                     card.innerHTML = `
-                        <div class="dish-image">${dish.icon || '🍽️'}</div>
+                        <div class="dish-image">
+                            ${dish.icon || '🍽️'}
+                            <div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>
+                        </div>
                         <div class="dish-content">
                             <div class="dish-name">${dish.name}</div>
                             <div class="dish-description">${dish.desc}</div>
@@ -699,27 +817,32 @@
             });
         }
 
-        // ===== FILTROS =====
         function filterMenu(category) {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             renderMenu(category);
         }
 
-        // ===== EDICIÓN =====
         function toggleEditMode() {
             const actions = document.querySelectorAll('.dish-actions');
             const isEditing = actions[0]?.style.display === 'flex';
             
-            actions.forEach(action => {
-                action.style.display = isEditing ? 'none' : 'flex';
-            });
-
-            event.target.textContent = isEditing ? '✏️ Modo Edición' : '✅ Salir Edición';
-            document.body.style.background = isEditing ? '#f5f1ed' : '#fff9e6';
+            if (!isEditing) {
+                document.getElementById('editModal').classList.add('active');
+            } else {
+                actions.forEach(action => action.style.display = 'none');
+                event.target.textContent = '✏️ Modo Edición';
+                document.body.style.background = '#f5f1ed';
+                isPasswordVerified = false;
+            }
         }
 
         function editDish(category, index) {
+            if (!isPasswordVerified) {
+                document.getElementById('editModal').classList.add('active');
+                return;
+            }
+            
             editingId = {category, index};
             const dish = menu[category][index];
             
@@ -728,20 +851,29 @@
             document.getElementById('dishDescription').value = dish.desc;
             document.getElementById('dishPrice').value = dish.price;
             document.getElementById('dishCategory').value = category;
-            document.getElementById('dishIcon').value = dish.icon;
+            document.getElementById('password').value = '';
             
             document.getElementById('editModal').classList.add('active');
         }
 
         function addDish() {
+            if (!isPasswordVerified) {
+                document.getElementById('editModal').classList.add('active');
+                return;
+            }
+            
             editingId = null;
             document.getElementById('modalTitle').textContent = 'Agregar Nuevo Plato';
             document.getElementById('dishForm').reset();
-            document.getElementById('dishIcon').value = '🍽️';
+            document.getElementById('password').value = '';
             document.getElementById('editModal').classList.add('active');
         }
 
         function deleteDish(category, index) {
+            if (!isPasswordVerified) {
+                alert('Necesitas contraseña para eliminar');
+                return;
+            }
             if (confirm('¿Estás seguro de que deseas eliminar este plato?')) {
                 menu[category].splice(index, 1);
                 saveMenu();
@@ -752,11 +884,19 @@
         document.getElementById('dishForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
+            const password = document.getElementById('password').value;
+            if (password !== ADMIN_PASSWORD) {
+                alert('Contraseña incorrecta');
+                return;
+            }
+
+            isPasswordVerified = true;
+
             const newDish = {
                 name: document.getElementById('dishName').value,
                 desc: document.getElementById('dishDescription').value,
                 price: parseInt(document.getElementById('dishPrice').value),
-                icon: document.getElementById('dishIcon').value,
+                icon: '🍽️'
             };
 
             const category = document.getElementById('dishCategory').value;
@@ -765,12 +905,18 @@
                 menu[editingId.category][editingId.index] = {...menu[editingId.category][editingId.index], ...newDish};
                 editingId = null;
             } else {
+                if (!menu[category]) menu[category] = [];
                 menu[category].push(newDish);
             }
 
             saveMenu();
             renderMenu('all');
             closeModal();
+            
+            const actions = document.querySelectorAll('.dish-actions');
+            actions.forEach(action => action.style.display = 'flex');
+            document.querySelector('.btn-primary').textContent = '✅ Salir Edición';
+            document.body.style.background = '#fff9e6';
         });
 
         function closeModal() {
@@ -789,7 +935,6 @@
             }
         }
 
-        // ===== QR =====
         function toggleQR() {
             document.getElementById('qrSection').classList.toggle('active');
         }
@@ -813,24 +958,6 @@
             link.download = 'lacima-qr.png';
             link.click();
         }
-
-        // ===== PDF EXPORT =====
-        function exportPDF() {
-            const element = document.querySelector('.menu-container');
-            const opt = {
-                margin: 10,
-                filename: 'La_Cima_Carta_Digital.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
-            };
-            html2pdf().set(opt).from(element).save();
-        }
-
-        // Cerrar modal con ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
     </script>
 </body>
 </html>
