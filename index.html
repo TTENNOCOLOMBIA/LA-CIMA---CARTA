@@ -35,7 +35,7 @@
         header {
             background: linear-gradient(135deg, var(--dark) 0%, var(--black) 100%);
             color: var(--primary);
-            padding: 30px 20px;
+            padding: 20px 20px;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             position: sticky;
@@ -47,29 +47,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
             margin-bottom: 15px;
         }
 
         .logo-img {
-            width: 70px;
-            height: 70px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--primary);
-        }
-
-        h1 {
-            font-size: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-size: 0.95rem;
-            color: #ddd;
-            font-style: italic;
-            margin-bottom: 15px;
+            border: 4px solid var(--primary);
         }
 
         .contact-info {
@@ -77,7 +63,7 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-top: 15px;
         }
 
@@ -90,8 +76,13 @@
         .contact-item span {
             background: var(--primary);
             color: var(--dark);
-            padding: 5px 10px;
+            padding: 8px 15px;
             border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .contact-label {
+            color: var(--primary);
             font-weight: bold;
         }
 
@@ -200,6 +191,7 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .filter-btn.active {
@@ -265,12 +257,17 @@
             font-weight: bold;
             text-align: center;
             padding: 20px;
+            position: relative;
         }
 
         .dish-image-placeholder {
             color: #999;
-            font-size: 1rem;
+            font-size: 0.8rem;
             font-weight: normal;
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
         }
 
         .dish-content {
@@ -451,8 +448,9 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 1.5rem;
+            .logo-img {
+                width: 100px;
+                height: 100px;
             }
 
             .menu-grid {
@@ -484,21 +482,20 @@
     <header>
         <div class="logo-container">
             <img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="Logo La Cima" class="logo-img">
-            <div>
-                <h1>LA CIMA</h1>
-                <p class="subtitle">Restaurante · Esto es Colombia</p>
-            </div>
         </div>
         <div class="contact-info">
             <div class="contact-item">
-                📞 <span id="phone">322 736 48 68</span>
+                🎉 <span class="contact-label">RESERVAS:</span> <span>322 736 48 68</span>
             </div>
             <div class="contact-item">
-                📍 <span id="address">Cra 7 # 27-90, Ipiales</span>
+                📍 <span>Cra 7 # 27-90, Ipiales</span>
             </div>
             <div class="contact-item">
-                🕐 <span id="hours">L-D: 11am - 10pm</span>
+                🕐 <span>L-V: 12 AM - 9 PM | S: 12 AM - 10 PM | D-F: 11 AM - 5 PM</span>
             </div>
+        </div>
+        <div style="font-size: 0.85rem; color: #ddd; margin-top: 10px;">
+            *En caso de reservas o eventos se puede llegar a un acuerdo
         </div>
     </header>
 
@@ -532,7 +529,12 @@
         <button class="filter-btn" onclick="filterMenu('chuletás')">Chuletas</button>
         <button class="filter-btn" onclick="filterMenu('cimar')">CI-MAR</button>
         <button class="filter-btn" onclick="filterMenu('tipicos')">Típicos</button>
-        <button class="filter-btn" onclick="filterMenu('bebidas')">Bebidas</button>
+        <button class="filter-btn" onclick="filterMenu('pastas')">Pastas</button>
+        <button class="filter-btn" onclick="filterMenu('hamburguesas')">Hamburguesas</button>
+        <button class="filter-btn" onclick="filterMenu('ensaladas')">Ensaladas</button>
+        <button class="filter-btn" onclick="filterMenu('postres')">Postres</button>
+        <button class="filter-btn" onclick="filterMenu('calientes')">Calientes</button>
+        <button class="filter-btn" onclick="filterMenu('frias')">Bebidas</button>
         <button class="filter-btn" onclick="filterMenu('eventos')">Eventos</button>
     </div>
 
@@ -564,7 +566,7 @@
                     <label>Categoría</label>
                     <select id="dishCategory" required>
                         <option value="entradas">Entradas</option>
-                        <option value="infantil">Menú Infantil</option>
+                        <option value="infantil">Infantil</option>
                         <option value="diaria">Menú Diaria</option>
                         <option value="parrilla">Parrilla</option>
                         <option value="chuletás">Chuletas</option>
@@ -577,7 +579,7 @@
                         <option value="calientes">Bebidas Calientes</option>
                         <option value="frias">Bebidas Frías</option>
                         <option value="naturales">Bebidas Naturales</option>
-                        <option value="sodas">Sodas Frutales</option>
+                        <option value="sodas">Sodas</option>
                         <option value="licores">Licores</option>
                         <option value="eventos">Eventos</option>
                     </select>
@@ -597,7 +599,7 @@
             <p>Carrera 7 # 27-90, Ipiales, Nariño</p>
         </div>
         <div class="footer-section">
-            <h4>📞 Contacto</h4>
+            <h4>📞 Reservas</h4>
             <p>WhatsApp: +57 322 736 48 68</p>
         </div>
         <div class="footer-section">
@@ -619,7 +621,7 @@
         const defaultMenu = {
             entradas: [
                 {name: "Chunchullo", desc: "Disfrútalo con papa criolla, salsa y limón", price: 18000, icon: "🍠"},
-                {name: "Chorizo pa' Picar", desc: "Chorizo de Cerdo, Papa, Arepa, Queso, Limó y Salsas", price: 12000, icon: "🌶️"},
+                {name: "Chorizo pa' Picar", desc: "Chorizo de Cerdo, Papa, Arepa, Queso, Limón y Salsas", price: 12000, icon: "🌶️"},
                 {name: "Palitos de queso x4", desc: "Palitos de queso artesanal", price: 8500, icon: "🧀"},
                 {name: "Empanadas x4", desc: "Empanadas tradicionales colombianas", price: 8500, icon: "🥟"}
             ],
@@ -630,7 +632,7 @@
                 {name: "Papicono Alitas", desc: "Alitas broaster y salsas", price: 16000, icon: "🍗"}
             ],
             diaria: [
-                {name: "Menú del Día", desc: "Sopa del día, proteína a elección, arroz, ensalada, papa, plátano, jugo natural y postre. Incluye opción a escoger", price: 23000, icon: "🍲"}
+                {name: "Menú del Día", desc: "Sopa del día, proteína a elección, arroz, ensalada, papa, plátano, jugo natural y postre", price: 23000, icon: "🍲"}
             ],
             parrilla: [
                 {name: "Churrasco Ranchero", desc: "Res, queso, huevo, papa, chorizo, maduro, ensalada y salsas", price: 39500, icon: "🥩"},
@@ -644,96 +646,103 @@
                 {name: "Chuleta Gratinada de Pollo", desc: "Pechuga apanada, queso, huevo, papa, ensalada y salsas", price: 32000, icon: "🍗"}
             ],
             cimar: [
-                {name: "Coctel de Camarones", desc: "Camarones marinado en jugo de limón y condimentos con hierbas y especias, acompañado con chips del plátano", price: 25000, icon: "🦐"},
+                {name: "Coctel de Camarones", desc: "Camarones marinado en jugo de limón, condimentos, hierbas y especias con chips de plátano", price: 25000, icon: "🦐"},
                 {name: "Ceviche de Camarones", desc: "Camarones marinado en jugo de limón y condimentos con hierbas y especias", price: 27000, icon: "🦐"},
                 {name: "Cima de Camarón", desc: "Camarones, tilapia en cubitos apanados, arroz amarillo, papas a la francesa, chips de plátano, ensalada y salsas", price: 42000, icon: "🦐"},
                 {name: "Trucha Gratinada", desc: "Trucha cocida en salsa al ajillo cubierta con queso gratinado, pimentón y cebolla", price: 42000, icon: "🐟"},
-                {name: "Trucha Marinera", desc: "Trucha, camarones y mariscos cocidos en salsa al ajillo, servida con patacones crocantes", price: 52000, icon: "🐟"}
+                {name: "Trucha Marinera", desc: "Trucha, camarones y mariscos cocidos en salsa al ajillo con patacones crocantes", price: 52000, icon: "🐟"},
+                {name: "Picada Mar y Tierra (2 Personas)", desc: "Camarones apanados, tilapia, chorizos ahumados, papa, chips de plátano y salsas", price: 59000, icon: "🌊"},
+                {name: "Salteado Pollo", desc: "Pechuga al wok con vegetales frescos", price: 24500, icon: "🍗"},
+                {name: "Salteado Cerdo", desc: "Cerdo al wok con vegetales frescos", price: 26000, icon: "🐷"},
+                {name: "Salteado Res", desc: "Res al wok con vegetales frescos", price: 29000, icon: "🥩"},
+                {name: "Salteado Camarón", desc: "Camarón al wok con vegetales frescos", price: 30000, icon: "🦐"},
+                {name: "Salteado Cima Fusión", desc: "Mezcla de proteínas al wok", price: 65000, icon: "🥘"}
             ],
             tipicos: [
                 {name: "Fritada", desc: "Porción de frito de cerdo, papa y crispetas", price: 22000, icon: "🍟"},
                 {name: "Bandeja Paisana", desc: "Fríjoles, maduro, huevo, aguacate, chorizo, morcilla, carne de res, chicharrón, arroz, arepa y papa", price: 39000, icon: "🍘"}
             ],
             pastas: [
-                {name: "Fettuccine Suprema de Pollo", desc: "Fettuccine en emulsión cremosa de ajillo y mantequilla, acompañado de tiernos bocados de pechuga de pollo sellados a la perfección", price: 30000, icon: "🍝"},
-                {name: "Fettuccine Mar de Altura", desc: "Cintas de fettuccine bañadas en emulsión cremosa de ajillo y mantequilla, realzadas con el umami de nuestra selección de frutos del mar", price: 39000, icon: "🍝"}
+                {name: "Fettuccine Suprema de Pollo", desc: "Fettuccine en emulsión cremosa de ajillo y mantequilla con tiernos bocados de pechuga sellados", price: 30000, icon: "🍝"},
+                {name: "Fettuccine Mar de Altura", desc: "Fettuccine en emulsión cremosa con frutos del mar, pimienta y toque exótico de sal marina", price: 39000, icon: "🍝"}
             ],
             hamburguesas: [
-                {name: "Reina de la Casa", desc: "Carne 100% de res novillo jugosa y en su punto, pan sellado a la parrilla, una fresca rodaja de tomate, lechuga crespa orgánica", price: 24000, icon: "🍔"},
-                {name: "Ahumada del Galeras", desc: "Intensa y diferente carne de costillitas desmechadas de cerdo ahumada al barril, pan sellado a la parrilla, una fresca rodaja de tomate, lechuga crespa", price: 27000, icon: "🍔"},
-                {name: "Cumbre Ranchera", desc: "Chorizo artesanal de cerdo con un toque ahumado, pan sellado a la parrilla, una fresca rodaja de tomate, lechuga crespa orgánica", price: 26000, icon: "🍔"},
-                {name: "Pico del Cumbal", desc: "Pechuga de pollo molida y sazonada con textura suave y en su punto, pan sellado a la parrilla, una fresca rodaja de tomate, lechuga crespa", price: 23500, icon: "🍔"}
+                {name: "Reina de la Casa", desc: "Carne 100% res novillo, pan sellado a la parrilla, tomate fresco, lechuga crespa, queso y salsas", price: 24000, icon: "🍔"},
+                {name: "Ahumada del Galeras", desc: "Carne desmechada de cerdo ahumada al barril, pan sellado, tomate, lechuga crespa y queso", price: 27000, icon: "🍔"},
+                {name: "Cumbre Ranchera", desc: "Chorizo artesanal ahumado, pan sellado, tomate, lechuga crespa, queso y salsas especiales", price: 26000, icon: "🍔"},
+                {name: "Pico del Cumbal", desc: "Pechuga molida y sazonada, pan sellado, tomate, lechuga crespa, queso y salsas", price: 23500, icon: "🍔"}
             ],
             ensaladas: [
-                {name: "Cima Verde Premium (Vegetariana)", desc: "Una mezcla vibrante de vegetales, lechuga crespa, tomate, cebolla, aguacate, aceitunas y queso, seleccionados por su frescura", price: 19000, icon: "🥗"},
-                {name: "Cima Verde Premium con Pollo", desc: "Cima Verde Premium con Pollo", price: 25000, icon: "🥗"},
-                {name: "Cima Verde Premium con Cerdo", desc: "Cima Verde Premium con Cerdo", price: 26000, icon: "🥗"}
+                {name: "Cima Verde Premium Vegetariana", desc: "Mezcla de vegetales, lechuga, tomate, cebolla, aguacate, aceitunas, queso, aderezos", price: 19000, icon: "🥗"},
+                {name: "Cima Verde Premium con Pollo", desc: "Cima Verde Premium con pechuga de pollo grillada", price: 25000, icon: "🥗"},
+                {name: "Cima Verde Premium con Cerdo", desc: "Cima Verde Premium con cerdo grillado", price: 26000, icon: "🥗"}
             ],
             postres: [
-                {name: "Brownie Tropical", desc: "Brownie caliente cubierto con salsa de maracuyá suavizada con crema de leche, queso rallado y frutos rojos", price: 12000, icon: "🍫"},
-                {name: "Biscochito Tropical", desc: "Biscochito cubierto con salsa de maracuyá suavizada con crema de leche, queso rallado y frutos rojos", price: 9000, icon: "🍰"},
-                {name: "Dulce Maracuyá-Mango", desc: "Dulce de maracuyá y mango con queso campesino", price: 4500, icon: "🥭"},
-                {name: "Dulce Kiwi-Lulo", desc: "Dulce de Kiwi y Lulo con queso campesino", price: 5500, icon: "🥝"},
-                {name: "Dulce Frutos Rojos", desc: "Dulce de frutos rojos con queso campesino", price: 6500, icon: "🍓"}
+                {name: "Brownie Tropical", desc: "Brownie caliente cubierto con salsa de maracuyá, crema de leche, queso y frutos rojos", price: 12000, icon: "🍫"},
+                {name: "Biscochito Tropical", desc: "Biscochito cubierto con salsa de maracuyá, crema de leche, queso y frutos rojos", price: 9000, icon: "🍰"},
+                {name: "Dulce Maracuyá-Mango", desc: "Dulce artesanal de maracuyá y mango con queso campesino", price: 4500, icon: "🥭"},
+                {name: "Dulce Kiwi-Lulo", desc: "Dulce artesanal de Kiwi y Lulo con queso campesino", price: 5500, icon: "🥝"},
+                {name: "Dulce Frutos Rojos", desc: "Dulce artesanal de frutos rojos con queso campesino", price: 6500, icon: "🍓"}
             ],
             calientes: [
-                {name: "Aromática", desc: "Bebida tradicional colombiana", price: 2500, icon: "☕"},
-                {name: "Café en Leche - 9 oz", desc: "Café con leche", price: 3000, icon: "☕"},
+                {name: "Aromática", desc: "Bebida tradicional colombiana reconfortante", price: 2500, icon: "☕"},
+                {name: "Café en Leche - 9 oz", desc: "Café con leche caliente", price: 3000, icon: "☕"},
                 {name: "Tinto - 7 oz", desc: "Café tinto pequeño", price: 2500, icon: "☕"},
-                {name: "Chocolate Abuelita - 9 oz", desc: "Chocolate caliente", price: 7000, icon: "🍫"},
-                {name: "MILO - 9 oz", desc: "Bebida de malta", price: 7000, icon: "🥛"},
-                {name: "Milo Frío - 16 oz", desc: "MILO frío", price: 8500, icon: "🥛"},
-                {name: "Chocolate ENRUANADO - 9 oz", desc: "Chocolate enruanado", price: 9500, icon: "🍫"},
-                {name: "Empanada", desc: "Acompañante", price: 2500, icon: "🥟"},
-                {name: "Palito de queso", desc: "Acompañante", price: 2500, icon: "🧀"},
-                {name: "Pan de queso gratinado", desc: "Acompañante", price: 3000, icon: "🍞"},
-                {name: "Combo Café y 2 empanadas", desc: "Café negro, Café en leche o Aromática", price: 6500, icon: "☕"},
-                {name: "Combo Café y Pan de queso", desc: "Café negro, Café en leche o Aromática", price: 5000, icon: "☕"}
+                {name: "Chocolate Abuelita - 9 oz", desc: "Chocolate caliente artesanal", price: 7000, icon: "🍫"},
+                {name: "MILO - 9 oz", desc: "Bebida de malta energizante", price: 7000, icon: "🥛"},
+                {name: "Milo Frío - 16 oz", desc: "MILO frío para días cálidos", price: 8500, icon: "🥛"},
+                {name: "Chocolate ENRUANADO - 9 oz", desc: "Chocolate enruanado artesanal premium", price: 9500, icon: "🍫"},
+                {name: "Empanada (Acompañante)", desc: "Empanada recién hecha", price: 2500, icon: "🥟"},
+                {name: "Palito de Queso (Acompañante)", desc: "Palito de queso artesanal", price: 2500, icon: "🧀"},
+                {name: "Pan de Queso Gratinado (Acompañante)", desc: "Pan de queso recién hecho", price: 3000, icon: "🍞"},
+                {name: "Combo Café y 2 Empanadas", desc: "Café negro, Café en leche o Aromática con 2 empanadas", price: 6500, icon: "☕"},
+                {name: "Combo Café y Pan de Queso", desc: "Café negro, Café en leche o Aromática con pan de queso", price: 5000, icon: "☕"}
             ],
             frias: [
                 {name: "Aguapanela Fría", desc: "Refrescante bebida tradicional colombiana", price: 2500, icon: "🥤"},
-                {name: "Refrescos", desc: "Refrescos varios", price: 5000, icon: "🧋"},
-                {name: "Cerveza Poker", desc: "Cerveza fría", price: 6500, icon: "🍺"},
-                {name: "Michelada", desc: "Cerveza con jugo", price: 7000, icon: "🍺"}
+                {name: "Refresco", desc: "Refresco variado a elección", price: 5000, icon: "🧋"},
+                {name: "Cerveza Poker", desc: "Cerveza fría premium", price: 6500, icon: "🍺"},
+                {name: "Cerveza Club Colombia", desc: "Cerveza fría clásica", price: 7000, icon: "🍺"},
+                {name: "Cerveza Corona", desc: "Cerveza fría importada", price: 9000, icon: "🍺"},
+                {name: "Michelada Poker", desc: "Cerveza con jugo y especias", price: 10500, icon: "🍺"},
+                {name: "Michelada Club Colombia", desc: "Cerveza con jugo y especias", price: 11000, icon: "🍺"},
+                {name: "Michelada Corona", desc: "Cerveza con jugo y especias", price: 13000, icon: "🍺"}
             ],
             naturales: [
                 {name: "Jugo Natural en Agua", desc: "Tamarindo, Fresa, Mora, Guanábana, Maracuyá o Mango", price: 6500, icon: "🧃"},
                 {name: "Jugo Natural en Agua JARRA 1.5 Lt", desc: "Limonada, Tamarindo, Fresa, Mora, Guanábana, Maracuyá, Mango", price: 16000, icon: "🧃"},
-                {name: "Jugo Natural en Leche", desc: "Fresa, Mora, Guanábana, Maracuyá, Mango", price: 9500, icon: "🥛"},
-                {name: "Jugo Natural en Leche JARRA 1.5 Lt", desc: "Fresa, Mora, Guanábana, Maracuyá, Mango", price: 23000, icon: "🥛"},
-                {name: "Granizado", desc: "Tamarindo, Fresa, Mora, Guanábana, Maracuyá, Mango, Limonada", price: 10000, icon: "🍧"},
-                {name: "Limonada (Vaso 16 oz)", desc: "Limonada natural", price: 6500, icon: "🍋"},
-                {name: "Limonada JARRA 1.5 Lt", desc: "Limonada natural", price: 16000, icon: "🍋"},
-                {name: "Cerezada (Vaso 16 oz)", desc: "Bebida de cereza", price: 10500, icon: "🍒"},
-                {name: "Cerezada JARRA 1.5 Lt", desc: "Bebida de cereza", price: 29000, icon: "🍒"}
+                {name: "Jugo Natural en Leche", desc: "Fresa, Mora, Guanábana, Maracuyá, Mango en leche", price: 9500, icon: "🥛"},
+                {name: "Jugo Natural en Leche JARRA 1.5 Lt", desc: "Fresa, Mora, Guanábana, Maracuyá, Mango en leche", price: 23000, icon: "🥛"},
+                {name: "Granizado", desc: "Tamarindo, Fresa, Mora, Guanábana, Maracuyá, Mango o Limonada granizada", price: 10000, icon: "🍧"},
+                {name: "Limonada (Vaso 16 oz)", desc: "Limonada natural fresca", price: 6500, icon: "🍋"},
+                {name: "Limonada JARRA 1.5 Lt", desc: "Limonada natural en jarra grande", price: 16000, icon: "🍋"},
+                {name: "Cerezada (Vaso 16 oz)", desc: "Bebida artesanal de cereza", price: 10500, icon: "🍒"},
+                {name: "Cerezada JARRA 1.5 Lt", desc: "Bebida artesanal en jarra grande", price: 29000, icon: "🍒"}
             ],
             sodas: [
-                {name: "Soda Frutos Rojos", desc: "Soda artesanal frutal", price: 16000, icon: "🍓"},
-                {name: "Soda Kiwi-Lulo", desc: "Soda artesanal frutal", price: 14000, icon: "🥝"},
-                {name: "Soda Maracuyá-Mango", desc: "Soda artesanal frutal", price: 12000, icon: "🥭"}
+                {name: "Soda Frutos Rojos", desc: "Soda artesanal con frutos rojos tropicales", price: 16000, icon: "🍓"},
+                {name: "Soda Kiwi-Lulo", desc: "Soda artesanal con kiwi y lulo", price: 14000, icon: "🥝"},
+                {name: "Soda Maracuyá-Mango", desc: "Soda artesanal con maracuyá y mango", price: 12000, icon: "🥭"}
             ],
             licores: [
-                {name: "Aguardiente Nariño", desc: "Aguardiente de Nariño", price: 105000, icon: "🍷"},
-                {name: "Aguardiente Amarillo", desc: "Aguardiente Amarillo", price: 105000, icon: "🍷"},
-                {name: "Ron Viejo de Caldas", desc: "Ron Premium", price: 110000, icon: "🍷"},
-                {name: "Brandy Domeco", desc: "Brandy", price: 110000, icon: "🍷"},
-                {name: "Jose Cuervo (Reposado)", desc: "Tequila", price: 170000, icon: "🍷"},
-                {name: "Olmeca", desc: "Tequila", price: 170000, icon: "🍷"},
-                {name: "Jimador (Reposado)", desc: "Tequila", price: 230000, icon: "🍷"},
-                {name: "Buchanan's", desc: "Whisky", price: 300000, icon: "🍷"},
-                {name: "OldParr", desc: "Whisky", price: 290000, icon: "🍷"},
-                {name: "Chivas", desc: "Whisky", price: 260000, icon: "🍷"},
-                {name: "Poker", desc: "Cerveza", price: 6500, icon: "🍺"},
-                {name: "Club Colombia", desc: "Cerveza", price: 7000, icon: "🍺"},
-                {name: "Corona", desc: "Cerveza", price: 9000, icon: "🍺"},
-                {name: "Michelada Poker", desc: "Cerveza con jugo", price: 10500, icon: "🍺"},
-                {name: "Michelada Club Colombia", desc: "Cerveza con jugo", price: 11000, icon: "🍺"},
-                {name: "Michelada Corona", desc: "Cerveza con jugo", price: 13000, icon: "🍺"}
+                {name: "Aguardiente Nariño", desc: "Aguardiente premium de Nariño (Botella)", price: 105000, icon: "🍷"},
+                {name: "Aguardiente Amarillo", desc: "Aguardiente Amarillo clásico (Botella)", price: 105000, icon: "🍷"},
+                {name: "Ron Viejo de Caldas", desc: "Ron Premium aged (Botella)", price: 110000, icon: "🍷"},
+                {name: "Brandy Domeco", desc: "Brandy español fino (Botella)", price: 110000, icon: "🍷"},
+                {name: "Jose Cuervo Reposado", desc: "Tequila mexicano reposado (Botella)", price: 170000, icon: "🍷"},
+                {name: "Olmeca", desc: "Tequila mexicano (Botella)", price: 170000, icon: "🍷"},
+                {name: "Jimador Reposado", desc: "Tequila premium reposado (Botella)", price: 230000, icon: "🍷"},
+                {name: "Buchanan's", desc: "Whisky escocés premium (Botella)", price: 300000, icon: "🍷"},
+                {name: "OldParr", desc: "Whisky escocés clásico (Botella)", price: 290000, icon: "🍷"},
+                {name: "Chivas", desc: "Whisky escocés de calidad (Botella)", price: 260000, icon: "🍷"},
+                {name: "Poker", desc: "Cerveza colombiana", price: 6500, icon: "🍺"},
+                {name: "Club Colombia", desc: "Cerveza colombiana clásica", price: 7000, icon: "🍺"},
+                {name: "Corona", desc: "Cerveza mexicana importada", price: 9000, icon: "🍺"}
             ],
             eventos: [
-                {name: "PLATO FUERTE", desc: "Mixto de Cerdo y Pechuga a la parrilla - Elige: Salsa (Maracuyá/BBQ/Agridulce), Acompañamientos y Ensalada. Incluye jarra de jugo personal", price: 35000, icon: "🎉"},
-                {name: "+ ENTRADA LA CIMA", desc: "Elige: Consomé pollo + papa fosforito o Crema de pollo", price: 40000, icon: "🎉"},
-                {name: "+ POSTRE", desc: "Elige: Maracuyá o Durazno", price: 43000, icon: "🎉"}
+                {name: "PLATO FUERTE", desc: "Mixto de Cerdo y Pechuga a la parrilla - Elige: Salsa (Maracuyá/BBQ/Agridulce), Acompañamientos y Ensalada. Incluye jarra personal de jugo", price: 35000, icon: "🎉"},
+                {name: "+ ENTRADA LA CIMA", desc: "Elige: Consomé de pollo + papa fosforito O Crema de pollo", price: 40000, icon: "🎉"},
+                {name: "+ POSTRE", desc: "Elige: Dulce de Maracuyá O Dulce de Durazno", price: 43000, icon: "🎉"}
             ]
         };
 
@@ -760,7 +769,6 @@
                 chuletás: {title: '🍖 CHULETAS', desc: 'Chuletas gratinadas - Crujientes por fuera, jugosas por dentro'},
                 cimar: {title: '🌊 CI-MAR - MARISCOS Y TRUCHAS', desc: 'Frescura del mar en cada bocado - Mariscos y truchas de primera'},
                 pastas: {title: '🍝 PASTAS', desc: 'Fettuccine exquisitas con salsas de autor - Sabor italiano con toque colombiano'},
-                salteados: {title: '🥘 SALTEADOS AL WOK', desc: 'Vegetales y proteína en punto perfecto - Recetas orientales con sabor local'},
                 hamburguesas: {title: '🍔 HAMBURGUESAS', desc: 'Hamburguesas artesanales con carne 100% premium - Deliciosas y abundantes'},
                 ensaladas: {title: '🥗 ENSALADAS LA CIMA', desc: 'Frescas, coloridas y nutritivas - La opción saludable sin sacrificar sabor'},
                 postres: {title: '🍰 POSTRES', desc: 'Dulces momentos - Brownie, biscochito y dulces artesanales para endulzar tu día'},
