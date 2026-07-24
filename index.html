@@ -9,79 +9,62 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--primary:#F4D03F;--dark:#3E2723;--black:#1a1a1a;--accent:#C17D11}
 body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f5f1ed;color:#333;line-height:1.6}
-header{background:linear-gradient(135deg,var(--dark),var(--black));color:var(--primary);padding:20px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+header{background:linear-gradient(135deg,var(--dark),var(--black));color:var(--primary);padding:20px;text-align:center}
 .logo-img{width:130px;height:130px;border-radius:50%;object-fit:cover;border:4px solid var(--primary)}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;font-size:.9rem;margin-top:15px}
-.contact-item{display:flex;align-items:center;gap:6px}
-.contact-item span{background:var(--primary);color:var(--dark);padding:8px 14px;border-radius:20px;font-weight:bold}
-.nota{margin-top:10px;font-size:.85rem;color:#ddd;font-style:italic}
-.toolbar{background:var(--primary);padding:12px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-button{padding:10px 18px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;transition:.3s;font-size:.9rem}
+.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:15px;font-size:.9rem;margin-top:15px}
+.contact-item{display:flex;align-items:center;gap:8px}
+.contact-item span{background:var(--primary);color:var(--dark);padding:8px 15px;border-radius:20px;font-weight:bold}
+.toolbar{background:var(--primary);padding:15px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:.95rem}
 .btn-primary{background:var(--dark);color:var(--primary)}
-.btn-primary:hover{background:var(--accent)}
 .btn-secondary{background:var(--accent);color:#fff}
-.btn-secondary:hover{background:var(--dark)}
 .btn-success{background:#27ae60;color:#fff}
-.qr-section{background:#fff;padding:25px;margin:20px;border-radius:15px;text-align:center;display:none;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.qr-section{background:#fff;padding:30px 20px;margin:20px;border-radius:15px;text-align:center;display:none}
 .qr-section.active{display:block}
-#qrcode{display:inline-block;margin:15px auto}
-.filters{display:flex;gap:8px;padding:18px;justify-content:center;flex-wrap:wrap;background:#fff;margin:0 15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.filter-btn{padding:8px 15px;border:2px solid var(--primary);background:#fff;color:var(--dark);border-radius:20px;cursor:pointer;font-weight:600;font-size:.85rem}
-.filter-btn.active{background:var(--primary);transform:scale(1.05)}
-.menu-container{max-width:1200px;margin:25px auto;padding:0 20px}
-.category-title{font-size:1.7rem;color:var(--dark);border-bottom:3px solid var(--primary);padding-bottom:8px;margin:35px 0 8px;text-transform:uppercase}
-.category-description{font-size:.95rem;color:#666;margin-bottom:18px;font-style:italic}
-.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:18px;margin-bottom:35px}
-.dish-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1);transition:.3s;border-left:5px solid var(--primary)}
-.dish-card:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(0,0,0,.15)}
-.dish-image{width:100%;height:180px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:2.8rem}
-.ph{font-size:.7rem;color:#8a6d1f;font-weight:normal;margin-top:6px}
-.dish-content{padding:18px}
-.dish-name{font-size:1.15rem;color:var(--dark);font-weight:bold;margin-bottom:6px}
-.dish-description{font-size:.82rem;color:#666;margin-bottom:10px}
+#qrcode{display:inline-block;margin:20px auto}
+.filters{display:flex;gap:8px;padding:20px;justify-content:center;flex-wrap:wrap;background:#fff;margin:0 20px;border-radius:10px}
+.filter-btn{padding:8px 14px;border:2px solid var(--primary);background:#fff;color:var(--dark);border-radius:20px;cursor:pointer;font-weight:600;font-size:.85rem}
+.filter-btn.active{background:var(--primary)}
+.menu-container{max-width:1200px;margin:30px auto;padding:0 20px}
+.category-title{font-size:1.8rem;color:var(--dark);border-bottom:3px solid var(--primary);padding-bottom:10px;margin:40px 0 10px;text-transform:uppercase}
+.category-description{font-size:1rem;color:#666;margin-bottom:20px;font-style:italic}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:40px}
+.dish-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1);border-left:5px solid var(--primary)}
+.dish-image{width:100%;height:180px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:3rem;color:var(--dark)}
+.dish-image-placeholder{color:#8a6d1f;font-size:.7rem}
+.dish-content{padding:20px}
+.dish-name{font-size:1.2rem;color:var(--dark);font-weight:bold;margin-bottom:8px}
+.dish-description{font-size:.85rem;color:#666;margin-bottom:12px}
 .dish-price{font-size:1.4rem;color:var(--accent);font-weight:bold}
-.dish-actions{display:flex;gap:8px;margin-top:10px}
-.edit-btn,.delete-btn{flex:1;padding:8px;border:none;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:bold}
+.dish-actions{display:flex;gap:10px;margin-top:12px}
+.edit-btn,.delete-btn{flex:1;padding:8px;border:none;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:bold}
 .edit-btn{background:var(--primary);color:var(--dark)}
 .delete-btn{background:#e74c3c;color:#fff}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center}
 .modal.active{display:flex}
-.modal-content{background:#fff;padding:28px;border-radius:15px;max-width:480px;width:90%;max-height:90vh;overflow-y:auto}
-.modal-content h3{color:var(--dark);margin-bottom:18px}
-.form-group{margin-bottom:14px}
+.modal-content{background:#fff;padding:30px;border-radius:15px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto}
+.form-group{margin-bottom:15px}
 .form-group label{display:block;margin-bottom:5px;color:var(--dark);font-weight:bold}
 .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px;border:2px solid var(--primary);border-radius:6px;font-size:1rem;font-family:inherit}
-.form-group textarea{min-height:75px;resize:vertical}
-.modal-actions{display:flex;gap:10px;margin-top:22px}
+.modal-actions{display:flex;gap:10px;margin-top:25px}
 .modal-actions button{flex:1}
-footer{background:var(--dark);color:var(--primary);padding:28px 20px;text-align:center;margin-top:45px}
-footer h4{margin-bottom:8px}
-footer div{margin-bottom:16px}
-@media(max-width:768px){
-.logo-img{width:95px;height:95px}
-.menu-grid{grid-template-columns:1fr}
-.contact-info{flex-direction:column;gap:8px}
-.toolbar{flex-direction:column}
-button{width:100%}
-.filters{margin:0 10px;gap:6px}
-.filter-btn{font-size:.78rem;padding:7px 12px}
-}
+footer{background:var(--dark);color:var(--primary);padding:30px 20px;text-align:center;margin-top:50px}
+@media(max-width:768px){.logo-img{width:100px;height:100px}.menu-grid{grid-template-columns:1fr}.contact-info{flex-direction:column;gap:10px}.toolbar{flex-direction:column}button{width:100%}}
 </style>
 </head>
 <body>
-
 <header>
-<img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="La Cima" class="logo-img">
+<img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="Logo La Cima" class="logo-img">
 <div class="contact-info">
 <div class="contact-item">📞 <span>RESERVAS: 322 736 48 68</span></div>
 <div class="contact-item">📍 <span>Cra 7 # 27-90, Ipiales</span></div>
-<div class="contact-item">🕐 <span>Lun-Vie: 12 AM - 9 PM &nbsp;|&nbsp; Sáb: 12 AM - 10 PM &nbsp;|&nbsp; Dom y festivos: 11 AM - 5 PM</span></div>
+<div class="contact-item">🕐 <span>Lun-Vie: 12 AM - 9 PM | Sáb: 12 AM - 10 PM | Dom y festivos: 11 AM - 5 PM</span></div>
 </div>
-<p class="nota">*En caso de reservas o eventos se puede llegar a un acuerdo</p>
+<p style="margin-top:10px;font-size:.85rem;color:#ddd">*En caso de reservas o eventos se puede llegar a un acuerdo</p>
 </header>
 
 <div class="toolbar">
-<button class="btn-primary" id="btnEdit" onclick="toggleEditMode()">✏️ Modo Edición</button>
+<button class="btn-primary" onclick="toggleEditMode()">✏️ Modo Edición</button>
 <button class="btn-secondary" onclick="toggleQR()">📱 Ver QR</button>
 <button class="btn-secondary" onclick="addDish()">➕ Nuevo Plato</button>
 <button class="btn-primary" onclick="resetMenu()">🔄 Restaurar Menú</button>
@@ -90,8 +73,7 @@ button{width:100%}
 <div class="qr-section" id="qrSection">
 <h3>Comparte este QR con tus clientes</h3>
 <div id="qrcode"></div>
-<p>Escanea para ver la carta desde cualquier dispositivo</p>
-<button class="btn-secondary" style="margin-top:12px" onclick="downloadQR()">⬇️ Descargar QR</button>
+<button class="btn-secondary" style="margin-top:15px" onclick="downloadQR()">⬇️ Descargar QR</button>
 </div>
 
 <div class="filters" id="filters"></div>
@@ -102,7 +84,7 @@ button{width:100%}
 <h3 id="modalTitle">Editar Plato</h3>
 <form id="dishForm">
 <div class="form-group"><label>Contraseña</label><input type="password" id="password" required></div>
-<div class="form-group"><label>Nombre</label><input type="text" id="dishName" required></div>
+<div class="form-group"><label>Nombre del Plato</label><input type="text" id="dishName" required></div>
 <div class="form-group"><label>Descripción</label><textarea id="dishDescription" required></textarea></div>
 <div class="form-group"><label>Precio (COP)</label><input type="number" id="dishPrice" required></div>
 <div class="form-group"><label>Categoría</label><select id="dishCategory" required></select></div>
@@ -115,112 +97,256 @@ button{width:100%}
 </div>
 
 <footer>
-<div><h4>📍 Ubícanos</h4><p>Carrera 7 # 27-90, Ipiales, Nariño</p></div>
-<div><h4>📞 Reservas</h4><p>WhatsApp: +57 322 736 48 68</p></div>
-<div><h4>🕐 Horarios</h4><p>Lun a Vie: 12 AM - 9 PM<br>Sábados: 12 AM - 10 PM<br>Domingos y festivos: 11 AM - 5 PM</p></div>
-<p style="border-top:1px solid var(--primary);padding-top:14px;margin-top:14px">© 2026 La Cima Restaurante · Esto es Colombia</p>
+<h4>📍 Ubícanos</h4>
+<p>Carrera 7 # 27-90, Ipiales, Nariño</p>
+<h4 style="margin-top:20px">📞 Reservas</h4>
+<p>WhatsApp: +57 322 736 48 68</p>
+<p style="margin-top:20px;border-top:1px solid var(--primary);padding-top:15px">© 2026 La Cima Restaurante</p>
 </footer>
 
-<script src="menu.js"></script>
 <script>
 const ADMIN_PASSWORD="lacima2024";
 
-const CATS={
-entradas:{t:"🍽️ ENTRADAS o PA' PICAR",d:"Abre tu paladar con nuestras delicias crujientes y sabrosas",n:"Entradas"},
-infantil:{t:"👶 MENÚ INFANTIL",d:"Porciones perfectas para los más pequeños, llenas de sabor",n:"Infantil"},
-diaria:{t:"📅 MENÚ DEL DÍA",d:"La mejor opción diaria: sopa, proteína, acompañamientos, jugo y postre",n:"Menú del Día"},
-parrilla:{t:"🔥 PARRILLA",d:"Lo mejor de la carne a la brasa: jugosa, tierna y en su punto",n:"Parrilla"},
-tipicos:{t:"🇨🇴 TÍPICOS COLOMBIANOS",d:"Sabor tradicional que te transporta a lo mejor de Colombia",n:"Típicos"},
-chuletas:{t:"🍖 CHULETAS",d:"Chuletas gratinadas: crujientes por fuera, jugosas por dentro",n:"Chuletas"},
-cimar:{t:"🌊 CI-MAR",d:"Frescura del mar en cada bocado: mariscos y truchas de primera",n:"CI-MAR"},
-pastas:{t:"🍝 PASTAS",d:"Fettuccine con salsas de autor: sabor italiano con toque colombiano",n:"Pastas"},
-salteados:{t:"🥘 SALTEADOS AL WOK",d:"Verduras y proteína en punto perfecto, con salsas orientales",n:"Salteados"},
-hamburguesas:{t:"🍔 HAMBURGUESAS",d:"Artesanales, abundantes y con nuestras salsas especiales",n:"Hamburguesas"},
-ensaladas:{t:"🥗 ENSALADAS LA CIMA",d:"Frescas, coloridas y nutritivas, sin sacrificar el sabor",n:"Ensaladas"},
-postres:{t:"🍰 POSTRES",d:"Dulces momentos para cerrar con broche de oro",n:"Postres"},
-calientes:{t:"☕ BEBIDAS CALIENTES",d:"Reconforta tu alma, con acompañantes y combos irresistibles",n:"Calientes"},
-frias:{t:"🧊 BEBIDAS FRÍAS",d:"Refresca tu paladar con opciones clásicas que nunca fallan",n:"Frías"},
-naturales:{t:"🧃 BEBIDAS NATURALES",d:"Jugos con fruta fresca preparados cada día",n:"Naturales"},
-sodas:{t:"🥤 SODAS FRUTALES",d:"Burbujas de sabor con frutas tropicales",n:"Sodas"},
-licores:{t:"🍷 LICORES",d:"Aguardientes, rones, whisky y hervidos para celebrar con estilo",n:"Licores"},
-promos:{t:"🎊 PROMOS ESPECIALES",d:"¡Ofertas irresistibles! No te las pierdas",n:"Promos"},
-eventos:{t:"🎉 CIMA EVENTOS",d:"Paquetes personalizables para tus eventos y celebraciones",n:"Eventos"}
+const categoryInfo={
+entradas:{title:"🍽️ ENTRADAS o PA' PICAR",desc:"Abre tu paladar con nuestras delicias crujientes y sabrosas",label:"Entradas"},
+infantil:{title:"👶 MENÚ INFANTIL",desc:"Porciones perfectas para los más pequeños, llenas de sabor",label:"Infantil"},
+diaria:{title:"📅 MENÚ DEL DÍA",desc:"La mejor opción diaria - Proteína, acompañamientos y postre",label:"Menú del Día"},
+parrilla:{title:"🔥 PARRILLA",desc:"Lo mejor de la carne a la brasa - Jugosa, tierna y al punto",label:"Parrilla"},
+tipicos:{title:"🇨🇴 TÍPICOS COLOMBIANOS",desc:"Sabor tradicional que te transporta a lo mejor de Colombia",label:"Típicos"},
+chuletas:{title:"🍖 CHULETAS",desc:"Chuletas gratinadas - Crujientes por fuera, jugosas por dentro",label:"Chuletas"},
+cimar:{title:"🌊 CI-MAR",desc:"Frescura del mar en cada bocado - Mariscos y truchas de primera",label:"CI-MAR"},
+pastas:{title:"🍝 PASTAS",desc:"Fettuccine exquisitas con salsas de autor",label:"Pastas"},
+salteados:{title:"🥘 SALTEADOS AL WOK",desc:"Trozos jugosos de carne salteados al wok con verduras frescas, ajonjolí, salsa de ostiones y salsa negra. Sobre cama de papas rústicas y maduro",label:"Salteados"},
+hamburguesas:{title:"🍔 HAMBURGUESAS",desc:"Hamburguesas artesanales con carne premium - Deliciosas y abundantes",label:"Hamburguesas"},
+ensaladas:{title:"🥗 ENSALADAS LA CIMA",desc:"Frescas, coloridas y nutritivas - Saludable sin sacrificar sabor",label:"Ensaladas"},
+postres:{title:"🍰 POSTRES",desc:"Dulces momentos para endulzar tu día",label:"Postres"},
+calientes:{title:"☕ BEBIDAS CALIENTES",desc:"Reconforta tu alma con nuestras bebidas calientes y acompañantes",label:"Calientes"},
+frias:{title:"🧊 BEBIDAS FRÍAS",desc:"Refresca tu paladar - Opciones clásicas que nunca fallan",label:"Frías"},
+naturales:{title:"🧃 BEBIDAS NATURALES",desc:"Jugos naturales frescos - Frutas frescas cada día",label:"Naturales"},
+sodas:{title:"🥤 SODAS FRUTALES",desc:"Burbujas de sabor - Sodas artesanales con frutas tropicales",label:"Sodas"},
+licores:{title:"🍷 LICORES",desc:"Aguardientes, rones y whisky - Para celebrar con estilo",label:"Licores"},
+promos:{title:"🎊 PROMOS ESPECIALES",desc:"¡Ofertas irresistibles! No te las pierdas",label:"Promos"},
+eventos:{title:"🎉 CIMA EVENTOS",desc:"Paquetes personalizables para tus eventos especiales y reservas",label:"Eventos"}
 };
 
-let menu=JSON.parse(localStorage.getItem('lacimaMenu'))||JSON.parse(JSON.stringify(defaultMenu));
-let editingId=null,isVerified=false;
+const defaultMenu={
+entradas:[
+{name:"Chunchullo",desc:"Disfrútalo con papa criolla, salsa y limón",price:18000,icon:"🍢"},
+{name:"Chorizo pa' Picar",desc:"Chorizo de cerdo, papa, arepa, queso, limón y salsas",price:12000,icon:"🌭"},
+{name:"Palitos de Queso x4",desc:"Palitos de queso crujientes",price:8500,icon:"🧀"},
+{name:"Empanadas x4",desc:"Empanadas tradicionales colombianas",price:8500,icon:"🥟"}
+],
+infantil:[
+{name:"PapiCono La Cima - Ranchera",desc:"Aguapanela, papas, chorizo ahumado de cerdo y salsas",price:14000,icon:"🌭"},
+{name:"PapiCono La Cima - Alitas",desc:"Aguapanela, papas, alitas broaster y salsas",price:16000,icon:"🍗"}
+],
+diaria:[
+{name:"Menú del día LA CIMA",desc:"Máx. hasta 3pm. Sopa del día, proteína a elección, arroz, ensalada fresca, papa y plátano. Incluye jugo natural y postre",price:23000,icon:"🍲"},
+{name:"Menú del día Especial LA CIMA",desc:"Con doble porción de proteína ó con un corte especial de la casa",price:31000,icon:"🍛"}
+],
+parrilla:[
+{name:"Churrasco Ranchero",desc:"Res, queso, huevo, papa, chorizo, maduro, ensalada y salsas",price:39500,icon:"🥩"},
+{name:"Cerdo a La Parrilla Gratinado",desc:"Cerdo, queso, papa, yuca, ensalada y salsas",price:34000,icon:"🐖"},
+{name:"Pechuga a La Parrilla Gratinada",desc:"Pechuga, queso, papa, yuca, ensalada y salsas",price:31000,icon:"🍗"},
+{name:"Chuletón",desc:"Chuletón de cerdo, queso, papa, yuca, ensalada y salsas",price:37000,icon:"🥓"},
+{name:"Costilla Ahumada en Salsa BBQ",desc:"Costillas de cerdo, papa, yuca, ensalada y salsas",price:37500,icon:"🍖"},
+{name:"Alitas BBQ",desc:"Alitas, papas, ensalada y salsas",price:32500,icon:"🍗"},
+{name:"Picada (2 Personas)",desc:"Churrasco, cerdo a la parrilla, chorizo de cerdo, papas, maduro, yuca y salsas",price:65000,icon:"🍽️"},
+{name:"Picada Familiar (6 Personas)",desc:"Churrasco, costilla ahumada, cerdo a la parrilla, chorizos de cerdo, pechuga, chicharrón, papas, yuca y salsas",price:135000,icon:"🍖"}
+],
+tipicos:[
+{name:"Bandeja Paisa'na",desc:"Fríjoles, maduro, huevo, aguacate, chorizo, morcilla, carne de res, chicharrón, arroz, arepa y papa",price:39000,icon:"🍛"},
+{name:"Fritada",desc:"Porción de frito de cerdo, papa y crispetas",price:22000,icon:"🥘"},
+{name:"Fritada con Queso y Choclo",desc:"Porción de frito de cerdo, papa, crispetas, choclo y queso",price:28000,icon:"🌽"}
+],
+chuletas:[
+{name:"Chuleta Gratinada De Cerdo",desc:"Cerdo apanado, queso, huevo, papa, ensalada y salsas",price:35000,icon:"🐖"},
+{name:"Chuleta Gratinada De Pollo",desc:"Pechuga apanada, queso, huevo, papa, ensalada y salsas",price:32000,icon:"🍗"}
+],
+cimar:[
+{name:"Coctel de Camarones",desc:"Camarones marinados en jugo de limón y condimentos con hierbas y especias, acompañados con chips de plátano",price:25000,icon:"🍤"},
+{name:"Ceviche de Camarones",desc:"Camarones marinados en jugo de limón y condimentos con hierbas y especias, acompañados con chips de plátano",price:27000,icon:"🦐"},
+{name:"Cima de Camarón",desc:"Camarones, tilapia en cubitos apanados, arroz amarillo, papas a la francesa, chips de plátano, ensalada y salsas. Opciones: Al Ajillo, Encocados o Apanados",price:42000,icon:"🍤"},
+{name:"Picada Mar y Tierra (2 Personas)",desc:"Camarones apanados, tilapia en cubitos apanados, chorizos de cerdo ahumado, papa, chips de plátano y salsas",price:59000,icon:"🍤"},
+{name:"Trucha Gratinada",desc:"Trucha cocida lentamente en salsa al ajillo cubierta con queso gratinado, pimentón y cebolla en julianas, servida con patacones crocantes, limón y ensalada fresca",price:42000,icon:"🐟"},
+{name:"Trucha Marinera",desc:"Trucha, camarones y mariscos cocidos lentamente en salsa al ajillo, servida con patacones crocantes, limón y ensalada fresca",price:52000,icon:"🐠"}
+],
+pastas:[
+{name:"Fettuccine Suprema de Pollo",desc:"Fettuccine en emulsión cremosa de ajillo y mantequilla, acompañada de tiernos bocados de pechuga sellados a la perfección. Servido con tostaditas crocantes",price:30000,icon:"🍝"},
+{name:"Fettuccine Mar de Altura",desc:"Fettuccine en emulsión cremosa de ajillo y mantequilla con camarones y mix de mariscos, tomate, pimentón y cristales cítricos. Servido con tostaditas",price:39000,icon:"🍤"}
+],
+salteados:[
+{name:"Salteado de Pollo — Clásico",desc:"1 porción de carne. Versión Premium (doble porción): $30.500",price:24500,icon:"🍗"},
+{name:"Salteado de Cerdo — Clásico",desc:"1 porción de carne. Versión Premium (doble porción): $34.000",price:26000,icon:"🐖"},
+{name:"Salteado de Res — Clásico",desc:"1 porción de carne. Versión Premium (doble porción): $38.000",price:29000,icon:"🥩"},
+{name:"Salteado de Camarón — Clásico",desc:"1 porción de carne. Versión Premium (doble porción): $39.000",price:30000,icon:"🍤"},
+{name:"Salteado Cima Fusión (2 Personas)",desc:"Con camarón, corvina y langostinos",price:65000,icon:"🦐"}
+],
+hamburguesas:[
+{name:"Reina de la Casa + Papas",desc:"Carne 100% de res novillo jugosa, pan sellado a la parrilla, tomate, lechuga crespa orgánica, queso fundido, tocineta de cerdo, dulce de pepino y salsas especiales",price:24000,icon:"🍔"},
+{name:"Ahumada del Galeras + Papas",desc:"Costillitas desmechadas de cerdo ahumadas al barril, pan sellado a la parrilla, tomate, lechuga, queso fundido, tocineta y salsa BBQ de la casa",price:27000,icon:"🍔"},
+{name:"Cumbre Ranchera + Papas",desc:"Chorizo artesanal de cerdo con toque ahumado, pan sellado a la parrilla, tomate, lechuga, queso fundido, tocineta y dulce de pepino",price:26000,icon:"🍔"},
+{name:"Pico del Cumbal + Papas",desc:"Pechuga de pollo molida y sazonada, pan sellado a la parrilla, tomate, lechuga, queso fundido, tocineta y dulce de pepino",price:23500,icon:"🍔"}
+],
+ensaladas:[
+{name:"Cima Verde Premium (Vegetariana)",desc:"Lechuga crespa, tomate, cebolla, pimentón, aguacate, aceitunas y queso. Acompañada con tostaditas, dulce de pepino y aderezo con base de soya",price:19000,icon:"🥗"},
+{name:"Cima Verde Premium con Pollo",desc:"Nuestra ensalada premium con pechuga de pollo",price:25000,icon:"🥗"},
+{name:"Cima Verde Premium con Cerdo",desc:"Nuestra ensalada premium con cerdo",price:26000,icon:"🥗"}
+],
+postres:[
+{name:"Brownie Tropical",desc:"Brownie caliente cubierto con salsa de maracuyá suavizada con crema de leche, acompañado de queso rallado y frutos rojos",price:12000,icon:"🍫"},
+{name:"Biscochito Tropical",desc:"Biscochito cubierto con salsa de maracuyá suavizada con crema de leche, queso rallado y frutos rojos",price:9000,icon:"🍰"},
+{name:"Dulce Frutos Rojos con Queso Campesino",desc:"Dulce de frutos rojos acompañado de queso campesino",price:6500,icon:"🍓"},
+{name:"Dulce Kiwi-Lulo con Queso Campesino",desc:"Dulce de kiwi y lulo acompañado de queso campesino",price:5500,icon:"🥝"},
+{name:"Dulce Maracu-Mango con Queso Campesino",desc:"Dulce de maracuyá y mango acompañado de queso campesino",price:4500,icon:"🥭"}
+],
+calientes:[
+{name:"Aromática",desc:"Infusión de hierbas naturales",price:2500,icon:"🍵"},
+{name:"Tinto - 7 oz",desc:"Café negro tradicional",price:2500,icon:"☕"},
+{name:"Café en Leche - 9 oz",desc:"Café con leche",price:3000,icon:"☕"},
+{name:"Chocolate Abuelita - 9 oz",desc:"Chocolate caliente tradicional",price:7000,icon:"🍫"},
+{name:"MILO - 9 oz",desc:"Bebida de malta caliente",price:7000,icon:"🥛"},
+{name:"Milo Frío - 16 oz",desc:"Bebida de malta fría",price:8500,icon:"🥤"},
+{name:"Chocolate ENRUANADO - 9 oz",desc:"Chocolate especial de la casa",price:9500,icon:"🍫"},
+{name:"Acompañante: Empanada",desc:"Empanada individual",price:2500,icon:"🥟"},
+{name:"Acompañante: Palito de Queso",desc:"Palito de queso individual",price:2500,icon:"🧀"},
+{name:"Acompañante: Pan de Queso Gratinado",desc:"Pan de queso gratinado",price:3000,icon:"🥖"},
+{name:"Combo Café y 2 Empanadas",desc:"Con café negro, café en leche o aromática",price:6500,icon:"☕"},
+{name:"Combo Café y Pan de Queso",desc:"Con café negro, café en leche o aromática",price:5000,icon:"☕"}
+],
+frias:[
+{name:"AguaPanela Fría",desc:"Vaso de aguapanela fría",price:2500,icon:"🥤"},
+{name:"AguaPanela Fría JARRA 1.5 Lt",desc:"Jarra de 1.5 litros",price:9000,icon:"🧉"},
+{name:"AguaPanela Caliente",desc:"Vaso de aguapanela caliente",price:3500,icon:"☕"},
+{name:"AguaPanela Caliente JARRA 1.5 Lt",desc:"Jarra de 1.5 litros",price:12000,icon:"🧉"},
+{name:"Agua en Botella",desc:"Agua embotellada",price:2500,icon:"💧"},
+{name:"CocaCola 400ml",desc:"Gaseosa personal",price:6000,icon:"🥤"},
+{name:"Soda Vaso 400ml",desc:"Soda en vaso",price:5000,icon:"🥤"},
+{name:"CocaCola 1.5 Lt",desc:"Gaseosa familiar",price:12000,icon:"🥤"},
+{name:"Postobón 1 Lt",desc:"Gaseosa 1 litro",price:7000,icon:"🥤"},
+{name:"Postobón 2.5 Lt",desc:"Gaseosa familiar 2.5 litros",price:12000,icon:"🥤"},
+{name:"Cola & Pola",desc:"Mezcla de cerveza y gaseosa",price:5500,icon:"🍺"},
+{name:"Cerveza Poker",desc:"Cerveza nacional",price:6500,icon:"🍺"},
+{name:"Cerveza Club Colombia",desc:"Cerveza premium nacional",price:7000,icon:"🍺"},
+{name:"Cerveza Corona",desc:"Cerveza importada",price:9000,icon:"🍺"}
+],
+naturales:[
+{name:"Jugo Natural en Agua",desc:"Tamarindo, fresa, mora, guanábana, maracuyá o mango",price:6500,icon:"🧃"},
+{name:"Jugo Natural en Agua JARRA 1.5 Lt",desc:"Limonada, tamarindo, fresa, mora, guanábana, maracuyá o mango",price:16000,icon:"🧃"},
+{name:"Jugo Natural en Leche",desc:"Fresa, mora, guanábana, maracuyá o mango",price:9500,icon:"🥛"},
+{name:"Jugo Natural en Leche JARRA 1.5 Lt",desc:"Fresa, mora, guanábana, maracuyá o mango",price:23000,icon:"🥛"},
+{name:"Granizado",desc:"Tamarindo, fresa, mora, guanábana, maracuyá, mango o limonada",price:10000,icon:"🍧"},
+{name:"Limonada (Vaso 16 oz)",desc:"Limonada natural",price:6500,icon:"🍋"},
+{name:"Limonada JARRA 1.5 Lt",desc:"Jarra de limonada natural",price:16000,icon:"🍋"},
+{name:"Cerezada (Vaso 16 oz)",desc:"Bebida de cereza",price:10500,icon:"🍒"},
+{name:"Cerezada JARRA 1.5 Lt",desc:"Jarra de cerezada",price:29000,icon:"🍒"}
+],
+sodas:[
+{name:"Soda Frutos Rojos",desc:"Soda artesanal de frutos rojos",price:16000,icon:"🍓"},
+{name:"Soda Kiwi-Lulo",desc:"Soda artesanal de kiwi y lulo",price:14000,icon:"🥝"},
+{name:"Soda Maracu-Mango",desc:"Soda artesanal de maracuyá y mango",price:12000,icon:"🥭"}
+],
+licores:[
+{name:"Aguardiente Nariño (Botella)",desc:"Aguardiente tradicional nariñense",price:105000,icon:"🥃"},
+{name:"Aguardiente Amarillo (Botella)",desc:"Aguardiente amarillo",price:105000,icon:"🥃"},
+{name:"Ron Viejo de Caldas (Botella)",desc:"Ron colombiano",price:110000,icon:"🥃"},
+{name:"Brandy Domeco (Botella)",desc:"Brandy",price:110000,icon:"🥃"},
+{name:"Tequila Jose Cuervo Reposado",desc:"Botella",price:170000,icon:"🌵"},
+{name:"Tequila Olmeca",desc:"Botella",price:170000,icon:"🌵"},
+{name:"Tequila Jimador Reposado",desc:"Botella",price:230000,icon:"🌵"},
+{name:"Whisky Buchanan's",desc:"Botella",price:300000,icon:"🥃"},
+{name:"Whisky OldParr",desc:"Botella",price:290000,icon:"🥃"},
+{name:"Whisky Chivas",desc:"Botella",price:260000,icon:"🥃"},
+{name:"Michelada - Poker",desc:"Cerveza preparada",price:10500,icon:"🍺"},
+{name:"Michelada - Club Colombia",desc:"Cerveza preparada",price:11000,icon:"🍺"},
+{name:"Michelada - Corona",desc:"Cerveza preparada",price:13000,icon:"🍺"},
+{name:"Hervido VASO",desc:"Maracuyá, tamarindo o mora",price:10000,icon:"🍹"},
+{name:"Hervido JARRA 1.5 Lt",desc:"Maracuyá, tamarindo o mora",price:35000,icon:"🍹"},
+{name:"Vino Caliente JARRA 1.5 Lt",desc:"Vino caliente de la casa",price:60000,icon:"🍷"}
+],
+promos:[
+{name:"Cima de Papas + Bebida",desc:"Base de papas, tocineta, queso, salsa, bebida y un topping a elegir: chicharrón, chorizo, fajitas de pollo, fajitas de cerdo o fajitas de chuleta de cerdo. Disponible de lunes a viernes. NO para reservas ni domicilios",price:14000,icon:"🍟"},
+{name:"Jueves de Karaoke (5 a 9 pm)",desc:"2 Hamburguesas Reinas de la Casa + 2 Papas + 2 Bebidas",price:39000,icon:"🎤"}
+],
+eventos:[
+{name:"Plato Fuerte",desc:"Mixto de cerdo y pechuga de pollo a la parrilla. Elegir salsa: maracuyá, BBQ o agridulce. Acompañamiento 1: papa rústica frita o papa cocida terminada a la parrilla. Acompañamiento 2: arroz. Acompañamiento 3: yuca o plátano. Ensalada: dulce o salada. Incluye jarra personal de jugo",price:35000,icon:"🍽️"},
+{name:"Plato Fuerte + Entrada",desc:"Todo lo anterior más entrada a elegir: consomé de pollo desmechado con papa fosforito, o crema de pollo",price:40000,icon:"🍲"},
+{name:"Plato Fuerte + Entrada + Postre",desc:"Todo lo anterior más postre a elegir: maracuyá o durazno",price:43000,icon:"🍮"}
+]
+};
+
+let menu=JSON.parse(localStorage.getItem('lacimaMenuV2'))||JSON.parse(JSON.stringify(defaultMenu));
+let editingId=null;
+let isPasswordVerified=false;
 
 function buildFilters(){
 const f=document.getElementById('filters');
 f.innerHTML='<button class="filter-btn active" onclick="filterMenu(\'all\',this)">Todos</button>';
-Object.keys(CATS).forEach(k=>{
-if(menu[k]&&menu[k].length)
-f.innerHTML+=`<button class="filter-btn" onclick="filterMenu('${k}',this)">${CATS[k].n}</button>`;
+Object.keys(categoryInfo).forEach(k=>{
+f.innerHTML+='<button class="filter-btn" onclick="filterMenu(\''+k+'\',this)">'+categoryInfo[k].label+'</button>';
 });
 }
 
 function buildSelect(){
 const s=document.getElementById('dishCategory');
 s.innerHTML='';
-Object.keys(CATS).forEach(k=>s.innerHTML+=`<option value="${k}">${CATS[k].n}</option>`);
+Object.keys(categoryInfo).forEach(k=>{
+s.innerHTML+='<option value="'+k+'">'+categoryInfo[k].label+'</option>';
+});
 }
 
-function renderMenu(cat='all'){
+function renderMenu(category){
 const c=document.getElementById('menuContainer');
 c.innerHTML='';
-const list=cat==='all'?Object.keys(CATS):[cat];
-list.forEach(k=>{
-if(!menu[k]||!menu[k].length)return;
-const i=CATS[k];
-c.innerHTML+=`<h2 class="category-title">${i.t}</h2><p class="category-description">${i.d}</p>`;
-const g=document.createElement('div');
-g.className='menu-grid';
-menu[k].forEach((d,x)=>{
-g.innerHTML+=`<div class="dish-card">
-<div class="dish-image">${d.icon||'🍽️'}<div class="ph">[ESPACIO PARA FOTO]</div></div>
-<div class="dish-content">
-<div class="dish-name">${d.name}</div>
-<div class="dish-description">${d.desc}</div>
-<div class="dish-price">$${d.price.toLocaleString('es-CO')}</div>
-<div class="dish-actions" style="display:none">
-<button class="edit-btn" onclick="editDish('${k}',${x})">✏️ Editar</button>
-<button class="delete-btn" onclick="deleteDish('${k}',${x})">🗑️ Borrar</button>
-</div></div></div>`;
+const cats=(category==='all')?Object.keys(categoryInfo):[category];
+cats.forEach(cat=>{
+if(!menu[cat]||menu[cat].length===0)return;
+const info=categoryInfo[cat];
+c.innerHTML+='<h2 class="category-title">'+info.title+'</h2><p class="category-description">'+info.desc+'</p>';
+const grid=document.createElement('div');
+grid.className='menu-grid';
+menu[cat].forEach((d,i)=>{
+grid.innerHTML+='<div class="dish-card"><div class="dish-image">'+(d.icon||'🍽️')+'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div></div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+'</div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editDish(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteDish(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
 });
-c.appendChild(g);
+c.appendChild(grid);
 });
-if(isVerified)showActions(true);
+if(isPasswordVerified){
+document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='flex';});
+}
 }
 
-function filterMenu(cat,el){
+function filterMenu(cat,btn){
 document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-el.classList.add('active');
+btn.classList.add('active');
 renderMenu(cat);
-window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function showActions(on){
-document.querySelectorAll('.dish-actions').forEach(a=>a.style.display=on?'flex':'none');
-document.getElementById('btnEdit').textContent=on?'✅ Salir Edición':'✏️ Modo Edición';
-document.body.style.background=on?'#fff9e6':'#f5f1ed';
 }
 
 function toggleEditMode(){
-if(isVerified){isVerified=false;showActions(false);return;}
-const p=prompt('Contraseña de administrador:');
-if(p===ADMIN_PASSWORD){isVerified=true;showActions(true);}
-else if(p!==null)alert('Contraseña incorrecta');
+const b=event.target;
+if(isPasswordVerified){
+isPasswordVerified=false;
+document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='none';});
+document.body.style.background='#f5f1ed';
+b.textContent='✏️ Modo Edición';
+}else{
+const p=prompt('Ingresa la contraseña de administrador:');
+if(p===ADMIN_PASSWORD){
+isPasswordVerified=true;
+document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='flex';});
+document.body.style.background='#fff9e6';
+b.textContent='✅ Salir Edición';
+}else if(p!==null){alert('Contraseña incorrecta');}
+}
 }
 
-function editDish(k,x){
-if(!isVerified)return;
-editingId={k,x};
-const d=menu[k][x];
+function editDish(cat,i){
+editingId={category:cat,index:i};
+const d=menu[cat][i];
 document.getElementById('modalTitle').textContent='Editar: '+d.name;
 document.getElementById('dishName').value=d.name;
 document.getElementById('dishDescription').value=d.desc;
 document.getElementById('dishPrice').value=d.price;
-document.getElementById('dishCategory').value=k;
+document.getElementById('dishCategory').value=cat;
 document.getElementById('password').value='';
 document.getElementById('editModal').classList.add('active');
 }
@@ -232,41 +358,23 @@ document.getElementById('dishForm').reset();
 document.getElementById('editModal').classList.add('active');
 }
 
-function deleteDish(k,x){
-if(!isVerified)return;
-if(confirm('¿Eliminar este plato?')){
-menu[k].splice(x,1);save();buildFilters();renderMenu('all');
-}
+function deleteDish(cat,i){
+if(!isPasswordVerified){alert('Activa el Modo Edición primero');return;}
+if(confirm('¿Eliminar este plato?')){menu[cat].splice(i,1);saveMenu();renderMenu('all');}
 }
 
-document.getElementById('dishForm').addEventListener('submit',e=>{
-e.preventDefault();
-if(document.getElementById('password').value!==ADMIN_PASSWORD){alert('Contraseña incorrecta');return;}
-isVerified=true;
-const nd={
-name:document.getElementById('dishName').value,
-desc:document.getElementById('dishDescription').value,
-price:parseInt(document.getElementById('dishPrice').value),
-icon:'🍽️'
-};
-const k=document.getElementById('dishCategory').value;
-if(editingId){menu[editingId.k][editingId.x]={...menu[editingId.k][editingId.x],...nd};editingId=null;}
-else{if(!menu[k])menu[k]=[];menu[k].push(nd);}
-save();buildFilters();renderMenu('all');closeModal();
-});
-
-function closeModal(){document.getElementById('editModal').classList.remove('active')}
-function save(){localStorage.setItem('lacimaMenu',JSON.stringify(menu))}
+function closeModal(){document.getElementById('editModal').classList.remove('active');}
+function saveMenu(){localStorage.setItem('lacimaMenuV2',JSON.stringify(menu));}
 
 function resetMenu(){
-if(confirm('¿Restaurar la carta original? Se perderán los cambios guardados.')){
+if(confirm('¿Restaurar la carta original?')){
 menu=JSON.parse(JSON.stringify(defaultMenu));
-localStorage.removeItem('lacimaMenu');
-buildFilters();renderMenu('all');
+localStorage.removeItem('lacimaMenuV2');
+renderMenu('all');
 }
 }
 
-function toggleQR(){document.getElementById('qrSection').classList.toggle('active')}
+function toggleQR(){document.getElementById('qrSection').classList.toggle('active');}
 
 function generateQR(){
 const q=document.getElementById('qrcode');
@@ -277,10 +385,34 @@ new QRCode(q,{text:window.location.href,width:280,height:280,colorDark:'#3E2723'
 function downloadQR(){
 const cv=document.querySelector('#qrcode canvas');
 const a=document.createElement('a');
-a.href=cv.toDataURL();a.download='lacima-qr.png';a.click();
+a.href=cv.toDataURL();
+a.download='lacima-qr.png';
+a.click();
 }
 
-buildFilters();buildSelect();renderMenu('all');generateQR();
+document.getElementById('dishForm').addEventListener('submit',function(e){
+e.preventDefault();
+if(document.getElementById('password').value!==ADMIN_PASSWORD){alert('Contraseña incorrecta');return;}
+isPasswordVerified=true;
+const nd={name:document.getElementById('dishName').value,desc:document.getElementById('dishDescription').value,price:parseInt(document.getElementById('dishPrice').value),icon:'🍽️'};
+const cat=document.getElementById('dishCategory').value;
+if(editingId){
+menu[editingId.category][editingId.index]=nd;
+editingId=null;
+}else{
+if(!menu[cat])menu[cat]=[];
+menu[cat].push(nd);
+}
+saveMenu();
+renderMenu('all');
+closeModal();
+document.body.style.background='#fff9e6';
+});
+
+buildFilters();
+buildSelect();
+renderMenu('all');
+generateQR();
 </script>
 </body>
 </html>
