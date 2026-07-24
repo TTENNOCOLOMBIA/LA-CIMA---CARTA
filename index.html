@@ -32,6 +32,9 @@ button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:
 .qr-section{background:#fff;padding:30px 20px;margin:20px;border-radius:15px;text-align:center;display:none}
 .qr-section.active{display:block}
 #qrcode{display:inline-block;margin:20px auto}
+.search-wrap{max-width:600px;margin:20px auto 0;padding:0 20px}
+.search-box{width:100%;padding:13px 20px;border:2px solid var(--primary);border-radius:30px;font-size:1rem;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.08);outline:none}
+.search-box:focus{border-color:var(--accent);box-shadow:0 2px 12px rgba(232,149,28,.25)}
 .filters{display:flex;gap:8px;padding:20px;justify-content:center;flex-wrap:wrap;background:#fff;margin:20px;border-radius:10px}
 .filter-btn{padding:8px 14px;border:2px solid var(--primary);background:#fff;color:var(--dark);border-radius:20px;cursor:pointer;font-weight:600;font-size:.85rem;transition:all .25s ease}
 .filter-btn:hover{background:var(--primary);transform:translateY(-2px)}
@@ -41,6 +44,7 @@ button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:
 .category-count{font-size:.85rem;color:var(--accent);font-weight:bold;margin-bottom:14px}
 .category-description{font-size:1rem;color:#666;margin-bottom:20px;font-style:italic}
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-bottom:40px}
+.no-results{text-align:center;color:#999;font-size:1.1rem;padding:40px 20px}
 .dish-card{position:relative;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1);border-left:5px solid var(--primary);transition:transform .3s ease,box-shadow .3s ease;opacity:0}
 .dish-card.destacado{border-left:5px solid var(--accent);box-shadow:0 4px 16px rgba(232,149,28,.25)}
 .dish-card.show{animation:fadeUp .6s ease forwards}
@@ -52,9 +56,11 @@ button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:
 .dish-content{padding:20px}
 .dish-name{font-size:1.2rem;color:var(--dark);font-weight:bold;margin-bottom:8px}
 .dish-description{font-size:.85rem;color:#666;margin-bottom:12px}
-.dish-price{font-size:1.5rem;color:var(--accent);font-weight:800}
+.dish-price{font-size:1.5rem;color:var(--accent);font-weight:800;margin-bottom:12px}
 .dish-price small{font-size:.85rem;font-weight:600;color:#b0791a}
-.dish-actions{display:flex;gap:10px;margin-top:12px}
+.order-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:var(--wa);color:#fff;padding:10px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:.9rem;transition:background .2s ease}
+.order-btn:hover{background:#1da851}
+.dish-actions{display:flex;gap:10px;margin-top:10px}
 .edit-btn,.delete-btn{flex:1;padding:8px;border:none;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:bold}
 .edit-btn{background:var(--primary);color:var(--dark)}
 .delete-btn{background:#e74c3c;color:#fff}
@@ -104,6 +110,10 @@ footer h4{margin-bottom:6px}
 <button class="btn-secondary" style="margin-top:15px" onclick="downloadQR()">⬇️ Descargar QR</button>
 </div>
 
+<div class="search-wrap">
+<input type="text" class="search-box" id="searchBox" placeholder="🔍 Busca tu plato favorito..." oninput="searchDishes(this.value)">
+</div>
+
 <div class="filters" id="filters"></div>
 <div class="menu-container" id="menuContainer"></div>
 
@@ -140,7 +150,8 @@ footer h4{margin-bottom:6px}
 
 <script>
 const ADMIN_PASSWORD="lacima2024";
-const destacados=["Bandeja Paisa'na","Fettuccine Mar de Altura","Churrasco Ranchero","Picada Familiar (6 Personas)","Picada (2 Personas)"];
+const WA_NUMERO="573227364868";
+const destacados=["Bandeja Paisa'na","Fettuccine Mar de Altura","Churrasco Ranchero","Picada Familiar (6 Personas)","Picada (2 Personas)","Ahumada del Galeras + Papas"];
 
 const categoryInfo={
 entradas:{title:"🍽️ ENTRADAS o PA' PICAR",desc:"Abre tu paladar con nuestras delicias crujientes y sabrosas",label:"Entradas"},
@@ -313,6 +324,7 @@ eventos:[
 let menu=JSON.parse(localStorage.getItem('lacimaMenuV2'))||JSON.parse(JSON.stringify(defaultMenu));
 let editingId=null;
 let isPasswordVerified=false;
+let currentCategory='all';
 
 function buildFilters(){
 const f=document.getElementById('filters');
@@ -344,7 +356,15 @@ obs.unobserve(en.target);
 cards.forEach(c=>obs.observe(c));
 }
 
+function cardHTML(cat,d,i){
+const esDestacado=destacados.includes(d.name);
+const msg=encodeURIComponent("Hola La Cima, quiero pedir: "+d.name+" ($"+d.price.toLocaleString('es-CO')+")");
+return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image">'+(d.icon||'🍽️')+'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div></div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text='+msg+'" target="_blank">💬 Pedir por WhatsApp</a><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editDish(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteDish(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
+}
+
 function renderMenu(category){
+currentCategory=category;
+document.getElementById('searchBox').value='';
 const c=document.getElementById('menuContainer');
 c.innerHTML='';
 const cats=(category==='all')?Object.keys(categoryInfo):[category];
@@ -355,16 +375,37 @@ const n=menu[cat].length;
 c.innerHTML+='<h2 class="category-title">'+info.title+'</h2><div class="category-count">'+n+' '+(n===1?'plato':'platos')+'</div><p class="category-description">'+info.desc+'</p>';
 const grid=document.createElement('div');
 grid.className='menu-grid';
-menu[cat].forEach((d,i)=>{
-const esDestacado=destacados.includes(d.name);
-grid.innerHTML+='<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image">'+(d.icon||'🍽️')+'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div></div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editDish(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteDish(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
-});
+menu[cat].forEach((d,i)=>{grid.innerHTML+=cardHTML(cat,d,i);});
 c.appendChild(grid);
 });
 revealCards();
-if(isPasswordVerified){
-document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='flex';});
+if(isPasswordVerified){document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='flex';});}
 }
+
+function searchDishes(term){
+term=term.trim().toLowerCase();
+if(term===''){renderMenu(currentCategory);return;}
+const c=document.getElementById('menuContainer');
+c.innerHTML='';
+let encontrados=[];
+Object.keys(menu).forEach(cat=>{
+menu[cat].forEach((d,i)=>{
+if(d.name.toLowerCase().includes(term)||d.desc.toLowerCase().includes(term)){
+encontrados.push({cat:cat,d:d,i:i});
+}
+});
+});
+if(encontrados.length===0){
+c.innerHTML='<div class="no-results">😔 No encontramos platos con "'+term+'".<br>Intenta con otra palabra.</div>';
+return;
+}
+c.innerHTML='<h2 class="category-title">🔍 Resultados</h2><div class="category-count">'+encontrados.length+' '+(encontrados.length===1?'plato encontrado':'platos encontrados')+'</div>';
+const grid=document.createElement('div');
+grid.className='menu-grid';
+encontrados.forEach(o=>{grid.innerHTML+=cardHTML(o.cat,o.d,o.i);});
+c.appendChild(grid);
+revealCards();
+if(isPasswordVerified){document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='flex';});}
 }
 
 function filterMenu(cat,btn){
@@ -413,7 +454,7 @@ document.getElementById('editModal').classList.add('active');
 
 function deleteDish(cat,i){
 if(!isPasswordVerified){alert('Activa el Modo Edición primero');return;}
-if(confirm('¿Eliminar este plato?')){menu[cat].splice(i,1);saveMenu();renderMenu('all');}
+if(confirm('¿Eliminar este plato?')){menu[cat].splice(i,1);saveMenu();renderMenu(currentCategory);}
 }
 
 function closeModal(){document.getElementById('editModal').classList.remove('active');}
@@ -461,7 +502,7 @@ if(!menu[cat])menu[cat]=[];
 menu[cat].push(nd);
 }
 saveMenu();
-renderMenu('all');
+renderMenu(currentCategory);
 closeModal();
 document.body.style.background='#fff9e6';
 });
