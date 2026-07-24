@@ -7,22 +7,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#F4D03F;--dark:#3E2723;--black:#1a1a1a;--accent:#C17D11}
+:root{--primary:#F4D03F;--dark:#3E2723;--black:#1a1a1a;--accent:#C17D11;--wa:#25D366}
 body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f5f1ed;color:#333;line-height:1.6}
-header{background:linear-gradient(135deg,var(--dark),var(--black));color:var(--primary);padding:20px;text-align:center}
-.logo-img{width:130px;height:130px;border-radius:50%;object-fit:cover;border:4px solid var(--primary)}
-.contact-info{display:flex;flex-wrap:wrap;justify-content:center;gap:15px;font-size:.9rem;margin-top:15px}
-.contact-item{display:flex;align-items:center;gap:8px}
-.contact-item span{background:var(--primary);color:var(--dark);padding:8px 15px;border-radius:20px;font-weight:bold}
-.toolbar{background:var(--primary);padding:15px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:.95rem}
+header{background:linear-gradient(135deg,var(--dark),var(--black));color:var(--primary);padding:25px 20px 20px;text-align:center}
+.logo-img{width:135px;height:135px;border-radius:50%;object-fit:cover;border:4px solid var(--primary)}
+.info-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:18px}
+.pill{background:var(--primary);color:var(--dark);padding:9px 18px;border-radius:22px;font-weight:bold;font-size:.9rem;display:inline-flex;align-items:center;gap:7px}
+.pill-wide{background:rgba(244,208,63,.15);border:1px solid var(--primary);color:var(--primary);padding:8px 18px;border-radius:22px;font-size:.85rem;display:inline-flex;align-items:center;gap:7px;margin-top:10px}
+.wa-btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:11px 26px;border-radius:26px;text-decoration:none;font-weight:bold;font-size:.95rem;margin-top:16px;box-shadow:0 3px 10px rgba(37,211,102,.35)}
+.wa-btn:hover{background:#1da851}
+.header-note{margin-top:14px;font-size:.9rem;color:#e8dcc0;font-style:italic}
+.edit-bar{background:var(--primary);padding:12px;display:none;gap:10px;flex-wrap:wrap;justify-content:center;position:sticky;top:0;z-index:95}
+.edit-bar.active{display:flex}
+button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:.9rem}
 .btn-primary{background:var(--dark);color:var(--primary)}
 .btn-secondary{background:var(--accent);color:#fff}
 .btn-success{background:#27ae60;color:#fff}
 .qr-section{background:#fff;padding:30px 20px;margin:20px;border-radius:15px;text-align:center;display:none}
 .qr-section.active{display:block}
 #qrcode{display:inline-block;margin:20px auto}
-.filters{display:flex;gap:8px;padding:20px;justify-content:center;flex-wrap:wrap;background:#fff;margin:0 20px;border-radius:10px}
+.filters{display:flex;gap:8px;padding:20px;justify-content:center;flex-wrap:wrap;background:#fff;margin:20px;border-radius:10px}
 .filter-btn{padding:8px 14px;border:2px solid var(--primary);background:#fff;color:var(--dark);border-radius:20px;cursor:pointer;font-weight:600;font-size:.85rem}
 .filter-btn.active{background:var(--primary)}
 .menu-container{max-width:1200px;margin:30px auto;padding:0 20px}
@@ -48,26 +52,31 @@ button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:
 .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px;border:2px solid var(--primary);border-radius:6px;font-size:1rem;font-family:inherit}
 .modal-actions{display:flex;gap:10px;margin-top:25px}
 .modal-actions button{flex:1}
-footer{background:var(--dark);color:var(--primary);padding:30px 20px;text-align:center;margin-top:50px}
-@media(max-width:768px){.logo-img{width:100px;height:100px}.menu-grid{grid-template-columns:1fr}.contact-info{flex-direction:column;gap:10px}.toolbar{flex-direction:column}button{width:100%}}
+footer{background:var(--dark);color:var(--primary);padding:35px 20px 25px;text-align:center;margin-top:50px}
+footer h4{margin-bottom:6px}
+.footer-wa{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:10px 24px;border-radius:24px;text-decoration:none;font-weight:bold;margin-top:14px}
+.admin-links{margin-top:28px;padding-top:16px;border-top:1px solid rgba(244,208,63,.3);font-size:.78rem}
+.admin-links a{color:rgba(244,208,63,.6);text-decoration:none;margin:0 10px;cursor:pointer}
+.admin-links a:hover{color:var(--primary);text-decoration:underline}
+@media(max-width:768px){.logo-img{width:105px;height:105px}.menu-grid{grid-template-columns:1fr}.info-row{flex-direction:column;align-items:center;gap:9px}.pill,.pill-wide{font-size:.8rem}.edit-bar{flex-direction:column}.edit-bar button{width:100%}}
 </style>
 </head>
 <body>
 <header>
 <img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="Logo La Cima" class="logo-img">
-<div class="contact-info">
-<div class="contact-item">📞 <span>RESERVAS: 322 736 48 68</span></div>
-<div class="contact-item">📍 <span>Cra 7 # 27-90, Ipiales</span></div>
-<div class="contact-item">🕐 <span>Lun-Vie: 12 AM - 9 PM | Sáb: 12 AM - 10 PM | Dom y festivos: 11 AM - 5 PM</span></div>
+<div class="info-row">
+<span class="pill">📞 DOMICILIOS Y RESERVAS: 322 736 48 68</span>
+<span class="pill">📍 Cra 7 # 27-90, Ipiales</span>
 </div>
-<p style="margin-top:10px;font-size:.85rem;color:#ddd">*En caso de reservas o eventos se puede llegar a un acuerdo</p>
+<div><span class="pill-wide">🕐 Lun a Vie: 12 AM - 9 PM &nbsp;|&nbsp; Sáb: 12 AM - 10 PM &nbsp;|&nbsp; Dom y festivos: 11 AM - 5 PM</span></div>
+<a class="wa-btn" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20hacer%20un%20pedido%20o%20reserva" target="_blank">💬 Pedir por WhatsApp</a>
+<p class="header-note">Horarios flexibles para reservaciones y eventos</p>
 </header>
 
-<div class="toolbar">
-<button class="btn-primary" onclick="toggleEditMode()">✏️ Modo Edición</button>
-<button class="btn-secondary" onclick="toggleQR()">📱 Ver QR</button>
+<div class="edit-bar" id="editBar">
 <button class="btn-secondary" onclick="addDish()">➕ Nuevo Plato</button>
-<button class="btn-primary" onclick="resetMenu()">🔄 Restaurar Menú</button>
+<button class="btn-secondary" onclick="toggleQR()">📱 Ver QR</button>
+<button class="btn-primary" onclick="toggleEditMode()">✅ Salir de Edición</button>
 </div>
 
 <div class="qr-section" id="qrSection">
@@ -99,9 +108,13 @@ footer{background:var(--dark);color:var(--primary);padding:30px 20px;text-align:
 <footer>
 <h4>📍 Ubícanos</h4>
 <p>Carrera 7 # 27-90, Ipiales, Nariño</p>
-<h4 style="margin-top:20px">📞 Reservas</h4>
-<p>WhatsApp: +57 322 736 48 68</p>
-<p style="margin-top:20px;border-top:1px solid var(--primary);padding-top:15px">© 2026 La Cima Restaurante</p>
+<h4 style="margin-top:18px">📞 Domicilios y Reservas</h4>
+<p>322 736 48 68</p>
+<a class="footer-wa" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20hacer%20un%20pedido%20o%20reserva" target="_blank">💬 Escríbenos por WhatsApp</a>
+<p style="margin-top:22px;font-size:.85rem">© 2026 La Cima Restaurante · Esto es Colombia</p>
+<div class="admin-links">
+<a onclick="toggleEditMode()">Modo Edición</a>·<a onclick="resetMenu()">Restaurar Menú</a>
+</div>
 </footer>
 
 <script>
@@ -322,19 +335,20 @@ renderMenu(cat);
 }
 
 function toggleEditMode(){
-const b=event.target;
 if(isPasswordVerified){
 isPasswordVerified=false;
 document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='none';});
+document.getElementById('editBar').classList.remove('active');
+document.getElementById('qrSection').classList.remove('active');
 document.body.style.background='#f5f1ed';
-b.textContent='✏️ Modo Edición';
 }else{
 const p=prompt('Ingresa la contraseña de administrador:');
 if(p===ADMIN_PASSWORD){
 isPasswordVerified=true;
 document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='flex';});
+document.getElementById('editBar').classList.add('active');
 document.body.style.background='#fff9e6';
-b.textContent='✅ Salir Edición';
+window.scrollTo({top:0,behavior:'smooth'});
 }else if(p!==null){alert('Contraseña incorrecta');}
 }
 }
@@ -367,10 +381,13 @@ function closeModal(){document.getElementById('editModal').classList.remove('act
 function saveMenu(){localStorage.setItem('lacimaMenuV2',JSON.stringify(menu));}
 
 function resetMenu(){
+const p=prompt('Ingresa la contraseña para restaurar la carta:');
+if(p!==ADMIN_PASSWORD){if(p!==null)alert('Contraseña incorrecta');return;}
 if(confirm('¿Restaurar la carta original?')){
 menu=JSON.parse(JSON.stringify(defaultMenu));
 localStorage.removeItem('lacimaMenuV2');
 renderMenu('all');
+alert('Carta restaurada');
 }
 }
 
@@ -394,6 +411,7 @@ document.getElementById('dishForm').addEventListener('submit',function(e){
 e.preventDefault();
 if(document.getElementById('password').value!==ADMIN_PASSWORD){alert('Contraseña incorrecta');return;}
 isPasswordVerified=true;
+document.getElementById('editBar').classList.add('active');
 const nd={name:document.getElementById('dishName').value,desc:document.getElementById('dishDescription').value,price:parseInt(document.getElementById('dishPrice').value),icon:'🍽️'};
 const cat=document.getElementById('dishCategory').value;
 if(editingId){
