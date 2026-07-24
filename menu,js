@@ -1,0 +1,150 @@
+const defaultMenu = {
+  entradas: [
+    {name:"Chunchullo", desc:"Disfrútalo con papa criolla, salsa y limón", price:18000, icon:"🍢"},
+    {name:"Chorizo pa' Picar", desc:"Chorizo de cerdo, papa, arepa, queso, limón y salsas", price:12000, icon:"🌭"},
+    {name:"Palitos de Queso x4", desc:"Cuatro unidades crujientes de queso", price:8500, icon:"🧀"},
+    {name:"Empanadas x4", desc:"Cuatro empanadas tradicionales recién hechas", price:8500, icon:"🥟"}
+  ],
+  infantil: [
+    {name:"PapiCono La Cima - Ranchera", desc:"Aguapanela, papas, chorizo ahumado de cerdo y salsas", price:14000, icon:"🌭"},
+    {name:"PapiCono La Cima - Alitas", desc:"Aguapanela, papas, alitas broaster y salsas", price:16000, icon:"🍗"},
+    {name:"Cima de Papas + Bebida", desc:"Base de papas, tocineta, queso, salsa y un topping a elección", price:14000, icon:"🍟"}
+  ],
+  diaria: [
+    {name:"Menú del Día LA CIMA", desc:"Hasta las 3pm. Sopa del día, proteína a elección, arroz, ensalada fresca, papa y plátano. Incluye jugo natural y postre", price:23000, icon:"🍲"},
+    {name:"Menú del Día Especial LA CIMA", desc:"Con doble porción de proteína ó con un corte especial de la casa", price:31000, icon:"🍛"}
+  ],
+  parrilla: [
+    {name:"Churrasco Ranchero", desc:"Res, queso, huevo, papa, chorizo, maduro, ensalada y salsas", price:39500, icon:"🥩"},
+    {name:"Cerdo a la Parrilla Gratinado", desc:"Cerdo, queso, papa, yuca, ensalada y salsas", price:34000, icon:"🐖"},
+    {name:"Pechuga a la Parrilla Gratinada", desc:"Pechuga, queso, papa, yuca, ensalada y salsas", price:31000, icon:"🍗"},
+    {name:"Chuletón", desc:"Chuletón de cerdo, queso, papa, yuca, ensalada y salsas", price:37000, icon:"🥩"},
+    {name:"Costilla Ahumada en Salsa BBQ", desc:"Costillas de cerdo, papa, yuca, ensalada y salsas", price:37500, icon:"🍖"},
+    {name:"Alitas BBQ", desc:"Alitas, papas, ensalada y salsas", price:32500, icon:"🍗"},
+    {name:"Picada (2 Personas)", desc:"Churrasco, cerdo a la parrilla, chorizo de cerdo, papas, maduro, yuca y salsas", price:65000, icon:"🍽️"},
+    {name:"Picada Familiar (6 Personas)", desc:"Churrasco, costilla ahumada, cerdo a la parrilla, chorizos, pechuga, chicharrón, papas, yuca y salsas", price:135000, icon:"🍖"}
+  ],
+  tipicos: [
+    {name:"Bandeja Paisa'na", desc:"Fríjoles, maduro, huevo, aguacate, chorizo, morcilla, carne de res, chicharrón, arroz, arepa y papa", price:39000, icon:"🇨🇴"},
+    {name:"Fritada", desc:"Porción de frito de cerdo, papa y crispetas", price:22000, icon:"🍟"},
+    {name:"Fritada con Queso y Choclo", desc:"Porción de frito de cerdo, papa, crispetas, choclo y queso", price:28000, icon:"🌽"}
+  ],
+  chuletas: [
+    {name:"Chuleta Gratinada de Cerdo", desc:"Cerdo apanado, queso, huevo, papa, ensalada y salsas", price:35000, icon:"🐖"},
+    {name:"Chuleta Gratinada de Pollo", desc:"Pechuga apanada, queso, huevo, papa, ensalada y salsas", price:32000, icon:"🍗"}
+  ],
+  cimar: [
+    {name:"Coctel de Camarones", desc:"Camarones marinados en jugo de limón con hierbas y especias, acompañados con chips de plátano", price:25000, icon:"🍤"},
+    {name:"Ceviche de Camarones", desc:"Camarones marinados en jugo de limón con hierbas y especias, acompañados con chips de plátano", price:27000, icon:"🦐"},
+    {name:"Cima de Camarón", desc:"Camarones (al ajillo, encocados o apanados), tilapia en cubitos, arroz amarillo, papas a la francesa, chips de plátano, ensalada y salsas", price:42000, icon:"🍤"},
+    {name:"Picada Mar y Tierra (2 Personas)", desc:"Camarones apanados, tilapia en cubitos, chorizos de cerdo ahumado, papa, chips de plátano y salsas", price:59000, icon:"🦞"},
+    {name:"Trucha Gratinada", desc:"Trucha cocida lentamente en salsa al ajillo, cubierta con queso gratinado, pimentón y cebolla en julianas. Con patacones, limón y ensalada", price:42000, icon:"🐟"},
+    {name:"Trucha Marinera", desc:"Trucha, camarones y mariscos cocidos en salsa al ajillo, servida con patacones crocantes, limón y ensalada fresca", price:52000, icon:"🐟"}
+  ],
+  pastas: [
+    {name:"Fettuccine Suprema de Pollo", desc:"Emulsión cremosa de ajillo y mantequilla con bocados de pechuga sellada. Tomate y pimentón. Servido con tostaditas crocantes", price:30000, icon:"🍝"},
+    {name:"Fettuccine Mar de Altura", desc:"Emulsión cremosa de ajillo y mantequilla con camarones y mix de mariscos, tomate, pimentón y cristales cítricos", price:39000, icon:"🍤"}
+  ],
+  salteados: [
+    {name:"Salteado de Pollo - Clásico", desc:"Trozos de pollo al wok con pimentón, cebolla, nabos chinos, brócoli y zanahoria. Sobre cama de papas rústicas y maduro", price:24500, icon:"🥘"},
+    {name:"Salteado de Pollo - Premium", desc:"Doble porción de carne. Mismo salteado al wok con verduras frescas y salsa de ostiones", price:30500, icon:"🥘"},
+    {name:"Salteado de Cerdo - Clásico", desc:"Trozos de cerdo al wok con verduras frescas, ajonjolí y salsa negra", price:26000, icon:"🥘"},
+    {name:"Salteado de Cerdo - Premium", desc:"Doble porción de carne. Cerdo al wok con verduras frescas y salsas orientales", price:34000, icon:"🥘"},
+    {name:"Salteado de Res - Clásico", desc:"Trozos de res al wok con verduras frescas, ajonjolí y salsa de ostiones", price:29000, icon:"🥘"},
+    {name:"Salteado de Res - Premium", desc:"Doble porción de carne. Res al wok con verduras frescas y salsas orientales", price:38000, icon:"🥘"},
+    {name:"Salteado de Camarón - Clásico", desc:"Camarones al wok con verduras frescas, ajonjolí y salsa de ostiones", price:30000, icon:"🍤"},
+    {name:"Salteado de Camarón - Premium", desc:"Doble porción. Camarones al wok con verduras frescas y salsas orientales", price:39000, icon:"🍤"},
+    {name:"Salteado Cima Fusión (2 Personas)", desc:"Con camarón, corvina y langostinos al wok", price:65000, icon:"🦞"}
+  ],
+  hamburguesas: [
+    {name:"Reina de la Casa + Papas", desc:"Carne 100% de res novillo, pan sellado a la parrilla, tomate, lechuga crespa, queso fundido, tocineta, dulce de pepino y salsas especiales", price:24000, icon:"🍔"},
+    {name:"Ahumada del Galeras + Papas", desc:"Costillitas desmechadas de cerdo ahumadas al barril, queso fundido, tocineta, salsa BBQ de la casa y salsas especiales", price:27000, icon:"🍔"},
+    {name:"Cumbre Ranchera + Papas", desc:"Chorizo artesanal de cerdo con toque ahumado, queso fundido, tocineta, dulce de pepino y salsas especiales", price:26000, icon:"🍔"},
+    {name:"Pico del Cumbal + Papas", desc:"Pechuga de pollo molida y sazonada, queso fundido, tocineta, dulce de pepino y salsas especiales", price:23500, icon:"🍔"}
+  ],
+  ensaladas: [
+    {name:"Cima Verde Premium (Vegetariana)", desc:"Lechuga crespa, tomate, cebolla, pimentón, aguacate, aceitunas y queso. Con tostaditas, dulce de pepino y aderezo de soya", price:19000, icon:"🥗"},
+    {name:"Cima Verde Premium con Pollo", desc:"Nuestra ensalada premium con pechuga de pollo", price:25000, icon:"🥗"},
+    {name:"Cima Verde Premium con Cerdo", desc:"Nuestra ensalada premium con cerdo", price:26000, icon:"🥗"}
+  ],
+  postres: [
+    {name:"Brownie Tropical", desc:"Brownie caliente con salsa de maracuyá suavizada con crema de leche, queso rallado y frutos rojos", price:12000, icon:"🍫"},
+    {name:"Biscochito Tropical", desc:"Biscochito con salsa de maracuyá suavizada con crema de leche, queso rallado y frutos rojos", price:9000, icon:"🍰"},
+    {name:"Dulce Maracu-Mango con Queso Campesino", desc:"Dulce de maracuyá y mango con queso campesino", price:4500, icon:"🥭"},
+    {name:"Dulce Kiwi-Lulo con Queso Campesino", desc:"Dulce de kiwi y lulo con queso campesino", price:5500, icon:"🥝"},
+    {name:"Dulce Frutos Rojos con Queso Campesino", desc:"Dulce de frutos rojos con queso campesino", price:6500, icon:"🍓"}
+  ],
+  calientes: [
+    {name:"Aromática", desc:"Infusión de hierbas naturales", price:2500, icon:"🍵"},
+    {name:"Tinto - 7 oz", desc:"Café negro tradicional", price:2500, icon:"☕"},
+    {name:"Café en Leche - 9 oz", desc:"Café con leche", price:3000, icon:"☕"},
+    {name:"Chocolate Abuelita - 9 oz", desc:"Chocolate caliente tradicional", price:7000, icon:"🍫"},
+    {name:"MILO - 9 oz", desc:"Bebida de malta caliente", price:7000, icon:"🥛"},
+    {name:"Milo Frío - 16 oz", desc:"Bebida de malta fría", price:8500, icon:"🥤"},
+    {name:"Chocolate ENRUANADO - 9 oz", desc:"Chocolate especial de la casa", price:9500, icon:"🍫"},
+    {name:"Empanada (acompañante)", desc:"Unidad de empanada para acompañar tu bebida", price:2500, icon:"🥟"},
+    {name:"Palito de Queso (acompañante)", desc:"Unidad de palito de queso", price:2500, icon:"🧀"},
+    {name:"Pan de Queso Gratinado (acompañante)", desc:"Pan de queso gratinado recién horneado", price:3000, icon:"🥖"},
+    {name:"Combo Café y 2 Empanadas", desc:"Con café negro, café en leche o aromática", price:6500, icon:"☕"},
+    {name:"Combo Café y Pan de Queso", desc:"Con café negro, café en leche o aromática", price:5000, icon:"☕"}
+  ],
+  frias: [
+    {name:"AguaPanela Fría", desc:"Vaso de aguapanela fría", price:2500, icon:"🥤"},
+    {name:"AguaPanela Fría JARRA 1.5 Lt", desc:"Jarra para compartir", price:9000, icon:"🥤"},
+    {name:"AguaPanela Caliente", desc:"Vaso de aguapanela caliente", price:3500, icon:"☕"},
+    {name:"AguaPanela Caliente JARRA 1.5 Lt", desc:"Jarra para compartir", price:12000, icon:"☕"},
+    {name:"Agua en Botella", desc:"Agua natural embotellada", price:2500, icon:"💧"},
+    {name:"CocaCola 400 ml", desc:"Gaseosa personal", price:6000, icon:"🥤"},
+    {name:"CocaCola 1.5 Lt", desc:"Gaseosa familiar", price:12000, icon:"🥤"},
+    {name:"Soda Vaso 400 ml", desc:"Soda servida en vaso", price:5000, icon:"🥤"},
+    {name:"Postobón 1 Lt", desc:"Gaseosa Postobón litro", price:7000, icon:"🥤"},
+    {name:"Postobón 2.5 Lt", desc:"Gaseosa Postobón familiar", price:12000, icon:"🥤"},
+    {name:"Cola & Pola", desc:"Mezcla clásica de cerveza y gaseosa", price:5500, icon:"🍺"},
+    {name:"Poker", desc:"Cerveza nacional", price:6500, icon:"🍺"},
+    {name:"Club Colombia", desc:"Cerveza premium nacional", price:7000, icon:"🍺"},
+    {name:"Corona", desc:"Cerveza importada", price:9000, icon:"🍺"}
+  ],
+  naturales: [
+    {name:"Jugo Natural en Agua", desc:"Tamarindo, fresa, mora, guanábana, maracuyá o mango", price:6500, icon:"🧃"},
+    {name:"Jugo Natural en Agua JARRA 1.5 Lt", desc:"Limonada, tamarindo, fresa, mora, guanábana, maracuyá o mango", price:16000, icon:"🧃"},
+    {name:"Jugo Natural en Leche", desc:"Fresa, mora, guanábana, maracuyá o mango", price:9500, icon:"🥛"},
+    {name:"Jugo Natural en Leche JARRA 1.5 Lt", desc:"Fresa, mora, guanábana, maracuyá o mango", price:23000, icon:"🥛"},
+    {name:"Granizado", desc:"Tamarindo, fresa, mora, guanábana, maracuyá, mango o limonada", price:10000, icon:"🍧"},
+    {name:"Limonada (Vaso 16 oz)", desc:"Limonada natural recién preparada", price:6500, icon:"🍋"},
+    {name:"Limonada JARRA 1.5 Lt", desc:"Jarra de limonada natural", price:16000, icon:"🍋"},
+    {name:"Cerezada (Vaso 16 oz)", desc:"Refrescante bebida de cereza", price:10500, icon:"🍒"},
+    {name:"Cerezada JARRA 1.5 Lt", desc:"Jarra de cerezada para compartir", price:29000, icon:"🍒"}
+  ],
+  sodas: [
+    {name:"Soda Frutos Rojos", desc:"Soda artesanal con frutos rojos", price:16000, icon:"🍓"},
+    {name:"Soda Kiwi-Lulo", desc:"Soda artesanal de kiwi y lulo", price:14000, icon:"🥝"},
+    {name:"Soda Maracu-Mango", desc:"Soda artesanal de maracuyá y mango", price:12000, icon:"🥭"}
+  ],
+  licores: [
+    {name:"Aguardiente Nariño (Botella)", desc:"Aguardiente tradicional nariñense", price:105000, icon:"🍾"},
+    {name:"Aguardiente Amarillo (Botella)", desc:"Aguardiente amarillo", price:105000, icon:"🍾"},
+    {name:"Ron Viejo de Caldas (Botella)", desc:"Ron añejo colombiano", price:110000, icon:"🥃"},
+    {name:"Brandy Domecq (Botella)", desc:"Brandy importado", price:110000, icon:"🥃"},
+    {name:"Tequila Jose Cuervo Reposado", desc:"Botella de tequila reposado", price:170000, icon:"🥃"},
+    {name:"Tequila Olmeca", desc:"Botella de tequila", price:170000, icon:"🥃"},
+    {name:"Tequila Jimador Reposado", desc:"Botella de tequila reposado", price:230000, icon:"🥃"},
+    {name:"Whisky Buchanan's", desc:"Botella de whisky escocés", price:300000, icon:"🥃"},
+    {name:"Whisky Old Parr", desc:"Botella de whisky escocés", price:290000, icon:"🥃"},
+    {name:"Whisky Chivas", desc:"Botella de whisky escocés", price:260000, icon:"🥃"},
+    {name:"Michelada - Poker", desc:"Cerveza Poker preparada estilo michelada", price:10500, icon:"🍺"},
+    {name:"Michelada - Club Colombia", desc:"Cerveza Club Colombia preparada", price:11000, icon:"🍺"},
+    {name:"Michelada - Corona", desc:"Cerveza Corona preparada", price:13000, icon:"🍺"},
+    {name:"Hervido VASO", desc:"Maracuyá, tamarindo o mora", price:10000, icon:"🍹"},
+    {name:"Hervido JARRA 1.5 Lt", desc:"Maracuyá, tamarindo o mora", price:35000, icon:"🍹"},
+    {name:"Vino Caliente JARRA 1.5 Lt", desc:"Vino caliente para compartir", price:60000, icon:"🍷"}
+  ],
+  promos: [
+    {name:"Cima de Papas + Bebida", desc:"Lunes a viernes. NO para reservas ni domicilios. Base de papas, tocineta, queso, salsa, bebida y un topping: chicharrón, chorizo, fajitas de pollo, cerdo o chuleta", price:14000, icon:"🍟"},
+    {name:"Jueves de Karaoke (5 a 9 pm)", desc:"2 Hamburguesas Reinas de la Casa + 2 Papas + 2 Bebidas", price:39000, icon:"🎤"}
+  ],
+  eventos: [
+    {name:"Plato Fuerte Eventos", desc:"Mixto de cerdo y pechuga de pollo a la parrilla. Elige salsa (maracuyá, BBQ o agridulce), papa (rústica frita o cocida a la parrilla), arroz, yuca o plátano, ensalada (dulce o salada) y jarra personal de jugo", price:35000, icon:"🎉"},
+    {name:"Plato Fuerte + Entrada", desc:"Todo lo anterior más entrada a elección: consomé de pollo desmechado con papa fosforito, o crema de pollo", price:40000, icon:"🍲"},
+    {name:"Plato Fuerte + Entrada + Postre", desc:"Todo lo anterior más postre a elección: maracuyá o durazno", price:43000, icon:"🍮"}
+  ]
+};
