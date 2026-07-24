@@ -358,9 +358,10 @@ let currentCategory='all';
 
 function buildFilters(){
 const f=document.getElementById('filters');
-f.innerHTML='<button class="filter-btn active" onclick="filterMenu(\'all\',this)">Todos</button>';
-Object.keys(categoryInfo).forEach(k=>{
-f.innerHTML+='<button class="filter-btn" onclick="filterMenu(\''+k+'\',this)">'+categoryInfo[k].label+'</button>';
+f.innerHTML='';
+const keys=Object.keys(categoryInfo);
+keys.forEach((k,idx)=>{
+f.innerHTML+='<button class="filter-btn'+(idx===0?' active':'')+'" onclick="filterMenu(\''+k+'\',this)">'+categoryInfo[k].label+'</button>';
 });
 }
 
@@ -496,7 +497,8 @@ if(p!==ADMIN_PASSWORD){if(p!==null)alert('Contraseña incorrecta');return;}
 if(confirm('¿Restaurar la carta original?')){
 menu=JSON.parse(JSON.stringify(defaultMenu));
 localStorage.removeItem('lacimaMenuV2');
-renderMenu('all');
+buildFilters();
+renderMenu(Object.keys(categoryInfo)[0]);
 alert('Carta restaurada');
 }
 }
