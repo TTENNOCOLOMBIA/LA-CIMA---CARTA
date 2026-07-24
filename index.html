@@ -7,16 +7,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--primary:#F4D03F;--dark:#3E2723;--black:#1a1a1a;--accent:#C17D11;--wa:#25D366}
+:root{--primary:#F4D03F;--dark:#3E2723;--black:#1a1a1a;--accent:#E8951C;--wa:#25D366}
 body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f5f1ed;color:#333;line-height:1.6}
-header{background:linear-gradient(135deg,var(--dark),var(--black));color:var(--primary);padding:25px 20px 20px;text-align:center}
-.logo-img{width:135px;height:135px;border-radius:50%;object-fit:cover;border:4px solid var(--primary)}
-.info-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:18px}
-.pill{background:var(--primary);color:var(--dark);padding:9px 18px;border-radius:22px;font-weight:bold;font-size:.9rem;display:inline-flex;align-items:center;gap:7px}
-.pill-wide{background:rgba(244,208,63,.15);border:1px solid var(--primary);color:var(--primary);padding:8px 18px;border-radius:22px;font-size:.85rem;display:inline-flex;align-items:center;gap:7px;margin-top:10px}
-.wa-btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:11px 26px;border-radius:26px;text-decoration:none;font-weight:bold;font-size:.95rem;margin-top:16px;box-shadow:0 3px 10px rgba(37,211,102,.35)}
-.wa-btn:hover{background:#1da851}
-.header-note{margin-top:14px;font-size:.9rem;color:#e8dcc0;font-style:italic}
+.hero{display:flex;min-height:520px;background:#111}
+.hero-left{flex:1;background:#111;color:#fff;padding:40px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.hero-logo{width:230px;max-width:80%}
+.hero-title{font-size:2.6rem;font-weight:800;color:var(--accent);letter-spacing:2px;line-height:1.1}
+.hero-sub{font-size:1.05rem;color:#eee;letter-spacing:1px;max-width:420px}
+.hero-data{font-size:1rem;color:#fff;margin-top:6px}
+.hero-data strong{color:var(--primary)}
+.hero-hours{font-size:.9rem;color:#ddd;line-height:1.5}
+.hero-phone{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:bold;color:#fff}
+.hero-phone span{color:var(--wa)}
+.reserva-btn{display:inline-block;background:var(--accent);color:#fff;padding:14px 40px;border-radius:30px;text-decoration:none;font-weight:bold;letter-spacing:2px;margin-top:10px;width:fit-content;box-shadow:0 4px 12px rgba(232,149,28,.4)}
+.reserva-btn:hover{background:#cf7f0e}
+.hero-right{flex:1;background-image:url('https://i.ibb.co/nqTvx0Wv/file-0000000004fc820e9a4fb001e2e04006.png');background-size:cover;background-position:center;clip-path:polygon(12% 0,100% 0,100% 100%,0 100%)}
+.toolbar-info{background:linear-gradient(135deg,var(--dark),var(--black));color:var(--primary);padding:15px;text-align:center;font-size:.85rem}
 .edit-bar{background:var(--primary);padding:12px;display:none;gap:10px;flex-wrap:wrap;justify-content:center;position:sticky;top:0;z-index:95}
 .edit-bar.active{display:flex}
 button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:.9rem}
@@ -58,20 +64,32 @@ footer h4{margin-bottom:6px}
 .admin-links{margin-top:28px;padding-top:16px;border-top:1px solid rgba(244,208,63,.3);font-size:.78rem}
 .admin-links a{color:rgba(244,208,63,.6);text-decoration:none;margin:0 10px;cursor:pointer}
 .admin-links a:hover{color:var(--primary);text-decoration:underline}
-@media(max-width:768px){.logo-img{width:105px;height:105px}.menu-grid{grid-template-columns:1fr}.info-row{flex-direction:column;align-items:center;gap:9px}.pill,.pill-wide{font-size:.8rem}.edit-bar{flex-direction:column}.edit-bar button{width:100%}}
+@media(max-width:768px){
+.hero{flex-direction:column}
+.hero-right{min-height:240px;clip-path:none;order:-1}
+.hero-left{padding:30px 22px}
+.hero-title{font-size:2rem}
+.hero-logo{width:180px}
+.menu-grid{grid-template-columns:1fr}
+.edit-bar{flex-direction:column}.edit-bar button{width:100%}
+}
 </style>
 </head>
 <body>
-<header>
-<img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="Logo La Cima" class="logo-img">
-<div class="info-row">
-<span class="pill">📞 DOMICILIOS Y RESERVAS: 322 736 48 68</span>
-<span class="pill">📍 Cra 7 # 27-90, Ipiales</span>
+<div class="hero">
+<div class="hero-left">
+<img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="Logo La Cima" class="hero-logo">
+<div class="hero-title">TODO ES DELICIOSO</div>
+<div class="hero-sub">Disfruta de una experiencia especial llena de luces y sabor</div>
+<div class="hero-data"><strong>📍 Cra 7 #27-90, Barrio Puenes, Ipiales</strong></div>
+<div class="hero-phone">📞 <span>322 736 48 68</span></div>
+<div class="hero-hours">🕐 Lun a Vie: 12 AM - 9 PM · Sáb: 12 AM - 10 PM · Dom y festivos: 11 AM - 5 PM<br><em>Horarios flexibles para reservaciones y eventos</em></div>
+<a class="reserva-btn" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">RESERVA AHORA</a>
 </div>
-<div><span class="pill-wide">🕐 Lun a Vie: 12 AM - 9 PM &nbsp;|&nbsp; Sáb: 12 AM - 10 PM &nbsp;|&nbsp; Dom y festivos: 11 AM - 5 PM</span></div>
-<a class="wa-btn" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20hacer%20un%20pedido%20o%20reserva" target="_blank">💬 Pedir por WhatsApp</a>
-<p class="header-note">Horarios flexibles para reservaciones y eventos</p>
-</header>
+<div class="hero-right"></div>
+</div>
+
+<div class="toolbar-info">🍴 Explora nuestra carta completa · Domicilios y reservas al 322 736 48 68</div>
 
 <div class="edit-bar" id="editBar">
 <button class="btn-secondary" onclick="addDish()">➕ Nuevo Plato</button>
@@ -107,10 +125,10 @@ footer h4{margin-bottom:6px}
 
 <footer>
 <h4>📍 Ubícanos</h4>
-<p>Carrera 7 # 27-90, Ipiales, Nariño</p>
+<p>Cra 7 #27-90, Barrio Puenes, Ipiales, Nariño</p>
 <h4 style="margin-top:18px">📞 Domicilios y Reservas</h4>
 <p>322 736 48 68</p>
-<a class="footer-wa" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20hacer%20un%20pedido%20o%20reserva" target="_blank">💬 Escríbenos por WhatsApp</a>
+<a class="footer-wa" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">💬 Escríbenos por WhatsApp</a>
 <p style="margin-top:22px;font-size:.85rem">© 2026 La Cima Restaurante · Esto es Colombia</p>
 <div class="admin-links">
 <a onclick="toggleEditMode()">Modo Edición</a>·<a onclick="resetMenu()">Restaurar Menú</a>
