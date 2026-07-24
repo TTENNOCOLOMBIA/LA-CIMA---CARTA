@@ -13,16 +13,16 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:#f5f1ed;color:#333;line
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 4px 12px rgba(232,149,28,.4)}50%{transform:scale(1.05);box-shadow:0 6px 20px rgba(232,149,28,.6)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-header{background:linear-gradient(135deg,var(--dark),var(--black));color:var(--primary);padding:22px 20px 18px;text-align:center}
+header{position:relative;background:linear-gradient(rgba(20,12,8,.78),rgba(20,12,8,.86)),url('https://i.ibb.co/yB6TV9tg/file-00000000d0f0820eaba28b438c38ccac.png');background-size:cover;background-position:center;background-repeat:no-repeat;color:var(--primary);padding:30px 20px 26px;text-align:center}
 .logo-img{width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid var(--primary);animation:fadeDown .8s ease both}
-.hero-title{font-size:1.5rem;font-weight:800;color:var(--accent);letter-spacing:2px;margin-top:12px;animation:fadeUp .8s ease .2s both}
-.hero-sub{font-size:.9rem;color:#e8dcc0;font-style:italic;animation:fadeUp .8s ease .35s both}
+.hero-title{font-size:1.6rem;font-weight:800;color:var(--accent);letter-spacing:2px;margin-top:12px;text-shadow:0 2px 6px rgba(0,0,0,.6);animation:fadeUp .8s ease .2s both}
+.hero-sub{font-size:.92rem;color:#fff;font-style:italic;text-shadow:0 1px 4px rgba(0,0,0,.7);animation:fadeUp .8s ease .35s both}
 .info-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:16px;animation:fadeUp .8s ease .5s both}
 .pill{background:var(--primary);color:var(--dark);padding:9px 18px;border-radius:22px;font-weight:bold;font-size:.85rem}
-.pill-wide{background:rgba(244,208,63,.15);border:1px solid var(--primary);color:var(--primary);padding:8px 18px;border-radius:22px;font-size:.82rem;display:inline-block;margin-top:10px;animation:fadeUp .8s ease .6s both}
+.pill-wide{background:rgba(0,0,0,.45);border:1px solid var(--primary);color:var(--primary);padding:8px 18px;border-radius:22px;font-size:.82rem;display:inline-block;margin-top:10px;animation:fadeUp .8s ease .6s both}
 .wa-btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:11px 30px;border-radius:26px;text-decoration:none;font-weight:bold;font-size:.95rem;margin-top:16px;animation:pulse 2.5s ease-in-out infinite}
 .wa-btn:hover{background:#1da851}
-.header-note{margin-top:12px;font-size:.85rem;color:#e8dcc0;font-style:italic;animation:fadeIn 1s ease .8s both}
+.header-note{margin-top:12px;font-size:.85rem;color:#fff;font-style:italic;text-shadow:0 1px 4px rgba(0,0,0,.7);animation:fadeIn 1s ease .8s both}
 .edit-bar{background:var(--primary);padding:12px;display:none;gap:10px;flex-wrap:wrap;justify-content:center;position:sticky;top:0;z-index:95}
 .edit-bar.active{display:flex}
 button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:.9rem}
@@ -68,7 +68,7 @@ footer h4{margin-bottom:6px}
 .admin-links{margin-top:28px;padding-top:16px;border-top:1px solid rgba(244,208,63,.3);font-size:.78rem}
 .admin-links a{color:rgba(244,208,63,.6);text-decoration:none;margin:0 10px;cursor:pointer}
 .admin-links a:hover{color:var(--primary);text-decoration:underline}
-@media(max-width:768px){.logo-img{width:95px;height:95px}.hero-title{font-size:1.3rem}.menu-grid{grid-template-columns:1fr}.info-row{flex-direction:column;align-items:center;gap:9px}.edit-bar{flex-direction:column}.edit-bar button{width:100%}}
+@media(max-width:768px){.logo-img{width:95px;height:95px}.hero-title{font-size:1.35rem}.menu-grid{grid-template-columns:1fr}.info-row{flex-direction:column;align-items:center;gap:9px}.edit-bar{flex-direction:column}.edit-bar button{width:100%}}
 </style>
 </head>
 <body>
@@ -394,70 +394,4 @@ document.getElementById('editModal').classList.add('active');
 
 function addDish(){
 editingId=null;
-document.getElementById('modalTitle').textContent='Agregar Nuevo Plato';
-document.getElementById('dishForm').reset();
-document.getElementById('editModal').classList.add('active');
-}
-
-function deleteDish(cat,i){
-if(!isPasswordVerified){alert('Activa el Modo Edición primero');return;}
-if(confirm('¿Eliminar este plato?')){menu[cat].splice(i,1);saveMenu();renderMenu('all');}
-}
-
-function closeModal(){document.getElementById('editModal').classList.remove('active');}
-function saveMenu(){localStorage.setItem('lacimaMenuV2',JSON.stringify(menu));}
-
-function resetMenu(){
-const p=prompt('Ingresa la contraseña para restaurar la carta:');
-if(p!==ADMIN_PASSWORD){if(p!==null)alert('Contraseña incorrecta');return;}
-if(confirm('¿Restaurar la carta original?')){
-menu=JSON.parse(JSON.stringify(defaultMenu));
-localStorage.removeItem('lacimaMenuV2');
-renderMenu('all');
-alert('Carta restaurada');
-}
-}
-
-function toggleQR(){document.getElementById('qrSection').classList.toggle('active');}
-
-function generateQR(){
-const q=document.getElementById('qrcode');
-q.innerHTML='';
-new QRCode(q,{text:window.location.href,width:280,height:280,colorDark:'#3E2723',colorLight:'#F4D03F'});
-}
-
-function downloadQR(){
-const cv=document.querySelector('#qrcode canvas');
-const a=document.createElement('a');
-a.href=cv.toDataURL();
-a.download='lacima-qr.png';
-a.click();
-}
-
-document.getElementById('dishForm').addEventListener('submit',function(e){
-e.preventDefault();
-if(document.getElementById('password').value!==ADMIN_PASSWORD){alert('Contraseña incorrecta');return;}
-isPasswordVerified=true;
-document.getElementById('editBar').classList.add('active');
-const nd={name:document.getElementById('dishName').value,desc:document.getElementById('dishDescription').value,price:parseInt(document.getElementById('dishPrice').value),icon:'🍽️'};
-const cat=document.getElementById('dishCategory').value;
-if(editingId){
-menu[editingId.category][editingId.index]=nd;
-editingId=null;
-}else{
-if(!menu[cat])menu[cat]=[];
-menu[cat].push(nd);
-}
-saveMenu();
-renderMenu('all');
-closeModal();
-document.body.style.background='#fff9e6';
-});
-
-buildFilters();
-buildSelect();
-renderMenu('all');
-generateQR();
-</script>
-</body>
-</html>
+document.getE
