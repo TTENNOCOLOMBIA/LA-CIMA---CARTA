@@ -394,4 +394,70 @@ document.getElementById('editModal').classList.add('active');
 
 function addDish(){
 editingId=null;
-document.getE
+document.getElementById('modalTitle').textContent='Agregar Nuevo Plato';
+document.getElementById('dishForm').reset();
+document.getElementById('editModal').classList.add('active');
+}
+
+function deleteDish(cat,i){
+if(!isPasswordVerified){alert('Activa el Modo Edición primero');return;}
+if(confirm('¿Eliminar este plato?')){menu[cat].splice(i,1);saveMenu();renderMenu('all');}
+}
+
+function closeModal(){document.getElementById('editModal').classList.remove('active');}
+function saveMenu(){localStorage.setItem('lacimaMenuV2',JSON.stringify(menu));}
+
+function resetMenu(){
+const p=prompt('Ingresa la contraseña para restaurar la carta:');
+if(p!==ADMIN_PASSWORD){if(p!==null)alert('Contraseña incorrecta');return;}
+if(confirm('¿Restaurar la carta original?')){
+menu=JSON.parse(JSON.stringify(defaultMenu));
+localStorage.removeItem('lacimaMenuV2');
+renderMenu('all');
+alert('Carta restaurada');
+}
+}
+
+function toggleQR(){document.getElementById('qrSection').classList.toggle('active');}
+
+function generateQR(){
+const q=document.getElementById('qrcode');
+q.innerHTML='';
+new QRCode(q,{text:window.location.href,width:280,height:280,colorDark:'#3E2723',colorLight:'#F4D03F'});
+}
+
+function downloadQR(){
+const cv=document.querySelector('#qrcode canvas');
+const a=document.createElement('a');
+a.href=cv.toDataURL();
+a.download='lacima-qr.png';
+a.click();
+}
+
+document.getElementById('dishForm').addEventListener('submit',function(e){
+e.preventDefault();
+if(document.getElementById('password').value!==ADMIN_PASSWORD){alert('Contraseña incorrecta');return;}
+isPasswordVerified=true;
+document.getElementById('editBar').classList.add('active');
+const nd={name:document.getElementById('dishName').value,desc:document.getElementById('dishDescription').value,price:parseInt(document.getElementById('dishPrice').value),icon:'🍽️'};
+const cat=document.getElementById('dishCategory').value;
+if(editingId){
+menu[editingId.category][editingId.index]=nd;
+editingId=null;
+}else{
+if(!menu[cat])menu[cat]=[];
+menu[cat].push(nd);
+}
+saveMenu();
+renderMenu('all');
+closeModal();
+document.body.style.background='#fff9e6';
+});
+
+buildFilters();
+buildSelect();
+renderMenu('all');
+generateQR();
+</script>
+</body>
+</html>
