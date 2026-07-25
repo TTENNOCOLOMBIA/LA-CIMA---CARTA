@@ -51,7 +51,8 @@ button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:
 .dish-card.show{animation:fadeUp .6s ease forwards}
 .dish-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 12px 28px rgba(0,0,0,.18)}
 .badge-star{position:absolute;top:12px;right:12px;background:var(--accent);color:#fff;font-size:.72rem;font-weight:bold;padding:5px 12px;border-radius:20px;z-index:5;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.dish-image{width:100%;height:180px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:3rem;color:var(--dark);transition:transform .3s ease;background-size:cover;background-position:center}
+.dish-image{width:100%;height:200px;background:#f0ece4;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:3rem;color:var(--dark);transition:transform .3s ease;background-size:contain;background-position:center;background-repeat:no-repeat}
+.dish-image.noimg{background:linear-gradient(135deg,var(--primary),var(--accent))}
 .dish-card:hover .dish-image{transform:scale(1.05)}
 .dish-image-placeholder{color:#8a6d1f;font-size:.7rem}
 .dish-content{padding:20px}
@@ -396,9 +397,10 @@ function cardHTML(cat,d,i){
 const esDestacado=destacados.includes(d.name);
 const msg=encodeURIComponent("Hola La Cima, quiero pedir: "+d.name+" ($"+d.price.toLocaleString('es-CO')+")");
 const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';
+const noimgClass=d.img?'':' noimg';
 const placeholder=d.img?'':'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';
 const icono=d.img?'':(d.icon||'🍽️');
-return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image" '+imgStyle+'>'+icono+placeholder+'</div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text='+msg+'" target="_blank">💬 Pedir por WhatsApp</a><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editDish(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteDish(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
+return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image'+noimgClass+'" '+imgStyle+'>'+icono+placeholder+'</div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text='+msg+'" target="_blank">💬 Pedir por WhatsApp</a><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editDish(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteDish(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
 }
 
 function renderMenu(category){
