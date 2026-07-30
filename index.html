@@ -24,6 +24,8 @@ header{position:relative;background:linear-gradient(rgba(20,12,8,.45),rgba(20,12
 .wa-btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:11px 30px;border-radius:26px;text-decoration:none;font-weight:bold;font-size:.95rem;margin-top:16px;animation:pulse 2.5s ease-in-out infinite}
 .wa-btn:hover{background:#1da851}
 .header-note{margin-top:12px;font-size:.85rem;color:#fff;font-style:italic;text-shadow:0 1px 4px rgba(0,0,0,.7);animation:fadeIn 1s ease .8s both}
+.music-btn{position:fixed;top:20px;right:20px;width:50px;height:50px;background:var(--accent);color:#fff;border:none;border-radius:50%;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:100;display:flex;align-items:center;justify-content:center;transition:transform .2s ease}
+.music-btn:hover{transform:scale(1.1)}
 .edit-bar{background:var(--primary);padding:12px;display:none;gap:10px;flex-wrap:wrap;justify-content:center;position:sticky;top:0;z-index:95}
 .edit-bar.active{display:flex}
 button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:.9rem}
@@ -80,6 +82,8 @@ button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:
 .gallery-content{padding:16px;text-align:center}
 .gallery-name{font-size:1.15rem;font-weight:bold;color:var(--dark);margin-bottom:8px}
 .gallery-desc{font-size:.8rem;color:#666;margin-bottom:10px;line-height:1.4}
+.gallery-price{font-size:1.3rem;color:var(--accent);font-weight:800;margin-bottom:10px}
+.gallery-price small{font-size:.75rem;color:#b0791a}
 .gallery-actions{display:flex;gap:8px;margin-top:10px}
 .video-btn{flex:1;padding:8px;border:none;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:bold;background:#2E86C1;color:#fff;display:flex;align-items:center;justify-content:center;gap:5px}
 .video-btn:hover{background:#1a5a9e}
@@ -116,10 +120,16 @@ footer h4{margin-bottom:6px}
 .top-btn{position:fixed;bottom:25px;right:25px;width:52px;height:52px;background:var(--accent);color:#fff;border:none;border-radius:50%;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3);display:none;align-items:center;justify-content:center;z-index:90;transition:transform .2s ease}
 .top-btn:hover{transform:scale(1.1);background:#cf7f0e}
 .top-btn.show{display:flex}
-@media(max-width:768px){.logo-img{width:95px;height:95px}.hero-title{font-size:1.35rem}.menu-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr}.info-row{flex-direction:column;align-items:center;gap:9px}.edit-bar{flex-direction:column}.edit-bar button{width:100%}.location-btns{flex-direction:column}.loc-btn{justify-content:center}}
+@media(max-width:768px){.logo-img{width:95px;height:95px}.hero-title{font-size:1.35rem}.menu-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr}.info-row{flex-direction:column;align-items:center;gap:9px}.edit-bar{flex-direction:column}.edit-bar button{width:100%}.location-btns{flex-direction:column}.loc-btn{justify-content:center}.music-btn{width:45px;height:45px;font-size:1.2rem;top:15px;right:15px}}
 </style>
 </head>
 <body>
+<audio id="backgroundMusic" autoplay loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-btn" id="musicToggle" onclick="toggleMusic()">🔊</button>
+
 <header>
 <img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="Logo La Cima" class="logo-img">
 <div class="hero-title">TODO ES DELICIOSO</div>
@@ -174,7 +184,7 @@ footer h4{margin-bottom:6px}
 <div class="form-group"><label>Descripción (opcional)</label><textarea id="dishDescription"></textarea></div>
 <div class="form-group"><label>Precio (COP, opcional)</label><input type="number" id="dishPrice"></div>
 <div class="form-group"><label>URL Imagen (ibb.co)</label><input type="text" id="dishImage" placeholder="https://i.ibb.co/..."></div>
-<div class="form-group"><label>URL Video (opcional, solo parqueadero)</label><input type="text" id="dishVideo" placeholder="https://drive.google.com/..."></div>
+<div class="form-group"><label>URL Video (opcional, solo parqueadero)</label><input type="text" id="dishVideo" placeholder="https://facebook.com/..."></div>
 <div class="form-group"><label>Categoría</label><select id="dishCategory" required></select></div>
 <div class="modal-actions">
 <button type="submit" class="btn-success">💾 Guardar</button>
@@ -384,15 +394,35 @@ espacios:[
 {name:"Promesa",desc:"Íntimo rincón para 10 personas — el lugar ideal para propuestas de matrimonio, aniversarios especiales, cenas románticas o reuniones de amigos más cercanos. Exclusividad y privacidad garantizadas.",img:"https://i.ibb.co/k2HKMcqn/IMG-20260729-WA0033.jpg"},
 {name:"Cocinita de la Abuela",desc:"Espacio para 10 personas con ese toque nostálgico de hogar. Perfecto para reuniones familiares pequeñas, desayunos íntimos o cenas donde lo importante es la compañía. Cada detalle respira amor y tradición.",img:"https://i.ibb.co/TqbXYjvS/IMG-20260729-WA0027.jpg"},
 {name:"Nidito",desc:"Refugio privado para 10 personas — tu espacio personal de lujo. Ideal para citas especiales, reuniones ejecutivas confidenciales o celebraciones que solo pueden ser tuyas. Intimidad y distinción en cada metro.",img:"https://i.ibb.co/SDdWq8Fg/IMG-20260729-WA0029.jpg"},
-{name:"Parqueadero",desc:"Parqueadero seguro para 22 vehículos con vigilancia las 24 horas. Tu tranquilidad mientras disfrutas de La Cima — porque los detalles cuentan.",img:"https://i.ibb.co/HpKnXHdX/file-0000000094c0820eb6545dca43ddfdb1.png",video:"https://drive.google.com/file/d/1umIcGBkWfkOympfkXkWLOwmnE0FDwYVV/view?usp=sharing"}
+{name:"Parqueadero",desc:"Parqueadero seguro para 22 vehículos con vigilancia las 24 horas. Tu tranquilidad mientras disfrutas de La Cima — porque los detalles cuentan.",img:"https://i.ibb.co/HpKnXHdX/file-0000000094c0820eb6545dca43ddfdb1.png",video:"https://www.facebook.com/share/r/1LkkN9gyZ1/"}
 ],
-decoraciones:Array(10).fill(null).map((_,i)=>({name:"",desc:"",img:""}))
+decoraciones:[
+{name:"Decoración Romántica",desc:"Crea un ambiente de puro romance: corazón decorativo con pétalos de rosa, velas aromáticas que iluminan la intimidad, mantelería elegante, copas de agua cristalina y letrero luminoso personalizado con tu mensaje especial. Perfecto para propuestas, aniversarios y cenas que necesitan ese toque de ensueño.",price:40000,img:"https://i.ibb.co/fhVQpdD/IMG-20260725-WA0000.jpg"},
+{name:"Decoración Pareja",desc:"La experiencia romántica completa: 5 globos con helio flotantes, botella de champagne premium, juego de mantelería exclusiva, decoración con velas aromáticas, rosas frescas estratégicamente colocadas y copas de lujo. Un paquete diseñado para momentos que merecen ser inolvidables.",price:75000,img:"https://i.ibb.co/qYD2jbgb/IMG-20260725-WA0001.jpg"},
+{name:"Decoración Personalizada",desc:"Expresa tu personalidad: pétalos de rosas esparcidos, 3 juegos de globos en los colores que elijas, letrero luminoso personalizado con tu frase especial, elegante base de pastel decorada y copas de agua de lujo. Ideal para cumpleaños, aniversarios y celebraciones únicas.",price:45000,img:"https://i.ibb.co/BVYq3Rk3/IMG-20260730-WA0004.jpg"},
+{name:"Decoración Cumple",desc:"Ambiente festivo y colorido: pétalos de rosas, 3 juegos de globos temáticos, clásicas letras HBD (Happy Birthday), base de pastel decorada y copas de agua. Simple pero efectiva para hacer tu día especial memorable.",price:35000,img:"https://i.ibb.co/PZjgHf2m/IMG-20260730-WA0003.jpg"}
+]
 };
 
 let menu=JSON.parse(localStorage.getItem('lacimaMenuV2'))||JSON.parse(JSON.stringify(defaultMenu));
 let editingId=null;
 let isPasswordVerified=false;
 let currentCategory='all';
+let musicPlaying=true;
+
+function toggleMusic(){
+const audio=document.getElementById('backgroundMusic');
+const btn=document.getElementById('musicToggle');
+if(musicPlaying){
+audio.pause();
+btn.textContent='🔇';
+musicPlaying=false;
+}else{
+audio.play();
+btn.textContent='🔊';
+musicPlaying=true;
+}
+}
 
 function buildFilters(){
 const f=document.getElementById('filters');
@@ -439,8 +469,9 @@ function galleryHTML(cat,d,i){
 const colorClass=categoryInfo[cat].color;
 const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';
 const placeholder=d.img?'':'📷';
-const videoBtn=d.video?'<button class="video-btn" onclick="window.open(\''+d.video+'\',\'_blank\')">▶️ Ver Video</button>':'';
-return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div>'+(d.desc?'<div class="gallery-desc">'+d.desc+'</div>':'')+'<div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div>'+videoBtn+'</div></div>';
+const videoBtn=d.video?'<a href="'+d.video+'" target="_blank" class="video-btn">▶️ Ver Video</a>':'';
+const orderBtn=(d.price)?'<a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text=Quiero%20contratar%20'+encodeURIComponent(d.name)+' - $'+d.price.toLocaleString('es-CO')+'" target="_blank">💬 Solicitar</a>':'';
+return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div>'+(d.desc?'<div class="gallery-desc">'+d.desc+'</div>':'')+(d.price?'<div class="gallery-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div>':'')+'<div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div>'+videoBtn+orderBtn+'</div></div>';
 }
 
 function renderMenu(category){
@@ -591,6 +622,7 @@ nd.price=parseInt(document.getElementById('dishPrice').value)||0;
 nd.icon='🍽️';
 }else{
 nd.desc=document.getElementById('dishDescription').value||'';
+nd.price=parseInt(document.getElementById('dishPrice').value)||0;
 }
 if(editingId){
 const old=menu[editingId.category][editingId.index];
@@ -615,6 +647,7 @@ buildFilters();
 buildSelect();
 renderMenu('all');
 generateQR();
+document.getElementById('backgroundMusic').play();
 </script>
 </body>
 </html>
