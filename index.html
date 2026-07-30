@@ -426,16 +426,16 @@ const esDestacado=destacados.includes(d.name);
 const msg=encodeURIComponent("Hola La Cima, quiero pedir: "+d.name+" ($"+d.price.toLocaleString('es-CO')+")");
 const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';
 const noimgClass=d.img?'':' noimg';
-const placeholder=d.img?'':<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';
+const placeholder=d.img?'':'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';
 const icono=d.img?'':(d.icon||'🍽️');
-return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image'+noimgClass+'" '+imgStyle+'>'+icono+placeholder+'</div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text='+msg+'" target="_blank">💬 Pedir por WhatsApp</a><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editGalery(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteGalery(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
+return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image'+noimgClass+'" '+imgStyle+'>'+icono+placeholder+'</div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text='+msg+'" target="_blank">💬 Pedir por WhatsApp</a><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
 }
 
 function galleryHTML(cat,d,i){
 const colorClass=categoryInfo[cat].color;
 const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';
 const placeholder=d.img?'':'📷';
-return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div><div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editGalery(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteGalery(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
+return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div><div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
 }
 
 function renderMenu(category){
@@ -515,13 +515,13 @@ window.scrollTo({top:0,behavior:'smooth'});
 }
 }
 
-function editGalery(cat,i){
+function editItem(cat,i){
 editingId={category:cat,index:i};
 const d=menu[cat][i];
 document.getElementById('modalTitle').textContent='Editar: '+d.name;
 document.getElementById('dishName').value=d.name;
-document.getElementById('dishDescription').value='';
-document.getElementById('dishPrice').value='';
+document.getElementById('dishDescription').value=d.desc||'';
+document.getElementById('dishPrice').value=d.price||'';
 document.getElementById('dishImage').value=d.img||'';
 document.getElementById('dishCategory').value=cat;
 document.getElementById('password').value='';
@@ -535,7 +535,7 @@ document.getElementById('dishForm').reset();
 document.getElementById('editModal').classList.add('active');
 }
 
-function deleteGalery(cat,i){
+function deleteItem(cat,i){
 if(!isPasswordVerified){alert('Activa el Modo Edición primero');return;}
 if(confirm('¿Eliminar este item?')){menu[cat].splice(i,1);saveMenu();renderMenu(currentCategory);}
 }
@@ -546,12 +546,12 @@ function saveMenu(){localStorage.setItem('lacimaMenuV2',JSON.stringify(menu));}
 function resetMenu(){
 const p=prompt('Ingresa la contraseña para restaurar la carta:');
 if(p!==ADMIN_PASSWORD){if(p!==null)alert('Contraseña incorrecta');return;}
-if(confirm('¿Restaurar la carta original?')){
+if(confirm('¿Restaurar la carta original? Se perderán todos los cambios.')){
 menu=JSON.parse(JSON.stringify(defaultMenu));
 localStorage.removeItem('lacimaMenuV2');
 buildFilters();
 renderMenu(Object.keys(categoryInfo)[0]);
-alert('Carta restaurada');
+alert('Carta restaurada exitosamente');
 }
 }
 
@@ -580,13 +580,13 @@ const nd={name:document.getElementById('dishName').value,img:document.getElement
 const cat=document.getElementById('dishCategory').value;
 const isGaleria=categoryInfo[cat].type==='galeria';
 if(!isGaleria){
-nd.desc=document.getElementById('dishDescription').value;
+nd.desc=document.getElementById('dishDescription').value||'';
 nd.price=parseInt(document.getElementById('dishPrice').value)||0;
 nd.icon='🍽️';
 }
 if(editingId){
 const old=menu[editingId.category][editingId.index];
-if(!isGaleria){nd.icon=old.icon;}
+if(!isGaleria&&old.icon){nd.icon=old.icon;}
 menu[editingId.category][editingId.index]=nd;
 editingId=null;
 }else{
