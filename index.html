@@ -78,8 +78,11 @@ button{padding:10px 20px;border:none;border-radius:25px;font-weight:bold;cursor:
 .gallery-image{width:100%;height:250px;background:#f0ece4;display:flex;align-items:center;justify-content:center;font-size:4rem;background-size:cover;background-position:center;background-repeat:no-repeat;transition:transform .3s ease}
 .gallery-card:hover .gallery-image{transform:scale(1.08)}
 .gallery-content{padding:16px;text-align:center}
-.gallery-name{font-size:1.15rem;font-weight:bold;color:var(--dark)}
+.gallery-name{font-size:1.15rem;font-weight:bold;color:var(--dark);margin-bottom:8px}
+.gallery-desc{font-size:.8rem;color:#666;margin-bottom:10px;line-height:1.4}
 .gallery-actions{display:flex;gap:8px;margin-top:10px}
+.video-btn{flex:1;padding:8px;border:none;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:bold;background:#2E86C1;color:#fff;display:flex;align-items:center;justify-content:center;gap:5px}
+.video-btn:hover{background:#1a5a9e}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:1000;align-items:center;justify-content:center}
 .modal.active{display:flex}
 .modal-content{background:#fff;padding:30px;border-radius:15px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;animation:fadeUp .4s ease both}
@@ -171,6 +174,7 @@ footer h4{margin-bottom:6px}
 <div class="form-group"><label>Descripción (opcional)</label><textarea id="dishDescription"></textarea></div>
 <div class="form-group"><label>Precio (COP, opcional)</label><input type="number" id="dishPrice"></div>
 <div class="form-group"><label>URL Imagen (ibb.co)</label><input type="text" id="dishImage" placeholder="https://i.ibb.co/..."></div>
+<div class="form-group"><label>URL Video (opcional, solo parqueadero)</label><input type="text" id="dishVideo" placeholder="https://drive.google.com/..."></div>
 <div class="form-group"><label>Categoría</label><select id="dishCategory" required></select></div>
 <div class="modal-actions">
 <button type="submit" class="btn-success">💾 Guardar</button>
@@ -373,16 +377,16 @@ eventos:[
 {name:"Plato Fuerte + Entrada + Postre",desc:"La experiencia completa: plato fuerte, entrada y postre a elegir (maracuyá o durazno). El paquete ideal para celebrar",price:43000,icon:"🍮"}
 ],
 espacios:[
-{name:"Zona Campestre",img:""},
-{name:"Reminiscencias",img:""},
-{name:"Colonial",img:""},
-{name:"Caribe",img:""},
-{name:"Cocinita de la Abuela",img:""},
-{name:"Promesa",img:""},
-{name:"Nidito",img:""},
-{name:"Parqueadero",img:""}
+{name:"Zona Campestre",desc:"Espacio amplio y acogedor con capacidad para 60 personas, donde la naturaleza y la comodidad se encuentran. Equipado con TV 75\" para proyecciones, presentaciones o disfrutar del fútbol en compañía. Ideal para eventos corporativos, reuniones familiares y celebraciones que requieren espacio y elegancia.",img:"https://i.ibb.co/k2hKfQsT/IMG-20260729-WA0032.jpg"},
+{name:"Reminiscencias",desc:"Rincón con encanto para 40 personas, donde cada detalle evoca recuerdos gratos. Pantalla gigante para compartir películas, música en vivo o momentos especiales. Un espacio perfecto para bodas, aniversarios y celebraciones que merecen atmósfera y tecnología de lujo.",img:"https://i.ibb.co/m5qDrtTm/IMG-20260729-WA0030.jpg"},
+{name:"Colonial",desc:"Salón de 30 personas con arquitectura colonial que respira tradición y clase. Pantalla gigante integrada para eventos empresariales, presentaciones y cenas temáticas. Cada rincón cuenta historias de buen gusto y refinamiento.",img:"https://i.ibb.co/99xWp7GX/IMG-20260729-WA0031.jpg"},
+{name:"Caribe",desc:"Espacio para 30 personas con la esencia del caribe: colores cálidos, ambiente festivo y TV 45\" para entretenimiento. Perfecto para fiestas, reuniones desenfadadas y momentos donde predominan la risa y la alegría.",img:"https://i.ibb.co/JRQkPQsR/IMG-20260729-WA0028.jpg"},
+{name:"Promesa",desc:"Íntimo rincón para 10 personas — el lugar ideal para propuestas de matrimonio, aniversarios especiales, cenas románticas o reuniones de amigos más cercanos. Exclusividad y privacidad garantizadas.",img:"https://i.ibb.co/k2HKMcqn/IMG-20260729-WA0033.jpg"},
+{name:"Cocinita de la Abuela",desc:"Espacio para 10 personas con ese toque nostálgico de hogar. Perfecto para reuniones familiares pequeñas, desayunos íntimos o cenas donde lo importante es la compañía. Cada detalle respira amor y tradición.",img:"https://i.ibb.co/TqbXYjvS/IMG-20260729-WA0027.jpg"},
+{name:"Nidito",desc:"Refugio privado para 10 personas — tu espacio personal de lujo. Ideal para citas especiales, reuniones ejecutivas confidenciales o celebraciones que solo pueden ser tuyas. Intimidad y distinción en cada metro.",img:"https://i.ibb.co/SDdWq8Fg/IMG-20260729-WA0029.jpg"},
+{name:"Parqueadero",desc:"Parqueadero seguro para 22 vehículos con vigilancia las 24 horas. Tu tranquilidad mientras disfrutas de La Cima — porque los detalles cuentan.",img:"https://i.ibb.co/HpKnXHdX/file-0000000094c0820eb6545dca43ddfdb1.png",video:"https://drive.google.com/file/d/1umIcGBkWfkOympfkXkWLOwmnE0FDwYVV/view?usp=sharing"}
 ],
-decoraciones:Array(10).fill(null).map((_,i)=>({name:"",img:""}))
+decoraciones:Array(10).fill(null).map((_,i)=>({name:"",desc:"",img:""}))
 };
 
 let menu=JSON.parse(localStorage.getItem('lacimaMenuV2'))||JSON.parse(JSON.stringify(defaultMenu));
@@ -435,7 +439,8 @@ function galleryHTML(cat,d,i){
 const colorClass=categoryInfo[cat].color;
 const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';
 const placeholder=d.img?'':'📷';
-return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div><div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>';
+const videoBtn=d.video?'<button class="video-btn" onclick="window.open(\''+d.video+'\',\'_blank\')">▶️ Ver Video</button>':'';
+return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div>'+(d.desc?'<div class="gallery-desc">'+d.desc+'</div>':'')+'<div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div>'+videoBtn+'</div></div>';
 }
 
 function renderMenu(category){
@@ -523,6 +528,7 @@ document.getElementById('dishName').value=d.name;
 document.getElementById('dishDescription').value=d.desc||'';
 document.getElementById('dishPrice').value=d.price||'';
 document.getElementById('dishImage').value=d.img||'';
+document.getElementById('dishVideo').value=d.video||'';
 document.getElementById('dishCategory').value=cat;
 document.getElementById('password').value='';
 document.getElementById('editModal').classList.add('active');
@@ -576,13 +582,15 @@ e.preventDefault();
 if(document.getElementById('password').value!==ADMIN_PASSWORD){alert('Contraseña incorrecta');return;}
 isPasswordVerified=true;
 document.getElementById('editBar').classList.add('active');
-const nd={name:document.getElementById('dishName').value,img:document.getElementById('dishImage').value||''};
+const nd={name:document.getElementById('dishName').value,img:document.getElementById('dishImage').value||'',video:document.getElementById('dishVideo').value||''};
 const cat=document.getElementById('dishCategory').value;
 const isGaleria=categoryInfo[cat].type==='galeria';
 if(!isGaleria){
 nd.desc=document.getElementById('dishDescription').value||'';
 nd.price=parseInt(document.getElementById('dishPrice').value)||0;
 nd.icon='🍽️';
+}else{
+nd.desc=document.getElementById('dishDescription').value||'';
 }
 if(editingId){
 const old=menu[editingId.category][editingId.index];
