@@ -15,7 +15,8 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 4px 12px rgba(255,107,53,.5)}50%{transform:scale(1.05);box-shadow:0 6px 20px rgba(255,107,53,.7)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-header{position:relative;background:linear-gradient(135deg,rgba(255,107,53,.95),rgba(255,140,66,.95)),url('https://i.ibb.co/yB6TV9tg/file-00000000d0f0820eaba28b438c38ccac.png');background-size:cover;background-position:center;background-repeat:no-repeat;color:var(--primary);padding:40px 20px 35px;text-align:center;border-bottom:5px solid var(--primary);box-shadow:0 8px 32px rgba(255,107,53,.3)}
+header{position:relative;background:linear-gradient(135deg,rgba(255,107,53,.95),rgba(255,140,66,.95)),url('https://i.ibb.co/yB6TV9tg/file-00000000d0f0820eaba28b438c38ccac.png');background-size:cover;background-position:center;background-repeat:no-repeat;color:var(--primary);padding:40px 20px 26px;text-align:center;border-bottom:5px solid var(--primary);box-shadow:0 8px 32px rgba(255,107,53,.3)}
+.header-top{position:relative;z-index:10}
 .logo-img{width:140px;height:140px;border-radius:50%;object-fit:cover;border:5px solid var(--primary);animation:fadeDown .8s ease both;box-shadow:0 8px 20px rgba(255,107,53,.4)}
 .hero-title{font-size:2rem;font-weight:900;color:var(--primary);letter-spacing:3px;margin-top:16px;text-shadow:0 3px 8px rgba(0,0,0,.4);animation:fadeUp .8s ease .2s both}
 .hero-sub{font-size:1rem;color:#fff;font-style:italic;text-shadow:0 2px 5px rgba(0,0,0,.5);animation:fadeUp .8s ease .35s both}
@@ -26,6 +27,8 @@ header{position:relative;background:linear-gradient(135deg,rgba(255,107,53,.95),
 .wa-btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:13px 35px;border-radius:28px;text-decoration:none;font-weight:bold;font-size:1rem;margin-top:18px;animation:pulse 2.5s ease-in-out infinite;box-shadow:0 6px 18px rgba(37,211,102,.4)}
 .wa-btn:hover{background:#1da851;transform:scale(1.05)}
 .header-note{margin-top:14px;font-size:.9rem;color:#fff;font-style:italic;text-shadow:0 1px 4px rgba(0,0,0,.5);animation:fadeIn 1s ease .8s both}
+.header-video{width:100%;height:280px;margin-top:20px;border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.header-video video{width:100%;height:100%;object-fit:cover;display:block}
 .edit-bar{background:linear-gradient(90deg,var(--accent),var(--primary));padding:14px;display:none;gap:10px;flex-wrap:wrap;justify-content:center;position:sticky;top:0;z-index:95;box-shadow:0 4px 12px rgba(0,0,0,.2)}
 .edit-bar.active{display:flex}
 button{padding:11px 22px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:.95rem;transition:all .2s ease}
@@ -126,12 +129,13 @@ footer h4{margin-bottom:8px;font-weight:900}
 .top-btn{position:fixed;bottom:28px;right:28px;width:60px;height:60px;background:var(--accent);color:#fff;border:none;border-radius:50%;font-size:1.6rem;cursor:pointer;box-shadow:0 6px 18px rgba(255,107,53,.4);display:none;align-items:center;justify-content:center;z-index:90;transition:transform .2s ease}
 .top-btn:hover{transform:scale(1.15);background:#FF6B35}
 .top-btn.show{display:flex}
-@media(max-width:768px){.logo-img{width:120px;height:120px}.hero-title{font-size:1.6rem}.category-title{font-size:1.4rem}.menu-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr}.info-row{flex-direction:column;align-items:center;gap:10px}.edit-bar{flex-direction:column}.edit-bar button{width:100%}.location-btns{flex-direction:column}.loc-btn{justify-content:center}.dish-card:hover{transform:translateY(-12px) rotateX(3deg) rotateY(3deg)}.gallery-card:hover{transform:translateY(-12px) rotateX(3deg) rotateY(3deg)}.image-modal-close{top:10px;right:10px;width:55px;height:55px;font-size:32px}}
+@media(max-width:768px){.logo-img{width:120px;height:120px}.hero-title{font-size:1.6rem}.category-title{font-size:1.4rem}.menu-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr}.header-video{height:200px}.info-row{flex-direction:column;align-items:center;gap:10px}.edit-bar{flex-direction:column}.edit-bar button{width:100%}.location-btns{flex-direction:column}.loc-btn{justify-content:center}.dish-card:hover{transform:translateY(-12px) rotateX(3deg) rotateY(3deg)}.gallery-card:hover{transform:translateY(-12px) rotateX(3deg) rotateY(3deg)}.image-modal-close{top:10px;right:10px;width:55px;height:55px;font-size:32px}}
 </style>
 </head>
 <body>
 
 <header>
+<div class="header-top">
 <img src="https://i.ibb.co/SD2mZYV1/IMG-20260627-WA0010.jpg" alt="Logo La Cima" class="logo-img">
 <div class="hero-title">TODO ES DELICIOSO</div>
 <div class="hero-sub">Disfruta de una experiencia especial llena de luces y sabor</div>
@@ -143,6 +147,14 @@ footer h4{margin-bottom:8px;font-weight:900}
 <div><span class="pill-wide">🕐 Lun a Vie: 12 AM - 9 PM &nbsp;|&nbsp; Sáb: 12 AM - 10 PM &nbsp;|&nbsp; Dom y festivos: 11 AM - 5 PM</span></div>
 <a class="wa-btn" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">💬 RESERVA AHORA</a>
 <p class="header-note">Horarios flexibles para reservaciones y eventos</p>
+</div>
+
+<div class="header-video">
+<video autoplay muted loop playsinline>
+<source src="https://www.mediafire.com/file/t72f5c9dbb3rfjd/276282036_1786056087298230.mp4/file" type="video/mp4">
+Tu navegador no soporta video HTML5
+</video>
+</div>
 </header>
 
 <div class="edit-bar" id="editBar">
