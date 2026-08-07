@@ -27,7 +27,7 @@ header{position:relative;background:linear-gradient(135deg,rgba(255,107,53,.95),
 .wa-btn{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:13px 35px;border-radius:28px;text-decoration:none;font-weight:bold;font-size:1rem;margin-top:18px;animation:pulse 2.5s ease-in-out infinite;box-shadow:0 6px 18px rgba(37,211,102,.4)}
 .wa-btn:hover{background:#1da851;transform:scale(1.05)}
 .header-note{margin-top:14px;font-size:.9rem;color:#fff;font-style:italic;text-shadow:0 1px 4px rgba(0,0,0,.5);animation:fadeIn 1s ease .8s both}
-.header-video{width:100%;height:280px;margin-top:20px;border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+.header-video{width:100%;height:450px;margin-top:20px;border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.3)}
 .header-video video{width:100%;height:100%;object-fit:cover;display:block}
 .edit-bar{background:linear-gradient(90deg,var(--accent),var(--primary));padding:14px;display:none;gap:10px;flex-wrap:wrap;justify-content:center;position:sticky;top:0;z-index:95;box-shadow:0 4px 12px rgba(0,0,0,.2)}
 .edit-bar.active{display:flex}
@@ -150,7 +150,10 @@ footer h4{margin-bottom:8px;font-weight:900}
 </div>
 
 <div class="header-video">
-<iframe src="https://drive.google.com/file/d/16a2gg8UzfXO5IFzcUTKJFD1AWSvX3d0e/preview" width="100%" height="100%" frameborder="0" allowfullscreen="" allow="autoplay"></iframe>
+<video autoplay muted loop playsinline>
+<source src="https://drive.google.com/uc?id=16a2gg8UzfXO5IFzcUTKJFD1AWSvX3d0e&export=download" type="video/mp4">
+Tu navegador no soporta video HTML5
+</video>
 </div>
 <source src="https://www.mediafire.com/file/t72f5c9dbb3rfjd/276282036_1786056087298230.mp4/file" type="video/mp4">
 Tu navegador no soporta video HTML5
