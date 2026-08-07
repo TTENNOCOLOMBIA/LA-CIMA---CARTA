@@ -18,20 +18,21 @@ body{font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,
 @keyframes trailFade{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(0,-20px) scale(0)}}
 @keyframes osoBaila{0%{transform:translateY(0) rotate(-6deg) scale(1)}25%{transform:translateY(-10px) rotate(0deg) scale(1.08)}50%{transform:translateY(0) rotate(6deg) scale(1)}75%{transform:translateY(-6px) rotate(0deg) scale(1.05)}100%{transform:translateY(0) rotate(-6deg) scale(1)}}
 @keyframes osoSalta{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-18px) scale(1.2)}}
-@keyframes logoFlota{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes logoFlota{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes logoGira{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes aroGira{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes aroPulso{0%,100%{opacity:.85;filter:blur(1px)}50%{opacity:1;filter:blur(2px)}}
+@keyframes aroPulso{0%,100%{opacity:.85;filter:blur(1px)}50%{opacity:1;filter:blur(2.5px)}}
 header{position:relative;width:100%;height:480px;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:5px solid var(--primary);box-shadow:0 8px 32px rgba(255,107,53,.3);background:#000}
 .header-video{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;overflow:hidden;pointer-events:none}
 .header-video iframe{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100vw;height:56.25vw;min-height:100%;min-width:177.77vh;border:none;pointer-events:none}
 .header-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.25) 45%,rgba(0,0,0,.55) 100%);z-index:5;pointer-events:none}
-.header-top{position:relative;z-index:10;text-align:center;color:var(--primary);padding:18px 20px}
-.logo-wrap{position:relative;width:170px;height:170px;margin:0 auto;animation:fadeDown .8s ease both}
-.logo-aro{position:absolute;top:50%;left:50%;width:170px;height:170px;border-radius:50%;border:5px solid transparent;border-top-color:#FF6B35;border-right-color:#FFD700;border-bottom-color:#FF4500;border-left-color:#FFA500;animation:aroGira 4s linear infinite,aroPulso 2s ease-in-out infinite;box-shadow:0 0 25px rgba(255,107,53,.7),inset 0 0 20px rgba(255,215,0,.4)}
-.logo-aro2{position:absolute;top:50%;left:50%;width:152px;height:152px;border-radius:50%;border:3px solid transparent;border-top-color:#FFD700;border-bottom-color:#FF6B35;animation:aroGira 3s linear infinite reverse;opacity:.7}
-.logo-img{position:relative;z-index:3;width:128px;height:128px;margin:21px;object-fit:contain;animation:logoFlota 3s ease-in-out infinite;filter:drop-shadow(0 6px 18px rgba(0,0,0,.6)) drop-shadow(0 0 12px rgba(255,215,0,.4))}
-.hero-title{font-size:1.9rem;font-weight:900;color:var(--primary);letter-spacing:3px;margin-top:10px;text-shadow:0 3px 8px rgba(0,0,0,.7);animation:fadeUp .8s ease .2s both}
-.hero-sub{font-size:.95rem;color:#fff;font-style:italic;text-shadow:0 2px 5px rgba(0,0,0,.7);animation:fadeUp .8s ease .35s both}
+.header-top{position:relative;z-index:10;text-align:center;color:var(--primary);padding:14px 20px}
+.logo-wrap{position:relative;width:220px;height:220px;margin:0 auto;animation:fadeDown .8s ease both}
+.logo-aro{position:absolute;top:50%;left:50%;width:220px;height:220px;border-radius:50%;border:6px solid transparent;border-top-color:#FF6B35;border-right-color:#FFD700;border-bottom-color:#FF4500;border-left-color:#FFA500;animation:aroGira 4s linear infinite,aroPulso 2s ease-in-out infinite;box-shadow:0 0 30px rgba(255,107,53,.75),inset 0 0 25px rgba(255,215,0,.45)}
+.logo-aro2{position:absolute;top:50%;left:50%;width:198px;height:198px;border-radius:50%;border:4px solid transparent;border-top-color:#FFD700;border-bottom-color:#FF6B35;animation:aroGira 3s linear infinite reverse;opacity:.75}
+.logo-float{position:relative;z-index:3;width:220px;height:220px;display:flex;align-items:center;justify-content:center;animation:logoFlota 3s ease-in-out infinite}
+.logo-img{width:170px;height:170px;object-fit:contain;animation:logoGira 12s linear infinite;filter:drop-shadow(0 6px 20px rgba(0,0,0,.65)) drop-shadow(0 0 14px rgba(255,215,0,.45))}
+.hero-title{font-size:2rem;font-weight:900;color:var(--primary);letter-spacing:3px;margin-top:8px;text-shadow:0 3px 8px rgba(0,0,0,.7);animation:fadeUp .8s ease .2s both}
 .info-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px;animation:fadeUp .8s ease .5s both}
 .pill{background:var(--primary);color:var(--dark);padding:10px 20px;border-radius:25px;font-weight:bold;font-size:.88rem;box-shadow:0 4px 12px rgba(255,215,0,.3)}
 .pill-air{background:#3DA9E8;color:#fff;box-shadow:0 4px 12px rgba(61,169,232,.3)}
@@ -145,12 +146,13 @@ footer h4{margin-bottom:8px;font-weight:900}
 .top-btn.show{display:flex}
 @media(max-width:768px){
 header{height:auto;min-height:auto;padding:22px 0}
-.hero-title,.hero-sub{display:none}
+.hero-title{display:none}
 .header-top{padding:10px 14px}
-.logo-wrap{width:145px;height:145px;margin-bottom:6px}
-.logo-aro{width:145px;height:145px}
-.logo-aro2{width:130px;height:130px}
-.logo-img{width:108px;height:108px;margin:18px}
+.logo-wrap{width:150px;height:150px;margin-bottom:6px}
+.logo-aro{width:150px;height:150px;border-width:4px}
+.logo-aro2{width:134px;height:134px;border-width:3px}
+.logo-float{width:150px;height:150px}
+.logo-img{width:112px;height:112px}
 .info-row{flex-direction:column;align-items:center;gap:8px;margin-top:10px}
 .pill{font-size:.82rem;padding:9px 16px}
 .pill-wide{font-size:.78rem;padding:8px 14px;margin-top:8px;line-height:1.4}
@@ -182,10 +184,9 @@ header{height:auto;min-height:auto;padding:22px 0}
 <div class="logo-wrap">
 <div class="logo-aro"></div>
 <div class="logo-aro2"></div>
-<img src="https://i.ibb.co/zhQYYN1D/file-00000000648c820e91fc175cc0f7ac22.png" alt="Logo La Cima" class="logo-img">
+<div class="logo-float"><img src="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png" alt="Logo La Cima" class="logo-img"></div>
 </div>
 <div class="hero-title">TODO ES DELICIOSO</div>
-<div class="hero-sub">Disfruta de una experiencia especial llena de luces y sabor</div>
 <div class="info-row">
 <span class="pill">📞 DOMICILIOS Y RESERVAS: 322 736 48 68</span>
 <span class="pill">📍 Cra 7 #27-90, Barrio Puenes, Ipiales</span>
