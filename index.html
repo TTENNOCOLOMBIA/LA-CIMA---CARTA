@@ -82,10 +82,8 @@ button{padding:11px 22px;border:none;border-radius:25px;font-weight:bold;cursor:
 .dish-price{font-size:1.7rem;color:#FF8C42;font-weight:900;margin-bottom:14px;text-shadow:0 2px 4px rgba(0,0,0,.4)}
 .dish-price small{font-size:.9rem;font-weight:600;color:var(--texto)}
 .dish-buttons{display:flex;gap:8px;margin-bottom:12px}
-.btn-cart{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--primary));color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:.88rem;border:none;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 10px rgba(255,107,53,.3)}
+.btn-cart{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--primary));color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:.88rem;border:none;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 10px rgba(255,107,53,.3);width:100%}
 .btn-cart:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(255,107,53,.4)}
-.btn-whatsapp{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--wa);color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:.88rem;border:none;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 10px rgba(37,211,102,.3)}
-.btn-whatsapp:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 6px 14px rgba(37,211,102,.4)}
 .order-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--wa);color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:.95rem;transition:all .2s ease;box-shadow:0 4px 12px rgba(37,211,102,.2);display:none}
 .order-btn:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 6px 16px rgba(37,211,102,.3)}
 .dish-actions{display:flex;gap:10px;margin-top:12px}
@@ -309,8 +307,18 @@ header{height:auto;min-height:auto;padding:22px 0}
 </div>
 
 <div class="form-group">
-<label>Dirección de Entrega *</label>
-<input type="text" id="customerAddress" required placeholder="Ej: Cra 7 #27-90, Apto 301">
+<label>Calle/Carrera y Número *</label>
+<input type="text" id="customerStreet" required placeholder="Ej: Cra 7 #27-90">
+</div>
+
+<div class="form-group">
+<label>Barrio *</label>
+<input type="text" id="customerBarrio" required placeholder="Ej: Barrio Puenes">
+</div>
+
+<div class="form-group">
+<label>Apto/Piso/Casa (Opcional)</label>
+<input type="text" id="customerComplement" placeholder="Ej: Apto 301, Casa 5">
 </div>
 
 <div class="form-group">
@@ -588,32 +596,6 @@ function addToCart(name, price) {
     openCart();
 }
 
-function quickOrder(name, price) {
-    const customerName = prompt('¿Cuál es tu nombre?');
-    if (!customerName) return;
-    const customerPhone = prompt('¿Tu teléfono?');
-    if (!customerPhone) return;
-    const customerAddress = prompt('¿Tu dirección?');
-    if (!customerAddress) return;
-    const notes = prompt('¿Notas especiales? (opcional)');
-    
-    const message = `*PEDIDO RÁPIDO - LA CIMA*
-    
-Producto: ${name}
-Precio: $${price.toLocaleString('es-CO')}
-
-*Cliente:*
-Nombre: ${customerName}
-Teléfono: ${customerPhone}
-Dirección: ${customerAddress}
-${notes ? `Notas: ${notes}` : ''}
-
-📍 Ubicación: https://maps.google.com/?q=${encodeURIComponent(customerAddress)}`;
-    
-    const wa_url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(message)}`;
-    window.open(wa_url, '_blank');
-}
-
 function updateCartUI() {
     const count = cart.reduce((sum, i) => sum + i.qty, 0);
     document.getElementById('cartCount').textContent = count;
@@ -673,13 +655,17 @@ function closeCart() {
 function sendOrder() {
     const name = document.getElementById('customerName').value;
     const phone = document.getElementById('customerPhone').value;
-    const address = document.getElementById('customerAddress').value;
+    const street = document.getElementById('customerStreet').value;
+    const barrio = document.getElementById('customerBarrio').value;
+    const complement = document.getElementById('customerComplement').value;
     const notes = document.getElementById('customerNotes').value;
     
-    if (!name || !phone || !address) {
+    if (!name || !phone || !street || !barrio) {
         alert('Por favor llena todos los datos requeridos');
         return;
     }
+    
+    const fullAddress = street + ', ' + barrio + (complement ? ', ' + complement : '');
     
     const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
     const total = subtotal + DOMICILIO;
@@ -691,7 +677,7 @@ function sendOrder() {
 *CLIENTE:*
 Nombre: ${name}
 Teléfono: ${phone}
-Dirección: ${address}
+Dirección: ${fullAddress}
 ${notes ? `Notas: ${notes}` : ''}
 
 *PRODUCTOS:*
@@ -702,7 +688,7 @@ Subtotal: $${subtotal.toLocaleString('es-CO')}
 Domicilio: $${DOMICILIO.toLocaleString('es-CO')}
 TOTAL: $${total.toLocaleString('es-CO')}
 
-📍 Google Maps: https://maps.google.com/?q=${encodeURIComponent(address)}`;
+📍 Google Maps: https://maps.google.com/?q=${encodeURIComponent(fullAddress + ', Ipiales, Nariño')}`;
     
     const wa_url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(message)}`;
     window.open(wa_url, '_blank');
@@ -713,7 +699,7 @@ TOTAL: $${total.toLocaleString('es-CO')}
     alert('¡Pedido enviado! Revisa tu WhatsApp para confirmar.');
 }
 
-function cardHTML(cat,d,i){const esDestacado=destacados.includes(d.name);const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';const noimgClass=d.img?'':' noimg';const placeholder=d.img?'':'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';const icono=d.img?'':(d.icon||'🍽️');const clickFoto=d.img?'onclick="openImageModal(\''+d.img+'\')"':'';return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image'+noimgClass+'" '+imgStyle+' '+clickFoto+'>'+icono+placeholder+'</div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><div class="dish-buttons"><button class="btn-cart" onclick="addToCart(\''+d.name+'\', '+d.price+')">🛒 Agregar al Carrito</button><button class="btn-whatsapp" onclick="quickOrder(\''+d.name+'\', '+d.price+')">📱 Ordenar Ahora</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>'}
+function cardHTML(cat,d,i){const esDestacado=destacados.includes(d.name);const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';const noimgClass=d.img?'':' noimg';const placeholder=d.img?'':'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';const icono=d.img?'':(d.icon||'🍽️');const clickFoto=d.img?'onclick="openImageModal(\''+d.img+'\')"':'';return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image'+noimgClass+'" '+imgStyle+' '+clickFoto+'>'+icono+placeholder+'</div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><div class="dish-buttons"><button class="btn-cart" onclick="addToCart(\''+d.name+'\', '+d.price+')">🛒 Agregar al Carrito</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>'}
 
 function galleryHTML(cat,d,i){const colorClass=categoryInfo[cat].color;const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';const placeholder=d.img?'':'📷';const clickFoto=d.img?'onclick="openImageModal(\''+d.img+'\')"':'';const videoBtn=d.video?'<a href="'+d.video+'" target="_blank" class="video-btn">▶️ Ver Video</a>':'';const orderBtn=(d.price)?'<a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text=Quiero%20contratar%20'+encodeURIComponent(d.name)+' - $'+d.price.toLocaleString('es-CO')+'" target="_blank">💬 Solicitar</a>':'';return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+' '+clickFoto+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div>'+(d.desc?'<div class="gallery-desc">'+d.desc+'</div>':'')+(d.price?'<div class="gallery-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div>':'')+'<div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div>'+videoBtn+orderBtn+'</div></div>'}
 
