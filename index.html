@@ -81,7 +81,12 @@ button{padding:11px 22px;border:none;border-radius:25px;font-weight:bold;cursor:
 .dish-description{font-size:.88rem;color:var(--texto);margin-bottom:14px;line-height:1.5}
 .dish-price{font-size:1.7rem;color:#FF8C42;font-weight:900;margin-bottom:14px;text-shadow:0 2px 4px rgba(0,0,0,.4)}
 .dish-price small{font-size:.9rem;font-weight:600;color:var(--texto)}
-.order-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--wa);color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:.95rem;transition:all .2s ease;box-shadow:0 4px 12px rgba(37,211,102,.2)}
+.dish-buttons{display:flex;gap:8px;margin-bottom:12px}
+.btn-cart{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,var(--accent),var(--primary));color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:.88rem;border:none;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 10px rgba(255,107,53,.3)}
+.btn-cart:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(255,107,53,.4)}
+.btn-whatsapp{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;background:var(--wa);color:#fff;padding:11px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:.88rem;border:none;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 10px rgba(37,211,102,.3)}
+.btn-whatsapp:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 6px 14px rgba(37,211,102,.4)}
+.order-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--wa);color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:.95rem;transition:all .2s ease;box-shadow:0 4px 12px rgba(37,211,102,.2);display:none}
 .order-btn:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 6px 16px rgba(37,211,102,.3)}
 .dish-actions{display:flex;gap:10px;margin-top:12px}
 .edit-btn,.delete-btn{flex:1;padding:9px;border:none;border-radius:7px;cursor:pointer;font-size:.88rem;font-weight:bold;transition:all .2s ease}
@@ -124,6 +129,46 @@ button{padding:11px 22px;border:none;border-radius:25px;font-weight:bold;cursor:
 .loc-entrada{background:var(--dark);color:var(--primary)}
 .loc-parqueo{background:var(--accent);color:#fff}
 .loc-aero{background:#3DA9E8;color:#fff}
+
+.cart-icon{position:fixed;bottom:28px;right:28px;width:70px;height:70px;background:linear-gradient(135deg,var(--accent),var(--primary));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,53,.5);z-index:90;animation:pulse 2.5s ease-in-out infinite;border:none;transition:all .2s ease}
+.cart-icon:hover{transform:scale(1.1)}
+.cart-icon.active{animation:none}
+.cart-count{position:absolute;top:-8px;right:-8px;background:var(--wa);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:14px;border:2px solid var(--madera)}
+
+.cart-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center}
+.cart-modal.active{display:flex}
+.cart-modal-content{background:var(--madera);padding:30px;border-radius:18px;max-width:550px;width:90%;max-height:85vh;overflow-y:auto;animation:fadeUp .4s ease both;box-shadow:0 10px 40px rgba(0,0,0,.5);border:3px solid var(--accent)}
+.cart-modal-header{font-size:24px;color:var(--primary);font-weight:900;margin-bottom:20px;text-align:center;text-shadow:0 2px 4px rgba(0,0,0,.4)}
+.cart-items-list{max-height:250px;overflow-y:auto;margin-bottom:20px;border:1px solid rgba(255,215,0,.2);border-radius:8px;padding:10px;background:rgba(0,0,0,.2)}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:rgba(255,215,0,.1);border-radius:6px;margin-bottom:8px;color:var(--texto)}
+.cart-item-name{flex:1;font-weight:bold;color:var(--primary)}
+.cart-item-qty{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.3);padding:5px 10px;border-radius:6px}
+.qty-btn{background:var(--accent);color:#fff;border:none;width:25px;height:25px;border-radius:4px;cursor:pointer;font-weight:bold;transition:all .2s}
+.qty-btn:hover{background:#FFD700;color:var(--dark)}
+.cart-item-price{font-weight:bold;color:#FF8C42;min-width:80px;text-align:right}
+.cart-remove{background:#e74c3c;color:#fff;border:none;padding:5px 8px;border-radius:4px;cursor:pointer;font-size:11px;margin-left:8px;transition:all .2s}
+.cart-remove:hover{background:#c0392b}
+.cart-empty{text-align:center;color:var(--texto);padding:30px 20px;font-style:italic}
+
+.cart-totals{background:rgba(255,215,0,.1);padding:15px;border-radius:8px;margin-bottom:20px;border:1px solid rgba(255,215,0,.2)}
+.total-row{display:flex;justify-content:space-between;padding:8px 0;color:var(--texto);font-size:14px}
+.total-row.final{border-top:2px solid var(--accent);padding-top:12px;font-size:18px;font-weight:900;color:var(--primary);text-shadow:0 1px 3px rgba(0,0,0,.3)}
+
+.cart-form{display:none}
+.cart-form.show{display:block}
+.cart-form h4{color:var(--primary);font-size:16px;margin-bottom:12px;margin-top:15px}
+.cart-form .form-group{margin-bottom:12px}
+.cart-form input,.cart-form textarea{width:100%;padding:10px;border:2px solid var(--primary);border-radius:6px;font-size:14px;font-family:inherit;background:#fff;color:#333;margin-top:5px}
+.cart-form input:focus,.cart-form textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 5px rgba(255,107,53,.3)}
+.cart-form textarea{resize:vertical;min-height:60px}
+
+.btn-send-order{width:100%;padding:15px;background:linear-gradient(135deg,var(--wa),#1da851);color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;transition:all .2s ease;box-shadow:0 4px 12px rgba(37,211,102,.4)}
+.btn-send-order:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(37,211,102,.5)}
+.btn-send-order:disabled{background:#ccc;cursor:not-allowed;transform:none}
+
+.btn-close-cart{width:100%;padding:10px;background:rgba(255,107,53,.2);color:var(--texto);border:2px solid var(--accent);border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;transition:all .2s}
+.btn-close-cart:hover{background:rgba(255,107,53,.3)}
+
 footer{background:linear-gradient(135deg,var(--dark),#1a2a3a);color:var(--primary);padding:40px 20px 28px;text-align:center;margin-top:20px;border-top:4px solid var(--accent)}
 footer h4{margin-bottom:8px;font-weight:900}
 .footer-wa{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:12px 28px;border-radius:26px;text-decoration:none;font-weight:bold;margin-top:16px;box-shadow:0 4px 12px rgba(37,211,102,.3)}
@@ -137,7 +182,7 @@ footer h4{margin-bottom:8px;font-weight:900}
 .admin-links{margin-top:32px;padding-top:18px;border-top:1px solid rgba(255,215,0,.25);font-size:.82rem}
 .admin-links a{color:rgba(255,215,0,.7);text-decoration:none;margin:0 12px;cursor:pointer}
 .admin-links a:hover{color:var(--primary);text-decoration:underline}
-.top-btn{position:fixed;bottom:28px;right:28px;width:60px;height:60px;background:var(--accent);color:#fff;border:none;border-radius:50%;font-size:1.6rem;cursor:pointer;box-shadow:0 6px 18px rgba(255,107,53,.4);display:none;align-items:center;justify-content:center;z-index:90;transition:transform .2s ease}
+.top-btn{position:fixed;bottom:110px;right:28px;width:60px;height:60px;background:var(--accent);color:#fff;border:none;border-radius:50%;font-size:1.6rem;cursor:pointer;box-shadow:0 6px 18px rgba(255,107,53,.4);display:none;align-items:center;justify-content:center;z-index:90;transition:transform .2s ease}
 .top-btn:hover{transform:scale(1.15);background:#FF6B35}
 .top-btn.show{display:flex}
 @media(max-width:768px){
@@ -163,6 +208,8 @@ header{height:auto;min-height:auto;padding:22px 0}
 .dish-card:hover{transform:translateY(-12px) rotateX(3deg) rotateY(3deg)}
 .gallery-card:hover{transform:translateY(-12px) rotateX(3deg) rotateY(3deg)}
 .image-modal-close{top:10px;right:10px;width:55px;height:55px;font-size:32px}
+.cart-modal-content{max-width:95%;width:95%}
+.cart-icon{width:60px;height:60px;font-size:28px}
 }
 </style>
 </head>
@@ -221,6 +268,62 @@ header{height:auto;min-height:auto;padding:22px 0}
 
 <button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
+<button class="cart-icon" id="cartIcon" onclick="openCart()">
+🛒
+<span class="cart-count" id="cartCount">0</span>
+</button>
+
+<div class="cart-modal" id="cartModal">
+<div class="cart-modal-content">
+<div class="cart-modal-header">Tu Pedido 🛒</div>
+
+<div class="cart-items-list" id="cartItemsList">
+<div class="cart-empty">El carrito está vacío</div>
+</div>
+
+<div class="cart-totals">
+<div class="total-row">
+<span>Subtotal:</span>
+<span id="subtotalAmount">$0</span>
+</div>
+<div class="total-row">
+<span>Domicilio:</span>
+<span>$7.000</span>
+</div>
+<div class="total-row final">
+<span>TOTAL:</span>
+<span id="totalAmount">$7.000</span>
+</div>
+</div>
+
+<div class="cart-form" id="cartForm">
+<h4>Tus Datos 👤</h4>
+<div class="form-group">
+<label>Nombre Completo *</label>
+<input type="text" id="customerName" required placeholder="Ej: Juan Pérez">
+</div>
+
+<div class="form-group">
+<label>Teléfono *</label>
+<input type="tel" id="customerPhone" required placeholder="Ej: 3001234567">
+</div>
+
+<div class="form-group">
+<label>Dirección de Entrega *</label>
+<input type="text" id="customerAddress" required placeholder="Ej: Cra 7 #27-90, Apto 301">
+</div>
+
+<div class="form-group">
+<label>Notas Especiales (Opcional)</label>
+<textarea id="customerNotes" placeholder="Ej: Sin cebolla, bien cocido, etc."></textarea>
+</div>
+
+<button type="button" class="btn-send-order" onclick="sendOrder()">📱 Enviar Pedido por WhatsApp</button>
+<button type="button" class="btn-close-cart" onclick="closeCart()">Seguir Comprando</button>
+</div>
+</div>
+</div>
+
 <div class="modal" id="editModal">
 <div class="modal-content">
 <h3 id="modalTitle">Editar</h3>
@@ -270,6 +373,7 @@ header{height:auto;min-height:auto;padding:22px 0}
 const ADMIN_PASSWORD="lacima2024";
 const WA_NUMERO="573227364868";
 const OSO_URL="https://i.ibb.co/wZfBFDX9/1000864515-removebg-preview.png";
+const DOMICILIO=7000;
 const destacados=["Bandeja Paisa'na","Fettuccine Mar de Altura","Churrasco Ranchero","Picada Familiar (6 Personas)","Picada (2 Personas)","Ahumada del Galeras + Papas"];
 
 const categoryInfo={
@@ -464,13 +568,160 @@ decoraciones:[
 };
 
 let menu=JSON.parse(localStorage.getItem('lacimaMenuV2'))||JSON.parse(JSON.stringify(defaultMenu));
+let cart=[];
 let editingId=null;
 let isPasswordVerified=false;
 let currentCategory='all';
 
 function osoHTML(){return '<img src="'+OSO_URL+'" alt="Oso La Cima" class="title-oso">'}
 function openImageModal(imgSrc){document.getElementById('imageModalImg').src=imgSrc;document.getElementById('imageModal').classList.add('active')}function closeImageModal(){document.getElementById('imageModal').classList.remove('active')}document.getElementById('imageModal').addEventListener('click',function(e){if(e.target===this)closeImageModal()});
-function buildFilters(){const f=document.getElementById('filters');f.innerHTML='';const keys=Object.keys(categoryInfo);keys.forEach((k,idx)=>{f.innerHTML+='<button class="filter-btn'+(idx===0?' active':'')+'" onclick="filterMenu(\''+k+'\',this)">'+categoryInfo[k].label+'</button>';})}function buildSelect(){const s=document.getElementById('dishCategory');s.innerHTML='';Object.keys(categoryInfo).forEach(k=>{s.innerHTML+='<option value="'+k+'">'+categoryInfo[k].label+'</option>'})}function revealCards(){const cards=document.querySelectorAll('.dish-card:not(.show),.gallery-card:not(.show)');const obs=new IntersectionObserver((entries)=>{entries.forEach((en,idx)=>{if(en.isIntersecting){en.target.style.animationDelay=(idx%6*0.08)+'s';en.target.classList.add('show');obs.unobserve(en.target)}})},{threshold:0.1});cards.forEach(c=>obs.observe(c))}function cardHTML(cat,d,i){const esDestacado=destacados.includes(d.name);const msg=encodeURIComponent("Hola La Cima, quiero pedir: "+d.name+" ($"+d.price.toLocaleString('es-CO')+")");const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';const noimgClass=d.img?'':' noimg';const placeholder=d.img?'':'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';const icono=d.img?'':(d.icon||'🍽️');const clickFoto=d.img?'onclick="openImageModal(\''+d.img+'\')"':'';return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image'+noimgClass+'" '+imgStyle+' '+clickFoto+'>'+icono+placeholder+'</div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text='+msg+'" target="_blank">💬 Pedir por WhatsApp</a><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>'}function galleryHTML(cat,d,i){const colorClass=categoryInfo[cat].color;const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';const placeholder=d.img?'':'📷';const clickFoto=d.img?'onclick="openImageModal(\''+d.img+'\')"':'';const videoBtn=d.video?'<a href="'+d.video+'" target="_blank" class="video-btn">▶️ Ver Video</a>':'';const orderBtn=(d.price)?'<a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text=Quiero%20contratar%20'+encodeURIComponent(d.name)+' - $'+d.price.toLocaleString('es-CO')+'" target="_blank">💬 Solicitar</a>':'';return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+' '+clickFoto+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div>'+(d.desc?'<div class="gallery-desc">'+d.desc+'</div>':'')+(d.price?'<div class="gallery-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div>':'')+'<div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div>'+videoBtn+orderBtn+'</div></div>'}function renderMenu(category){currentCategory=category;document.getElementById('searchBox').value='';const c=document.getElementById('menuContainer');c.innerHTML='';const cats=(category==='all')?Object.keys(categoryInfo):[category];cats.forEach(cat=>{if(!menu[cat]||menu[cat].length===0)return;const info=categoryInfo[cat];const n=menu[cat].length;const isGaleria=info.type==='galeria';const titleClass=isGaleria?(' '+info.color+'-title'):' regular';c.innerHTML+='<h2 class="category-title'+titleClass+'"><span>'+info.title+'</span>'+osoHTML()+'</h2><div class="category-count">'+n+' '+(n===1?'opción':'opciones')+'</div>';if(!isGaleria)c.innerHTML+='<p class="category-description">'+info.desc+'</p>';const grid=document.createElement('div');grid.className=isGaleria?'gallery-grid':'menu-grid';menu[cat].forEach((d,i)=>{grid.innerHTML+=isGaleria?galleryHTML(cat,d,i):cardHTML(cat,d,i)});c.appendChild(grid)});revealCards();if(isPasswordVerified){document.querySelectorAll('.dish-actions, .gallery-actions').forEach(a=>{a.style.display='flex'})}}function searchDishes(term){term=term.trim().toLowerCase();if(term===''){renderMenu(currentCategory);return}const c=document.getElementById('menuContainer');c.innerHTML='';let encontrados=[];Object.keys(menu).forEach(cat=>{if(categoryInfo[cat].type==='galeria')return;menu[cat].forEach((d,i)=>{if(d.name.toLowerCase().includes(term)||d.desc.toLowerCase().includes(term)){encontrados.push({cat:cat,d:d,i:i})}})});if(encontrados.length===0){c.innerHTML='<div class="no-results">😔 No encontramos platos con "'+term+'".<br>Intenta con otra palabra.</div>';return}c.innerHTML='<h2 class="category-title regular"><span>🔍 Resultados</span>'+osoHTML()+'</h2><div class="category-count">'+encontrados.length+' '+(encontrados.length===1?'plato encontrado':'platos encontrados')+'</div>';const grid=document.createElement('div');grid.className='menu-grid';encontrados.forEach(o=>{grid.innerHTML+=cardHTML(o.cat,o.d,o.i)});c.appendChild(grid);revealCards();if(isPasswordVerified){document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='flex'})}}function filterMenu(cat,btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMenu(cat)}function toggleEditMode(){if(isPasswordVerified){isPasswordVerified=false;document.querySelectorAll('.dish-actions, .gallery-actions').forEach(a=>{a.style.display='none'});document.getElementById('editBar').classList.remove('active');document.getElementById('qrSection').classList.remove('active')}else{const p=prompt('Ingresa la contraseña de administrador:');if(p===ADMIN_PASSWORD){isPasswordVerified=true;document.querySelectorAll('.dish-actions, .gallery-actions').forEach(a=>{a.style.display='flex'});document.getElementById('editBar').classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}else if(p!==null){alert('Contraseña incorrecta')}}}function editItem(cat,i){editingId={category:cat,index:i};const d=menu[cat][i];document.getElementById('modalTitle').textContent='Editar: '+d.name;document.getElementById('dishName').value=d.name;document.getElementById('dishDescription').value=d.desc||'';document.getElementById('dishPrice').value=d.price||'';document.getElementById('dishImage').value=d.img||'';document.getElementById('dishVideo').value=d.video||'';document.getElementById('dishCategory').value=cat;document.getElementById('password').value='';document.getElementById('editModal').classList.add('active')}function addDish(){editingId=null;document.getElementById('modalTitle').textContent='Agregar Nuevo Plato';document.getElementById('dishForm').reset();document.getElementById('editModal').classList.add('active')}function deleteItem(cat,i){if(!isPasswordVerified){alert('Activa el Modo Edición primero');return}if(confirm('¿Eliminar este item?')){menu[cat].splice(i,1);saveMenu();renderMenu(currentCategory)}}function closeModal(){document.getElementById('editModal').classList.remove('active')}function saveMenu(){localStorage.setItem('lacimaMenuV2',JSON.stringify(menu))}function resetMenu(){const p=prompt('Ingresa la contraseña para restaurar la carta:');if(p!==ADMIN_PASSWORD){if(p!==null)alert('Contraseña incorrecta');return}if(confirm('¿Restaurar la carta original? Se perderán todos los cambios.')){menu=JSON.parse(JSON.stringify(defaultMenu));localStorage.removeItem('lacimaMenuV2');buildFilters();renderMenu('all');alert('Carta restaurada exitosamente')}}function toggleQR(){document.getElementById('qrSection').classList.toggle('active')}function generateQR(){const q=document.getElementById('qrcode');q.innerHTML='';new QRCode(q,{text:window.location.href,width:280,height:280,colorDark:'#1a3a52',colorLight:'#FFD700'})}function downloadQR(){const cv=document.querySelector('#qrcode canvas');const a=document.createElement('a');a.href=cv.toDataURL();a.download='lacima-qr.png';a.click()}document.getElementById('dishForm').addEventListener('submit',function(e){e.preventDefault();if(document.getElementById('password').value!==ADMIN_PASSWORD){alert('Contraseña incorrecta');return}isPasswordVerified=true;document.getElementById('editBar').classList.add('active');const nd={name:document.getElementById('dishName').value,img:document.getElementById('dishImage').value||'',video:document.getElementById('dishVideo').value||''};const cat=document.getElementById('dishCategory').value;const isGaleria=categoryInfo[cat].type==='galeria';if(!isGaleria){nd.desc=document.getElementById('dishDescription').value||'';nd.price=parseInt(document.getElementById('dishPrice').value)||0;nd.icon='🍽️'}else{nd.desc=document.getElementById('dishDescription').value||'';nd.price=parseInt(document.getElementById('dishPrice').value)||0}if(editingId){const old=menu[editingId.category][editingId.index];if(!isGaleria&&old.icon){nd.icon=old.icon}menu[editingId.category][editingId.index]=nd;editingId=null}else{if(!menu[cat])menu[cat]=[];menu[cat].push(nd)}saveMenu();renderMenu(currentCategory);closeModal()});window.addEventListener('scroll',function(){document.getElementById('topBtn').classList.toggle('show',window.scrollY>400)});
+function buildFilters(){const f=document.getElementById('filters');f.innerHTML='';const keys=Object.keys(categoryInfo);keys.forEach((k,idx)=>{f.innerHTML+='<button class="filter-btn'+(idx===0?' active':'')+'" onclick="filterMenu(\''+k+'\',this)">'+categoryInfo[k].label+'</button>';})}function buildSelect(){const s=document.getElementById('dishCategory');s.innerHTML='';Object.keys(categoryInfo).forEach(k=>{s.innerHTML+='<option value="'+k+'">'+categoryInfo[k].label+'</option>'})}function revealCards(){const cards=document.querySelectorAll('.dish-card:not(.show),.gallery-card:not(.show)');const obs=new IntersectionObserver((entries)=>{entries.forEach((en,idx)=>{if(en.isIntersecting){en.target.style.animationDelay=(idx%6*0.08)+'s';en.target.classList.add('show');obs.unobserve(en.target)}})},{threshold:0.1});cards.forEach(c=>obs.observe(c))}
+
+function addToCart(name, price) {
+    const item = cart.find(i => i.name === name);
+    if (item) {
+        item.qty++;
+    } else {
+        cart.push({ name, price, qty: 1 });
+    }
+    updateCartUI();
+    openCart();
+}
+
+function quickOrder(name, price) {
+    const customerName = prompt('¿Cuál es tu nombre?');
+    if (!customerName) return;
+    const customerPhone = prompt('¿Tu teléfono?');
+    if (!customerPhone) return;
+    const customerAddress = prompt('¿Tu dirección?');
+    if (!customerAddress) return;
+    const notes = prompt('¿Notas especiales? (opcional)');
+    
+    const message = `*PEDIDO RÁPIDO - LA CIMA*
+    
+Producto: ${name}
+Precio: $${price.toLocaleString('es-CO')}
+
+*Cliente:*
+Nombre: ${customerName}
+Teléfono: ${customerPhone}
+Dirección: ${customerAddress}
+${notes ? `Notas: ${notes}` : ''}
+
+📍 Ubicación: https://maps.google.com/?q=${encodeURIComponent(customerAddress)}`;
+    
+    const wa_url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(message)}`;
+    window.open(wa_url, '_blank');
+}
+
+function updateCartUI() {
+    const count = cart.reduce((sum, i) => sum + i.qty, 0);
+    document.getElementById('cartCount').textContent = count;
+    
+    const itemsList = document.getElementById('cartItemsList');
+    
+    if (cart.length === 0) {
+        itemsList.innerHTML = '<div class="cart-empty">El carrito está vacío</div>';
+        document.getElementById('cartForm').classList.remove('show');
+        updateTotals();
+        return;
+    }
+    
+    itemsList.innerHTML = cart.map((item, idx) => `
+        <div class="cart-item">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-qty">
+                <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
+                <span>${item.qty}</span>
+                <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+            </div>
+            <div class="cart-item-price">$${(item.price * item.qty).toLocaleString('es-CO')}</div>
+            <button class="cart-remove" onclick="removeFromCart(${idx})">✕</button>
+        </div>
+    `).join('');
+    
+    document.getElementById('cartForm').classList.add('show');
+    updateTotals();
+}
+
+function changeQty(idx, delta) {
+    cart[idx].qty += delta;
+    if (cart[idx].qty < 1) cart.splice(idx, 1);
+    updateCartUI();
+}
+
+function removeFromCart(idx) {
+    cart.splice(idx, 1);
+    updateCartUI();
+}
+
+function updateTotals() {
+    const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+    const total = subtotal + DOMICILIO;
+    document.getElementById('subtotalAmount').textContent = '$' + subtotal.toLocaleString('es-CO');
+    document.getElementById('totalAmount').textContent = '$' + total.toLocaleString('es-CO');
+}
+
+function openCart() {
+    document.getElementById('cartModal').classList.add('active');
+}
+
+function closeCart() {
+    document.getElementById('cartModal').classList.remove('active');
+}
+
+function sendOrder() {
+    const name = document.getElementById('customerName').value;
+    const phone = document.getElementById('customerPhone').value;
+    const address = document.getElementById('customerAddress').value;
+    const notes = document.getElementById('customerNotes').value;
+    
+    if (!name || !phone || !address) {
+        alert('Por favor llena todos los datos requeridos');
+        return;
+    }
+    
+    const subtotal = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+    const total = subtotal + DOMICILIO;
+    
+    let productsList = cart.map(i => `- ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`).join('\n');
+    
+    const message = `*PEDIDO - LA CIMA RESTAURANTE*
+
+*CLIENTE:*
+Nombre: ${name}
+Teléfono: ${phone}
+Dirección: ${address}
+${notes ? `Notas: ${notes}` : ''}
+
+*PRODUCTOS:*
+${productsList}
+
+*TOTALES:*
+Subtotal: $${subtotal.toLocaleString('es-CO')}
+Domicilio: $${DOMICILIO.toLocaleString('es-CO')}
+TOTAL: $${total.toLocaleString('es-CO')}
+
+📍 Google Maps: https://maps.google.com/?q=${encodeURIComponent(address)}`;
+    
+    const wa_url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(message)}`;
+    window.open(wa_url, '_blank');
+    
+    cart = [];
+    updateCartUI();
+    closeCart();
+    alert('¡Pedido enviado! Revisa tu WhatsApp para confirmar.');
+}
+
+function cardHTML(cat,d,i){const esDestacado=destacados.includes(d.name);const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';const noimgClass=d.img?'':' noimg';const placeholder=d.img?'':'<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';const icono=d.img?'':(d.icon||'🍽️');const clickFoto=d.img?'onclick="openImageModal(\''+d.img+'\')"':'';return '<div class="dish-card'+(esDestacado?' destacado':'')+'">'+(esDestacado?'<div class="badge-star">⭐ El más pedido</div>':'')+'<div class="dish-image'+noimgClass+'" '+imgStyle+' '+clickFoto+'>'+icono+placeholder+'</div><div class="dish-content"><div class="dish-name">'+d.name+'</div><div class="dish-description">'+d.desc+'</div><div class="dish-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div><div class="dish-buttons"><button class="btn-cart" onclick="addToCart(\''+d.name+'\', '+d.price+')">🛒 Agregar al Carrito</button><button class="btn-whatsapp" onclick="quickOrder(\''+d.name+'\', '+d.price+')">📱 Ordenar Ahora</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div></div></div>'}
+
+function galleryHTML(cat,d,i){const colorClass=categoryInfo[cat].color;const imgStyle=d.img?'style="background-image:url(\''+d.img+'\')"':'';const placeholder=d.img?'':'📷';const clickFoto=d.img?'onclick="openImageModal(\''+d.img+'\')"':'';const videoBtn=d.video?'<a href="'+d.video+'" target="_blank" class="video-btn">▶️ Ver Video</a>':'';const orderBtn=(d.price)?'<a class="order-btn" href="https://wa.me/'+WA_NUMERO+'?text=Quiero%20contratar%20'+encodeURIComponent(d.name)+' - $'+d.price.toLocaleString('es-CO')+'" target="_blank">💬 Solicitar</a>':'';return '<div class="gallery-card '+colorClass+'" style="opacity:0"><div class="gallery-image" '+imgStyle+' '+clickFoto+'>'+placeholder+'</div><div class="gallery-content"><div class="gallery-name">'+d.name+'</div>'+(d.desc?'<div class="gallery-desc">'+d.desc+'</div>':'')+(d.price?'<div class="gallery-price">$'+d.price.toLocaleString('es-CO')+' <small>COP</small></div>':'')+'<div class="gallery-actions" style="display:none"><button class="edit-btn" onclick="editItem(\''+cat+'\','+i+')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\''+cat+'\','+i+')">🗑️ Borrar</button></div>'+videoBtn+orderBtn+'</div></div>'}
+
+function renderMenu(category){currentCategory=category;document.getElementById('searchBox').value='';const c=document.getElementById('menuContainer');c.innerHTML='';const cats=(category==='all')?Object.keys(categoryInfo):[category];cats.forEach(cat=>{if(!menu[cat]||menu[cat].length===0)return;const info=categoryInfo[cat];const n=menu[cat].length;const isGaleria=info.type==='galeria';const titleClass=isGaleria?(' '+info.color+'-title'):' regular';c.innerHTML+='<h2 class="category-title'+titleClass+'"><span>'+info.title+'</span>'+osoHTML()+'</h2><div class="category-count">'+n+' '+(n===1?'opción':'opciones')+'</div>';if(!isGaleria)c.innerHTML+='<p class="category-description">'+info.desc+'</p>';const grid=document.createElement('div');grid.className=isGaleria?'gallery-grid':'menu-grid';menu[cat].forEach((d,i)=>{grid.innerHTML+=isGaleria?galleryHTML(cat,d,i):cardHTML(cat,d,i)});c.appendChild(grid)});revealCards();if(isPasswordVerified){document.querySelectorAll('.dish-actions, .gallery-actions').forEach(a=>{a.style.display='flex'})}}
+
+function searchDishes(term){term=term.trim().toLowerCase();if(term===''){renderMenu(currentCategory);return}const c=document.getElementById('menuContainer');c.innerHTML='';let encontrados=[];Object.keys(menu).forEach(cat=>{if(categoryInfo[cat].type==='galeria')return;menu[cat].forEach((d,i)=>{if(d.name.toLowerCase().includes(term)||d.desc.toLowerCase().includes(term)){encontrados.push({cat:cat,d:d,i:i})}})});if(encontrados.length===0){c.innerHTML='<div class="no-results">😔 No encontramos platos con "'+term+'".<br>Intenta con otra palabra.</div>';return}c.innerHTML='<h2 class="category-title regular"><span>🔍 Resultados</span>'+osoHTML()+'</h2><div class="category-count">'+encontrados.length+' '+(encontrados.length===1?'plato encontrado':'platos encontrados')+'</div>';const grid=document.createElement('div');grid.className='menu-grid';encontrados.forEach(o=>{grid.innerHTML+=cardHTML(o.cat,o.d,o.i)});c.appendChild(grid);revealCards();if(isPasswordVerified){document.querySelectorAll('.dish-actions').forEach(a=>{a.style.display='flex'})}}
+
+function filterMenu(cat,btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMenu(cat)}function toggleEditMode(){if(isPasswordVerified){isPasswordVerified=false;document.querySelectorAll('.dish-actions, .gallery-actions').forEach(a=>{a.style.display='none'});document.getElementById('editBar').classList.remove('active');document.getElementById('qrSection').classList.remove('active')}else{const p=prompt('Ingresa la contraseña de administrador:');if(p===ADMIN_PASSWORD){isPasswordVerified=true;document.querySelectorAll('.dish-actions, .gallery-actions').forEach(a=>{a.style.display='flex'});document.getElementById('editBar').classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}else if(p!==null){alert('Contraseña incorrecta')}}}function editItem(cat,i){editingId={category:cat,index:i};const d=menu[cat][i];document.getElementById('modalTitle').textContent='Editar: '+d.name;document.getElementById('dishName').value=d.name;document.getElementById('dishDescription').value=d.desc||'';document.getElementById('dishPrice').value=d.price||'';document.getElementById('dishImage').value=d.img||'';document.getElementById('dishVideo').value=d.video||'';document.getElementById('dishCategory').value=cat;document.getElementById('password').value='';document.getElementById('editModal').classList.add('active')}function addDish(){editingId=null;document.getElementById('modalTitle').textContent='Agregar Nuevo Plato';document.getElementById('dishForm').reset();document.getElementById('editModal').classList.add('active')}function deleteItem(cat,i){if(!isPasswordVerified){alert('Activa el Modo Edición primero');return}if(confirm('¿Eliminar este item?')){menu[cat].splice(i,1);saveMenu();renderMenu(currentCategory)}}function closeModal(){document.getElementById('editModal').classList.remove('active')}function saveMenu(){localStorage.setItem('lacimaMenuV2',JSON.stringify(menu))}function resetMenu(){const p=prompt('Ingresa la contraseña para restaurar la carta:');if(p!==ADMIN_PASSWORD){if(p!==null)alert('Contraseña incorrecta');return}if(confirm('¿Restaurar la carta original? Se perderán todos los cambios.')){menu=JSON.parse(JSON.stringify(defaultMenu));localStorage.removeItem('lacimaMenuV2');buildFilters();renderMenu('all');alert('Carta restaurada exitosamente')}}function toggleQR(){document.getElementById('qrSection').classList.toggle('active')}function generateQR(){const q=document.getElementById('qrcode');q.innerHTML='';new QRCode(q,{text:window.location.href,width:280,height:280,colorDark:'#1a3a52',colorLight:'#FFD700'})}function downloadQR(){const cv=document.querySelector('#qrcode canvas');const a=document.createElement('a');a.href=cv.toDataURL();a.download='lacima-qr.png';a.click()}document.getElementById('dishForm').addEventListener('submit',function(e){e.preventDefault();if(document.getElementById('password').value!==ADMIN_PASSWORD){alert('Contraseña incorrecta');return}isPasswordVerified=true;document.getElementById('editBar').classList.add('active');const nd={name:document.getElementById('dishName').value,img:document.getElementById('dishImage').value||'',video:document.getElementById('dishVideo').value||''};const cat=document.getElementById('dishCategory').value;const isGaleria=categoryInfo[cat].type==='galeria';if(!isGaleria){nd.desc=document.getElementById('dishDescription').value||'';nd.price=parseInt(document.getElementById('dishPrice').value)||0;nd.icon='🍽️'}else{nd.desc=document.getElementById('dishDescription').value||'';nd.price=parseInt(document.getElementById('dishPrice').value)||0}if(editingId){const old=menu[editingId.category][editingId.index];if(!isGaleria&&old.icon){nd.icon=old.icon}menu[editingId.category][editingId.index]=nd;editingId=null}else{if(!menu[cat])menu[cat]=[];menu[cat].push(nd)}saveMenu();renderMenu(currentCategory);closeModal()});window.addEventListener('scroll',function(){document.getElementById('topBtn').classList.toggle('show',window.scrollY>400)});
 let lastTrail=0;document.addEventListener('mousemove',function(e){const now=Date.now();if(now-lastTrail<40)return;lastTrail=now;const fire=document.createElement('div');fire.style.position='fixed';fire.style.left=(e.clientX-6)+'px';fire.style.top=(e.clientY-6)+'px';fire.style.width='12px';fire.style.height='12px';fire.style.background='radial-gradient(circle,#FFD700,#FF6B35)';fire.style.borderRadius='50%';fire.style.pointerEvents='none';fire.style.zIndex='89';fire.style.boxShadow='0 0 10px #FF6B35';fire.style.animation='trailFade 0.6s ease-out forwards';document.body.appendChild(fire);setTimeout(function(){fire.remove()},600)});
 buildFilters();buildSelect();renderMenu('all');generateQR();
 </script>
