@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Cima Restaurante - Carta Digital</title>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="La Cima Restaurante - Carta Digital 🍽️">
+  <meta property="og:description" content="ESTO ES COLOMBIA 🇨🇴">
+  <meta property="og:image" content="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png">
+  <meta property="og:url" content="https://cimarestaurante.netlify.app">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="description" content="Carta digital La Cima Restaurante - Esto es Colombia">
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png">
+
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- QRCode Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       HEADER
+       ======================================== -->
+  <header>
+    <div class="header-video">
+      <iframe src="https://player.vimeo.com/video/1216505794?background=1&autoplay=1&loop=1&muted=1&autopause=0&title=0&byline=0&portrait=0&controls=0&badge=0&dnt=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <div class="header-overlay"></div>
+
+    <div class="header-top">
+      <div class="logo-wrap">
+        <div class="logo-float">
+          <img src="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png" alt="Logo La Cima" class="logo-img">
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="pill">📞 DOMICILIOS Y RESERVAS: 322 736 48 68</span>
+        <span class="pill">📍 Cra 7 #27-90, Barrio Puenes, Ipiales, Nariño, Colombia</span>
+      </div>
+      <div><span class="pill-wide">🕐 Lun a Vie: 12 AM - 9 PM &nbsp;|&nbsp; Sáb: 12 AM - 10 PM &nbsp;|&nbsp; Dom y festivos: 11 AM - 5 PM</span></div>
+      <a class="wa-btn" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">💬 RESERVA AHORA</a>
+      <p class="header-note">Horarios flexibles para reservaciones y eventos</p>
+    </div>
+  </header>
+
+  <!-- ========================================
+       EDIT BAR (Admin)
+       ======================================== -->
+  <div class="edit-bar" id="editBar">
+    <button class="btn-secondary" onclick="addDish()">➕ Nuevo Plato</button>
+    <button class="btn-secondary" onclick="toggleQR()">📱 Ver QR</button>
+    <button class="btn-primary" onclick="toggleEditMode()">✅ Salir de Edición</button>
+  </div>
+
+  <!-- ========================================
+       QR SECTION
+       ======================================== -->
+  <div class="qr-section" id="qrSection">
+    <h3>Comparte este QR con tus clientes</h3>
+    <div id="qrcode"></div>
+    <button class="btn-secondary" style="margin-top:15px" onclick="downloadQR()">⬇️ Descargar QR</button>
+  </div>
+
+  <!-- ========================================
+       SEARCH BAR
+       ======================================== -->
+  <div class="search-wrap">
+    <input type="text" class="search-box" id="searchBox" placeholder="🔍 Busca tu plato favorito..." oninput="searchDishes(this.value)">
+  </div>
+
+  <!-- ========================================
+       FILTERS
+       ======================================== -->
+  <div class="filters" id="filters"></div>
+
+  <!-- ========================================
+       MENU CONTAINER
+       ======================================== -->
+  <div class="menu-container" id="menuContainer"></div>
+
+  <!-- ========================================
+       LOCATION SECTION
+       ======================================== -->
+  <div class="location-section">
+    <h2>📍 ¿Cómo llegar?</h2>
+    <p>Fácil acceso · A solo 10 minutos del Aeropuerto San Luis de Ipiales</p>
+    <div class="location-btns">
+      <a class="loc-btn loc-entrada" href="https://maps.app.goo.gl/ftArrLoVaofjCtWn9" target="_blank">🚪 Entrada Principal</a>
+      <a class="loc-btn loc-parqueo" href="https://maps.app.goo.gl/mtP7KVerWoK8xsjc8" target="_blank">🅿️ Parqueadero</a>
+      <a class="loc-btn loc-aero" href="https://www.google.com/maps/dir/Aeropuerto+San+Luis+Ipiales/La+Cima+Restaurante,+Cra+7+%2327-90,+Ipiales" target="_blank">✈️ Desde el Aeropuerto</a>
+    </div>
+  </div>
+
+  <!-- ========================================
+       FLOATING BUTTONS
+       ======================================== -->
+  <button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <button class="cart-icon" id="cartIcon" onclick="openCart()">
+    🛒
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+
+  <!-- ========================================
+       CART MODAL
+       ======================================== -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-modal-content">
+      <div class="cart-modal-header">Tu Pedido 🛒</div>
+
+      <div class="cart-items-list" id="cartItemsList">
+        <div class="cart-empty">El carrito está vacío</div>
+      </div>
+
+      <div class="cart-coupons">
+        <button type="button" class="btn-coupon" onclick="showCouponInput()">🎟️ Tengo un cupón</button>
+        <div id="couponContainer" style="display:none;margin-top:12px;padding:12px;background:rgba(255,255,255,.1);border-radius:8px;">
+          <input type="text" id="couponInput" placeholder="Ingresa tu código de cupón" style="width:100%;padding:10px;border:2px solid #FFD700;border-radius:6px;margin-bottom:8px;">
+          <button type="button" class="btn-apply-coupon" onclick="applyCoupon(document.getElementById('couponInput').value)">✓ Aplicar Cupón</button>
+        </div>
+        <div id="appliedCouponInfo" style="display:none;margin-top:10px;padding:10px;background:rgba(39,174,96,.2);border-radius:6px;border-left:4px solid #27ae60;color:#fff;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span id="appliedCouponText">Cupón aplicado</span>
+            <button type="button" style="background:#e74c3c;color:#fff;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:12px;" onclick="removeCoupon()">Remover</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-totals">
+        <div class="total-row">
+          <span>Subtotal:</span>
+          <span id="subtotalAmount">$0</span>
+        </div>
+        <div class="total-row" id="discountRow" style="display:none;color:#27ae60;">
+          <span>Descuento:</span>
+          <span id="discountAmount">-$0</span>
+        </div>
+        <div class="total-row">
+          <span>Domicilio:</span>
+          <span>$7.000</span>
+        </div>
+        <div class="total-row final">
+          <span>TOTAL:</span>
+          <span id="totalAmount">$7.000</span>
+        </div>
+      </div>
+
+      <div class="cart-form" id="cartForm">
+        <h4>Tus Datos 👤</h4>
+        <div class="form-group">
+          <label>Nombre Completo *</label>
+          <input type="text" id="customerName" required placeholder="Ej: Juan Pérez">
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono *</label>
+          <input type="tel" id="customerPhone" required placeholder="Ej: 3001234567">
+        </div>
+
+        <div class="form-group">
+          <label>Calle/Carrera y Número *</label>
+          <input type="text" id="customerStreet" required placeholder="Ej: Cra 7 #27-90">
+        </div>
+
+        <div class="form-group">
+          <label>Barrio *</label>
+          <input type="text" id="customerBarrio" required placeholder="Ej: Barrio Puenes">
+        </div>
+
+        <div class="form-group">
+          <label>Apto/Piso/Casa (Opcional)</label>
+          <input type="text" id="customerComplement" placeholder="Ej: Apto 301, Casa 5">
+        </div>
+
+        <div class="form-group">
+          <label>Notas Especiales (Opcional)</label>
+          <textarea id="customerNotes" placeholder="Ej: Sin cebolla, bien cocido, etc."></textarea>
+        </div>
+
+        <button type="button" class="btn-confirm-map" onclick="confirmAddressOnMap()">📍 Confirmar Dirección en Google Maps</button>
+
+        <div id="mapConfirmation" style="display:none;background:rgba(255,255,255,.1);padding:12px;border-radius:8px;margin-top:10px;border:2px solid #FFD700;text-align:center;">
+          <p style="color:#fff;font-size:14px;margin-bottom:10px;">✅ Dirección confirmada en Maps</p>
+          <button type="button" class="btn-send-order" onclick="sendOrder()">📱 Enviar Pedido por WhatsApp</button>
+        </div>
+
+        <button type="button" class="btn-close-cart" onclick="closeCart()">Seguir Comprando</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       EDIT MODAL
+       ======================================== -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Editar</h3>
+      <form id="dishForm">
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="password" required>
+        </div>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="dishName" required>
+        </div>
+        <div class="form-group">
+          <label>Descripción (opcional)</label>
+          <textarea id="dishDescription"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Precio (COP, opcional)</label>
+          <input type="number" id="dishPrice">
+        </div>
+        <div class="form-group">
+          <label>URL Imagen (ibb.co)</label>
+          <input type="text" id="dishImage" placeholder="https://i.ibb.co/...">
+        </div>
+        <div class="form-group">
+          <label>URL Video (opcional)</label>
+          <input type="text" id="dishVideo" placeholder="https://facebook.com/...">
+        </div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <select id="dishCategory" required></select>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn-success">💾 Guardar</button>
+          <button type="button" class="btn-primary" onclick="closeModal()">❌ Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================
+       IMAGE MODAL
+       ======================================== -->
+  <div class="image-modal" id="imageModal">
+    <div class="image-modal-content">
+      <button class="image-modal-close" onclick="closeImageModal()">✕</button>
+      <img id="imageModalImg" src="" alt="Imagen" class="image-modal-img">
+    </div>
+  </div>
+
+  <!-- ========================================
+       FOOTER
+       ======================================== -->
+  <footer>
+    <h4>📍 Ubícanos</h4>
+    <p>Cra 7 #27-90, Barrio Puenes, Ipiales, Nariño, Colombia</p>
+    <p style="font-size:.9rem;color:#d8c9a8">✈️ A 10 minutos del Aeropuerto San Luis de Ipiales</p>
+    <h4 style="margin-top:20px">📞 Domicilios y Reservas</h4>
+    <p>322 736 48 68</p>
+    <a class="footer-wa" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">💬 Escríbenos por WhatsApp</a>
+    <div class="social-title">🌐 Síguenos en redes</div>
+    <div class="social-row">
+      <a class="social-btn sc-fb" href="https://www.facebook.com/share/1BTeGdTEMk/" target="_blank">📘 Facebook</a>
+      <a class="social-btn sc-ig" href="https://www.instagram.com/lacimarestauranteipiales" target="_blank">📷 Instagram</a>
+      <a class="social-btn sc-tt" href="https://www.tiktok.com/@lacimarestauranteipiales" target="_blank">🎵 TikTok</a>
+    </div>
+    <p style="margin-top:24px;font-size:.88rem">© 2026 La Cima Restaurante · Esto es Colombia</p>
+    <div class="admin-links">
+      <a onclick="toggleEditMode()">Modo Edición</a>·<a onclick="resetMenu()">Restaurar Menú</a>
+    </div>
+  </footer>
+
+  <!-- ========================================
+       SCRIPTS - ORDEN IMPORTANTE
+       ======================================== -->
+  <!-- 1. Configuración y datos -->
+  <script src="js/config.js"></script>
+
+  <!-- 2. Almacenamiento y funcionalidades -->
+  <script src="js/storage.js"></script>
+  <script src="js/promotions.js"></script>
+  <script src="js/favorites.js"></script>
+
+  <!-- 3. Lógica modular principal -->
+  <script src="js/menu.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/admin.js"></script>
+
+  <!-- 4. Inicialización (debe ir al final) -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>

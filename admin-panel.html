@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Cima - Admin Panel</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #FFD700;
+      --dark: #3d5a47;
+      --black: #0f1419;
+      --accent: #FF6B35;
+      --madera: #3E2A1C;
+      --madera2: #2A1C12;
+      --texto: #F0E0C8;
+      --success: #27ae60;
+      --error: #e74c3c;
+      --warning: #f39c12;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--madera) 100%);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    .admin-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ============ SIDEBAR ============ */
+    .sidebar {
+      background: linear-gradient(180deg, var(--madera) 0%, var(--madera2) 100%);
+      border-right: 3px solid var(--accent);
+      padding: 30px 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      overflow-y: auto;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .sidebar-header {
+      padding: 0 20px 30px;
+      border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+      text-align: center;
+    }
+
+    .sidebar-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .sidebar-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sidebar-title {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .sidebar-nav {
+      margin-top: 30px;
+    }
+
+    .nav-item {
+      padding: 15px 20px;
+      color: var(--texto);
+      cursor: pointer;
+      border-left: 4px solid transparent;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-item:hover {
+      background: rgba(255, 215, 0, 0.1);
+      border-left-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
+      border-left-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .nav-icon {
+      font-size: 18px;
+      min-width: 24px;
+    }
+
+    .sidebar-footer {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      border-top: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 10px;
+      background: linear-gradient(135deg, var(--error), #c0392b);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-logout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+    }
+
+    /* ============ MAIN CONTENT ============ */
+    .main-content {
+      margin-left: 250px;
+      padding: 30px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .header h1 {
+      color: var(--primary);
+      font-size: 32px;
+      font-weight: 900;
+    }
+
+    .user-info {
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .user-info p {
+      color: var(--texto);
+    }
+
+    /* ============ CONTENT SECTIONS ============ */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* ============ DASHBOARD ============ */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(255, 107, 53, 0.3);
+    }
+
+    .stat-number {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: var(--texto);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ============ BUTTONS ============ */
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-success,
+    .btn-danger {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: var(--dark);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 215, 0, 0.2);
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: var(--error);
+      color: #fff;
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-success:hover,
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ============ TABLES ============ */
+    .table-container {
+      background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: rgba(255, 215, 0, 0.15);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    th {
+      padding: 15px;
+      color: var(--primary);
+      font-weight: bold;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+      color: var(--texto);
+      font-size: 14px;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 215, 0, 0.05);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-edit {
+      background: var(--primary);
+      color: var(--dark);
+    }
+
+    .btn-delete {
+      background: var(--error);
+      color: #fff;
+    }
+
+    .btn-small:hover {
+      transform: scale(1.05);
+    }
+
+    /* ============ MODALS ============ */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      color: var(--primary);
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      color: var(--primary);
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid var(--primary);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--texto);
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+    }
+
+    /* ============ NOTIFICATIONS ============ */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      animation: slideIn 0.3s ease;
+      z-index: 2000;
+      max-width: 300px;
+    }
+
+    .notification.success {
+      background: var(--success);
+    }
+
+    .notification.error {
+      background: var(--error);
+    }
+
+    .notification.warning {
+      background: var(--warning);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* ============ EMPTY STATE ============ */
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: rgba(240, 224, 200, 0.6);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width: 768px) {
+      .admin-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 3px solid var(--accent);
+        padding: 20px 0;
+      }
+
+      .sidebar-nav {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        margin-top: 0;
+      }
+
+      .nav-item {
+        padding: 10px;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .sidebar-footer {
+        position: static;
+        padding: 20px;
+        border-top: 1px solid rgba(255, 215, 0, 0.2);
+        margin-top: 20px;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-container">
+    <!-- ============ SIDEBAR ============ -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <img src="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png" alt="Logo">
+        </div>
+        <p class="sidebar-title">Admin Panel</p>
+      </div>
+
+      <div class="sidebar-nav">
+        <div class="nav-item active" onclick="showSection('dashboard')">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="showSection('categorias')">
+          <span class="nav-icon">🏷️</span>
+          <span>Categorías</span>
+        </div>
+        <div class="nav-item" onclick="showSection('productos')">
+          <span class="nav-icon">🍽️</span>
+          <span>Productos</span>
+        </div>
+        <div class="nav-item" onclick="showSection('precios')">
+          <span class="nav-icon">💰</span>
+          <span>Editar Precios</span>
+        </div>
+        <div class="nav-item" onclick="showSection('imagenes')">
+          <span class="nav-icon">🖼️</span>
+          <span>Editar Imágenes</span>
+        </div>
+        <div class="nav-item" onclick="showSection('descripciones')">
+          <span class="nav-icon">📝</span>
+          <span>Editar Descripciones</span>
+        </div>
+        <div class="nav-item" onclick="showSection('backups')">
+          <span class="nav-icon">💾</span>
+          <span>Backups</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="logout()">🚪 Cerrar Sesión</button>
+      </div>
+    </div>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="main-content">
+      <div class="header">
+        <h1>🎛️ Panel Administrativo</h1>
+        <div class="user-info">
+          <p>Bienvenido, <strong>Admin</strong></p>
+          <p id="currentTime"></p>
+        </div>
+      </div>
+
+      <!-- ========== DASHBOARD ========== -->
+      <div id="dashboard" class="section active">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">📈 Dashboard</h2>
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="totalProductos">0</div>
+            <div class="stat-label">Total de Productos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="totalCategorias">0</div>
+            <div class="stat-label">Total de Categorías</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="sinPrecio">0</div>
+            <div class="stat-label">Productos sin Precio</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="ultimaModificacion">-</div>
+            <div class="stat-label">Última Modificación</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== CATEGORÍAS ========== -->
+      <div id="categorias" class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2 style="color: var(--primary);">🏷️ Gestión de Categorías</h2>
+          <button class="btn-primary" onclick="openModalNuevaCategoria()">➕ Nueva Categoría</button>
+        </div>
+
+        <div id="categoriasTable" class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Productos</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="categoriasBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ========== PRODUCTOS ========== -->
+      <div id="productos" class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <h2 style="color: var(--primary);">🍽️ Gestión de Productos</h2>
+          <button class="btn-primary" onclick="openModalNuevoProducto()">➕ Nuevo Producto</button>
+        </div>
+
+        <div id="productosTable" class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="productosBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ========== EDITAR PRECIOS ========== -->
+      <div id="precios" class="section">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">💰 Edición Rápida de Precios</h2>
+
+        <div style="margin-bottom: 20px;">
+          <input type="text" id="searchProductos" placeholder="🔍 Buscar producto..." style="padding: 10px; border: 2px solid var(--primary); border-radius: 6px; width: 100%; max-width: 300px; background: rgba(255,255,255,0.05); color: var(--texto);">
+        </div>
+
+        <div id="preciosTable" class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Precio Actual</th>
+                <th>Nuevo Precio</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="preciosBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ========== EDITAR IMÁGENES ========== -->
+      <div id="imagenes" class="section">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">🖼️ Edición Rápida de Imágenes</h2>
+
+        <div style="margin-bottom: 20px;">
+          <input type="text" id="searchImagenes" placeholder="🔍 Buscar producto..." style="padding: 10px; border: 2px solid var(--primary); border-radius: 6px; width: 100%; max-width: 300px; background: rgba(255,255,255,0.05); color: var(--texto);">
+        </div>
+
+        <div id="imagenesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        </div>
+      </div>
+
+      <!-- ========== EDITAR DESCRIPCIONES ========== -->
+      <div id="descripciones" class="section">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">📝 Edición de Descripciones</h2>
+
+        <div style="margin-bottom: 20px;">
+          <input type="text" id="searchDesc" placeholder="🔍 Buscar producto..." style="padding: 10px; border: 2px solid var(--primary); border-radius: 6px; width: 100%; max-width: 300px; background: rgba(255,255,255,0.05); color: var(--texto);">
+        </div>
+
+        <div id="descripcionesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px;">
+        </div>
+      </div>
+
+      <!-- ========== BACKUPS ========== -->
+      <div id="backups" class="section">
+        <h2 style="color: var(--primary); margin-bottom: 20px;">💾 Backups y Exportación</h2>
+
+        <div class="btn-group">
+          <button class="btn-success" onclick="descargarBackup()">⬇️ Descargar Backup</button>
+          <button class="btn-secondary" onclick="restaurarBackup()">⬆️ Restaurar desde Backup</button>
+          <button class="btn-danger" onclick="resetearDatos()">🔄 Resetear a Original</button>
+        </div>
+
+        <div style="background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%); border: 2px solid var(--accent); border-radius: 12px; padding: 20px; margin-top: 30px;">
+          <h3 style="color: var(--primary); margin-bottom: 10px;">ℹ️ Información de Backups</h3>
+          <p style="color: var(--texto); margin-bottom: 10px;">• Los backups contienen toda la información del menú (categorías y productos)</p>
+          <p style="color: var(--texto); margin-bottom: 10px;">• Puedes descargar un backup en cualquier momento como respaldo</p>
+          <p style="color: var(--texto);">• Para restaurar, selecciona un archivo JSON previamente guardado</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MODALS ============ -->
+
+  <!-- Modal Nueva Categoría -->
+  <div id="modalCategoria" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="modalTitleCategoria">Nueva Categoría</span>
+        <button class="modal-close" onclick="closeModal('modalCategoria')">✕</button>
+      </div>
+      <form onsubmit="guardarCategoria(event)">
+        <div class="form-group">
+          <label>Nombre de la Categoría *</label>
+          <input type="text" id="categoriaNombre" required>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="categoriaDesc"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="categoriaTipo">
+            <option value="plato">Plato</option>
+            <option value="galeria">Galería</option>
+          </select>
+        </div>
+        <div class="btn-group">
+          <button type="submit" class="btn-success">💾 Guardar</button>
+          <button type="button" class="btn-secondary" onclick="closeModal('modalCategoria')">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script>
+    // Verificar sesión
+    function checkSession() {
+      const session = localStorage.getItem("lacimaAdminSession");
+      if (session !== "true") {
+        window.location.href = "admin-login.html";
+      }
+    }
+
+    function logout() {
+      if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
+        localStorage.removeItem("lacimaAdminSession");
+        localStorage.removeItem("lacimaAdminLoginTime");
+        window.location.href = "admin-login.html";
+      }
+    }
+
+    // Mostrar secciones
+    function showSection(sectionName) {
+      // Ocultar todas las secciones
+      document.querySelectorAll(".section").forEach(section => {
+        section.classList.remove("active");
+      });
+
+      // Mostrar la sección seleccionada
+      document.getElementById(sectionName).classList.add("active");
+
+      // Actualizar nav activo
+      document.querySelectorAll(".nav-item").forEach(item => {
+        item.classList.remove("active");
+      });
+      event.target.closest(".nav-item").classList.add("active");
+
+      // Cargar datos si es necesario
+      if (sectionName === "dashboard") {
+        actualizarDashboard();
+      } else if (sectionName === "categorias") {
+        cargarCategorias();
+      } else if (sectionName === "productos") {
+        cargarProductos();
+      } else if (sectionName === "precios") {
+        cargarPrecios();
+      } else if (sectionName === "imagenes") {
+        cargarImagenes();
+      } else if (sectionName === "descripciones") {
+        cargarDescripciones();
+      }
+    }
+
+    // Dashboard
+    function actualizarDashboard() {
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+
+      let totalProds = 0;
+      let sinPrecio = 0;
+
+      Object.keys(menu).forEach(cat => {
+        if (Array.isArray(menu[cat])) {
+          totalProds += menu[cat].length;
+          menu[cat].forEach(prod => {
+            if (prod.price === 0 || !prod.price) {
+              sinPrecio++;
+            }
+          });
+        }
+      });
+
+      document.getElementById("totalProductos").textContent = totalProds;
+      document.getElementById("totalCategorias").textContent = Object.keys(menu).length;
+      document.getElementById("sinPrecio").textContent = sinPrecio;
+      document.getElementById("ultimaModificacion").textContent = "Ahora";
+    }
+
+    // Cargar categorías
+    function cargarCategorias() {
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+      const tbody = document.getElementById("categoriasBody");
+      tbody.innerHTML = "";
+
+      Object.keys(categoryInfo).forEach(catKey => {
+        const catInfo = categoryInfo[catKey];
+        const productos = menu[catKey] ? menu[catKey].length : 0;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><strong>${catInfo.label}</strong></td>
+          <td>${productos}</td>
+          <td>${catInfo.type === "plato" ? "🍽️ Plato" : "🖼️ Galería"}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-small btn-edit" onclick="editarCategoria('${catKey}')">✏️ Editar</button>
+              <button class="btn-small btn-delete" onclick="eliminarCategoria('${catKey}')">🗑️ Eliminar</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Cargar productos
+    function cargarProductos() {
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+      const tbody = document.getElementById("productosBody");
+      tbody.innerHTML = "";
+
+      Object.keys(menu).forEach(catKey => {
+        if (Array.isArray(menu[catKey])) {
+          menu[catKey].forEach((prod, idx) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td><strong>${prod.name}</strong></td>
+              <td>${categoryInfo[catKey].label}</td>
+              <td>$${prod.price ? prod.price.toLocaleString("es-CO") : "Sin precio"}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-small btn-edit" onclick="editarProducto('${catKey}', ${idx})">✏️ Editar</button>
+                  <button class="btn-small btn-delete" onclick="eliminarProducto('${catKey}', ${idx})">🗑️ Eliminar</button>
+                </div>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+      });
+    }
+
+    // Cargar precios
+    function cargarPrecios() {
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+      const tbody = document.getElementById("preciosBody");
+      tbody.innerHTML = "";
+
+      Object.keys(menu).forEach(catKey => {
+        if (Array.isArray(menu[catKey])) {
+          menu[catKey].forEach((prod, idx) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${prod.name}</td>
+              <td>${categoryInfo[catKey].label}</td>
+              <td>$${prod.price ? prod.price.toLocaleString("es-CO") : "0"}</td>
+              <td><input type="number" value="${prod.price || 0}" id="precio_${catKey}_${idx}" style="width:100%; padding:6px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 4px;"></td>
+              <td><button class="btn-small btn-success" onclick="actualizarPrecio('${catKey}', ${idx})">✓ Actualizar</button></td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+      });
+    }
+
+    // Actualizar precio
+    function actualizarPrecio(catKey, idx) {
+      const newPrice = parseInt(document.getElementById(`precio_${catKey}_${idx}`).value);
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+
+      if (menu[catKey] && menu[catKey][idx]) {
+        menu[catKey][idx].price = newPrice;
+        localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
+        showNotification("Precio actualizado correctamente", "success");
+        cargarPrecios();
+      }
+    }
+
+    // Cargar imágenes
+    function cargarImagenes() {
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+      const grid = document.getElementById("imagenesGrid");
+      grid.innerHTML = "";
+
+      Object.keys(menu).forEach(catKey => {
+        if (Array.isArray(menu[catKey])) {
+          menu[catKey].forEach((prod, idx) => {
+            const card = document.createElement("div");
+            card.style.cssText = "background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%); border: 2px solid var(--accent); border-radius: 12px; padding: 15px;";
+            card.innerHTML = `
+              <img src="${prod.img || "https://via.placeholder.com/200"}" alt="${prod.name}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
+              <p style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">${prod.name}</p>
+              <input type="text" value="${prod.img || ""}" id="img_${catKey}_${idx}" placeholder="URL de imagen" style="width:100%; padding:8px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 4px; margin-bottom: 10px; color: var(--texto);">
+              <button class="btn-small btn-success" onclick="actualizarImagen('${catKey}', ${idx})" style="width:100%;">Guardar Imagen</button>
+            `;
+            grid.appendChild(card);
+          });
+        }
+      });
+    }
+
+    // Actualizar imagen
+    function actualizarImagen(catKey, idx) {
+      const newImg = document.getElementById(`img_${catKey}_${idx}`).value;
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+
+      if (menu[catKey] && menu[catKey][idx]) {
+        menu[catKey][idx].img = newImg;
+        localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
+        showNotification("Imagen actualizada correctamente", "success");
+        cargarImagenes();
+      }
+    }
+
+    // Guardar categoría
+    function guardarCategoria(event) {
+      event.preventDefault();
+      showNotification("Categoría guardada correctamente", "success");
+      closeModal("modalCategoria");
+      cargarCategorias();
+    }
+
+    // Funciones auxiliares
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add("active");
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove("active");
+    }
+
+    function openModalNuevaCategoria() {
+      document.getElementById("modalTitleCategoria").textContent = "Nueva Categoría";
+      document.getElementById("categoriaNombre").value = "";
+      document.getElementById("categoriaDesc").value = "";
+      openModal("modalCategoria");
+    }
+
+    function openModalNuevoProducto() {
+      showNotification("Abre desde gestión de productos", "info");
+    }
+
+    function showNotification(message, type = "success") {
+      const notification = document.createElement("div");
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    function descargarBackup() {
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+      const dataStr = JSON.stringify(menu, null, 2);
+      const dataBlob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `backup-lacima-${new Date().toISOString().split("T")[0]}.json`;
+      link.click();
+      showNotification("Backup descargado correctamente", "success");
+    }
+
+    function restaurarBackup() {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".json";
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const data = JSON.parse(event.target.result);
+            localStorage.setItem("lacimaMenuV2", JSON.stringify(data));
+            showNotification("Backup restaurado correctamente", "success");
+          } catch {
+            showNotification("Error al restaurar el backup", "error");
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+
+    function resetearDatos() {
+      if (confirm("¿Estás seguro de que quieres resetear los datos al original? Esta acción no se puede deshacer.")) {
+        localStorage.removeItem("lacimaMenuV2");
+        showNotification("Datos reseteados al original", "success");
+      }
+    }
+
+    // Cargar descripciones
+    function cargarDescripciones() {
+      const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
+      const grid = document.getElementById("descripcionesGrid");
+      grid.innerHTML = "";
+
+      Object.keys(menu).forEach(catKey => {
+        if (Array.isArray(menu[catKey])) {
+          menu[catKey].forEach((prod, idx) => {
+            const card = document.createElement("div");
+            card.style.cssText = "background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%); border: 2px solid var(--accent); border-radius: 12px; padding: 20px;";
+            card.innerHTML = `
+              <h4 style="color: var(--primary); margin-bottom: 10px;">${prod.name}</h4>
+              <p style="color: var(--texto); font-size: 12px; margin-bottom: 10px;">Categoría: ${categoryInfo[catKey].label}</p>
+              <label style="color: var(--primary); font-weight: bold; margin-bottom: 8px; display: block;">Descripción:</label>
+              <textarea id="desc_${catKey}_${idx}" placeholder="Ingresa la descripción del producto" style="width:100%; padding:10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 6px; color: var(--texto); min-height: 80px; font-family: inherit; resize: vertical;">${prod.desc || ""}</textarea>
+              <button class="btn-small btn-success" onclick="actualizarDescripcion('${catKey}', ${idx})" style="width:100%; margin-top: 10px;">Guardar Descripción</button>
+            `;
+            grid.appendChild(card);
+          });
+        }
+      });
+    }
+
+    // Actualizar descripción
+    function actualizarDescripcion(catKey, idx) {
+      const newDesc = document.getElementById(`desc_${catKey}_${idx}`).value;
+      const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
+
+      if (menu[catKey] && menu[catKey][idx]) {
+        menu[catKey][idx].desc = newDesc;
+        localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
+        showNotification("Descripción actualizada correctamente", "success");
+        cargarDescripciones();
+      }
+    }
+
+    // Actualizar hora
+    function actualizarHora() {
+      const now = new Date();
+      document.getElementById("currentTime").textContent = now.toLocaleTimeString("es-CO");
+    }
+
+    // Inicializar
+    window.addEventListener("load", function() {
+      checkSession();
+      actualizarDashboard();
+      setInterval(actualizarHora, 1000);
+      actualizarHora();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Cima Restaurante - Carta Digital</title>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="La Cima Restaurante - Carta Digital 🍽️">
+  <meta property="og:description" content="ESTO ES COLOMBIA 🇨🇴">
+  <meta property="og:image" content="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png">
+  <meta property="og:url" content="https://cimarestaurante.netlify.app">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="description" content="Carta digital La Cima Restaurante - Esto es Colombia">
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png">
+
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- QRCode Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       HEADER
+       ======================================== -->
+  <header>
+    <div class="header-video">
+      <iframe src="https://player.vimeo.com/video/1216505794?background=1&autoplay=1&loop=1&muted=1&autopause=0&title=0&byline=0&portrait=0&controls=0&badge=0&dnt=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+    <div class="header-overlay"></div>
+
+    <div class="header-top">
+      <div class="logo-wrap">
+        <div class="logo-float">
+          <img src="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png" alt="Logo La Cima" class="logo-img">
+        </div>
+      </div>
+      <div class="info-row">
+        <span class="pill">📞 DOMICILIOS Y RESERVAS: 322 736 48 68</span>
+        <span class="pill">📍 Cra 7 #27-90, Barrio Puenes, Ipiales, Nariño, Colombia</span>
+      </div>
+      <div><span class="pill-wide">🕐 Lun a Vie: 12 AM - 9 PM &nbsp;|&nbsp; Sáb: 12 AM - 10 PM &nbsp;|&nbsp; Dom y festivos: 11 AM - 5 PM</span></div>
+      <a class="wa-btn" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">💬 RESERVA AHORA</a>
+      <p class="header-note">Horarios flexibles para reservaciones y eventos</p>
+    </div>
+  </header>
+
+  <!-- ========================================
+       EDIT BAR (Admin)
+       ======================================== -->
+  <div class="edit-bar" id="editBar">
+    <button class="btn-secondary" onclick="addDish()">➕ Nuevo Plato</button>
+    <button class="btn-secondary" onclick="toggleQR()">📱 Ver QR</button>
+    <button class="btn-primary" onclick="toggleEditMode()">✅ Salir de Edición</button>
+  </div>
+
+  <!-- ========================================
+       QR SECTION
+       ======================================== -->
+  <div class="qr-section" id="qrSection">
+    <h3>Comparte este QR con tus clientes</h3>
+    <div id="qrcode"></div>
+    <button class="btn-secondary" style="margin-top:15px" onclick="downloadQR()">⬇️ Descargar QR</button>
+  </div>
+
+  <!-- ========================================
+       SEARCH BAR
+       ======================================== -->
+  <div class="search-wrap">
+    <input type="text" class="search-box" id="searchBox" placeholder="🔍 Busca tu plato favorito..." oninput="searchDishes(this.value)">
+  </div>
+
+  <!-- ========================================
+       FILTERS
+       ======================================== -->
+  <div class="filters" id="filters"></div>
+
+  <!-- ========================================
+       MENU CONTAINER
+       ======================================== -->
+  <div class="menu-container" id="menuContainer"></div>
+
+  <!-- ========================================
+       LOCATION SECTION
+       ======================================== -->
+  <div class="location-section">
+    <h2>📍 ¿Cómo llegar?</h2>
+    <p>Fácil acceso · A solo 10 minutos del Aeropuerto San Luis de Ipiales</p>
+    <div class="location-btns">
+      <a class="loc-btn loc-entrada" href="https://maps.app.goo.gl/ftArrLoVaofjCtWn9" target="_blank">🚪 Entrada Principal</a>
+      <a class="loc-btn loc-parqueo" href="https://maps.app.goo.gl/mtP7KVerWoK8xsjc8" target="_blank">🅿️ Parqueadero</a>
+      <a class="loc-btn loc-aero" href="https://www.google.com/maps/dir/Aeropuerto+San+Luis+Ipiales/La+Cima+Restaurante,+Cra+7+%2327-90,+Ipiales" target="_blank">✈️ Desde el Aeropuerto</a>
+    </div>
+  </div>
+
+  <!-- ========================================
+       FLOATING BUTTONS
+       ======================================== -->
+  <button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <button class="cart-icon" id="cartIcon" onclick="openCart()">
+    🛒
+    <span class="cart-count" id="cartCount">0</span>
+  </button>
+
+  <!-- ========================================
+       CART MODAL
+       ======================================== -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-modal-content">
+      <div class="cart-modal-header">Tu Pedido 🛒</div>
+
+      <div class="cart-items-list" id="cartItemsList">
+        <div class="cart-empty">El carrito está vacío</div>
+      </div>
+
+      <div class="cart-totals">
+        <div class="total-row">
+          <span>Subtotal:</span>
+          <span id="subtotalAmount">$0</span>
+        </div>
+        <div class="total-row" id="discountRow" style="display:none;color:#27ae60;">
+          <span>Descuento:</span>
+          <span id="discountAmount">-$0</span>
+        </div>
+        <div class="total-row">
+          <span>Domicilio:</span>
+          <span>$7.000</span>
+        </div>
+        <div class="total-row final">
+          <span>TOTAL:</span>
+          <span id="totalAmount">$7.000</span>
+        </div>
+      </div>
+
+      <div class="cart-form" id="cartForm">
+        <h4 style="color:#1e90ff;font-size:22px;font-weight:bold;margin-bottom:20px;">Tus Datos 💙</h4>
+
+        <!-- DOS OPCIONES DE PAGO -->
+        <div style="display:flex;gap:15px;margin-bottom:20px;flex-direction:column;">
+          <button type="button" class="btn-option-factura" onclick="toggleFormularioFactura(event)">
+            💳 Factura Electrónica (Opcional)
+          </button>
+          <button type="button" class="btn-option-simple" onclick="toggleFormularioSimple(event)">
+            ❌ Sin Factura Electrónica
+          </button>
+        </div>
+
+        <!-- FORMULARIO FACTURA ELECTRÓNICA -->
+        <div class="form-section" id="formularioFactura" style="display:none;">
+          <div style="background:rgba(255,215,0,0.1);border-left:4px solid #FFD700;padding:12px;margin-bottom:15px;border-radius:4px;font-size:13px;color:#F0E0C8;">
+            ✓ Completa los datos para generar tu factura electrónica
+          </div>
+
+          <div style="color:#FFD700;font-weight:bold;margin-top:15px;margin-bottom:12px;font-size:14px;border-bottom:1px solid #FFD700;padding-bottom:8px;">📄 Tipo de Documento</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+            <div class="form-group">
+              <label>Selecciona:</label>
+              <select id="tipoDoc">
+                <option value="">-- Selecciona --</option>
+                <option value="cc">Cédula de Ciudadanía</option>
+                <option value="nit">NIT</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Número:</label>
+              <input type="text" id="numeroDoc" placeholder="Ej: 1023456789">
+            </div>
+          </div>
+
+          <div style="color:#FFD700;font-weight:bold;margin-top:15px;margin-bottom:12px;font-size:14px;border-bottom:1px solid #FFD700;padding-bottom:8px;">👤 Datos Personales</div>
+          <div class="form-group">
+            <label>Nombre o Razón Social:</label>
+            <input type="text" id="nombreFactura" placeholder="Ej: Juan Pérez">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+            <div class="form-group">
+              <label>Correo:</label>
+              <input type="email" id="correoFactura" placeholder="correo@ejemplo.com">
+            </div>
+            <div class="form-group">
+              <label>Teléfono:</label>
+              <input type="tel" id="telefonoFactura" placeholder="3207364868">
+            </div>
+          </div>
+
+          <div style="color:#FFD700;font-weight:bold;margin-top:15px;margin-bottom:12px;font-size:14px;border-bottom:1px solid #FFD700;padding-bottom:8px;">🏛️ Tipo de Responsabilidad</div>
+          <div class="form-group">
+            <label>Selecciona:</label>
+            <select id="responsabilidad">
+              <option value="">-- Selecciona --</option>
+              <option value="gran-contrib">Gran Contribuyente</option>
+              <option value="autorreten">Autorretenedor</option>
+              <option value="agente-reten">Agente de Retención IVA</option>
+              <option value="regimen-simple">Régimen Simple de Tributación</option>
+              <option value="no-resp">No Responsable</option>
+            </select>
+          </div>
+
+          <div style="color:#FFD700;font-weight:bold;margin-top:15px;margin-bottom:12px;font-size:14px;border-bottom:1px solid #FFD700;padding-bottom:8px;">💰 Responsabilidad Tributaria</div>
+          <div class="form-group">
+            <label>Selecciona:</label>
+            <select id="tributaria">
+              <option value="">-- Selecciona --</option>
+              <option value="iva">IVA</option>
+              <option value="inc">INC</option>
+              <option value="iva-inc">IVA-INC</option>
+              <option value="no-aplica">No Aplica</option>
+            </select>
+          </div>
+
+          <button type="button" class="btn-confirm-map" onclick="generarFactura()" style="background:#27ae60;margin-top:15px;">✅ Generar Factura Electrónica</button>
+        </div>
+
+        <!-- FORMULARIO SIN FACTURA ELECTRÓNICA -->
+        <div class="form-section" id="formularioSimple" style="display:none;">
+          <div style="background:rgba(255,215,0,0.1);border-left:4px solid #FFD700;padding:12px;margin-bottom:15px;border-radius:4px;font-size:13px;color:#F0E0C8;">
+            ✓ Sin factura electrónica, llena estos datos para tu pedido
+          </div>
+
+          <div class="form-group">
+            <label>Nombre Completo *</label>
+            <input type="text" id="customerName" required placeholder="Tu nombre completo">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+            <div class="form-group">
+              <label>Teléfono *</label>
+              <input type="tel" id="customerPhone" required placeholder="3207364868">
+            </div>
+            <div class="form-group">
+              <label>Correo</label>
+              <input type="email" id="correoSimple" placeholder="correo@ejemplo.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Calle/Carrera y Número *</label>
+            <input type="text" id="customerStreet" required placeholder="Ej: Cra 7 #27-90">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+            <div class="form-group">
+              <label>Barrio *</label>
+              <input type="text" id="customerBarrio" required placeholder="Ej: Barrio Puenes">
+            </div>
+            <div class="form-group">
+              <label>Complemento (Opcional)</label>
+              <input type="text" id="customerComplement" placeholder="Apt, local, etc.">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Notas Especiales (Opcional)</label>
+            <textarea id="customerNotes" placeholder="Sin cebolla, bien cocido..."></textarea>
+          </div>
+
+          <button type="button" class="btn-confirm-map" onclick="guardarFormularioSimple()" style="background:#27ae60;margin-top:15px;">✅ Confirmar Datos</button>
+        </div>
+
+        <!-- BOTÓN FINAL ENVIAR PEDIDO -->
+        <button type="button" class="btn-confirm-map" onclick="sendRealTimeOrder()" style="margin-top:15px;">🚀 Haz tu pedido en tiempo real</button>
+
+        <div id="mapConfirmation" style="display:none;background:rgba(255,255,255,.1);padding:12px;border-radius:8px;margin-top:10px;border:2px solid #FFD700;text-align:center;">
+          <p style="color:#fff;font-size:14px;margin-bottom:10px;">✅ Dirección confirmada en Maps</p>
+          <button type="button" class="btn-send-order" onclick="sendOrder()">📱 Enviar Pedido por WhatsApp</button>
+        </div>
+
+        <button type="button" class="btn-close-cart" onclick="closeCart()">Seguir Comprando</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       EDIT MODAL
+       ======================================== -->
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Editar</h3>
+      <form id="dishForm">
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" id="password" required>
+        </div>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" id="dishName" required>
+        </div>
+        <div class="form-group">
+          <label>Descripción (opcional)</label>
+          <textarea id="dishDescription"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Precio (COP, opcional)</label>
+          <input type="number" id="dishPrice">
+        </div>
+        <div class="form-group">
+          <label>URL Imagen (ibb.co)</label>
+          <input type="text" id="dishImage" placeholder="https://i.ibb.co/...">
+        </div>
+        <div class="form-group">
+          <label>URL Video (opcional)</label>
+          <input type="text" id="dishVideo" placeholder="https://facebook.com/...">
+        </div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <select id="dishCategory" required></select>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn-success">💾 Guardar</button>
+          <button type="button" class="btn-primary" onclick="closeModal()">❌ Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================
+       IMAGE MODAL
+       ======================================== -->
+  <div class="image-modal" id="imageModal">
+    <div class="image-modal-content">
+      <button class="image-modal-close" onclick="closeImageModal()">✕</button>
+      <img id="imageModalImg" src="" alt="Imagen" class="image-modal-img">
+    </div>
+  </div>
+
+  <!-- ========================================
+       FOOTER
+       ======================================== -->
+  <footer>
+    <h4>📍 Ubícanos</h4>
+    <p>Cra 7 #27-90, Barrio Puenes, Ipiales, Nariño, Colombia</p>
+    <p style="font-size:.9rem;color:#d8c9a8">✈️ A 10 minutos del Aeropuerto San Luis de Ipiales</p>
+    <h4 style="margin-top:20px">📞 Domicilios y Reservas</h4>
+    <p>322 736 48 68</p>
+    <a class="footer-wa" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">💬 Escríbenos por WhatsApp</a>
+    <div class="social-title">🌐 Síguenos en redes</div>
+    <div class="social-row">
+      <a class="social-btn sc-fb" href="https://www.facebook.com/share/1BTeGdTEMk/" target="_blank">📘 Facebook</a>
+      <a class="social-btn sc-ig" href="https://www.instagram.com/lacimarestauranteipiales" target="_blank">📷 Instagram</a>
+      <a class="social-btn sc-tt" href="https://www.tiktok.com/@lacimarestauranteipiales" target="_blank">🎵 TikTok</a>
+    </div>
+    <p style="margin-top:24px;font-size:.88rem">© 2026 La Cima Restaurante · Esto es Colombia</p>
+    <div class="admin-links">
+      <a onclick="toggleEditMode()">Modo Edición</a>·<a onclick="resetMenu()">Restaurar Menú</a>·<a onclick="sincronizarMenu()">Sincronizar Cambios</a>
+    </div>
+    <button class="sync-btn" onclick="sincronizarMenu()" title="Recarga los cambios del menú">🔄 Sincronizar Cambios</button>
+  </footer>
+
+  <!-- ========================================
+       SCRIPTS - ORDEN IMPORTANTE
+       ======================================== -->
+  <!-- 1. Configuración y datos -->
+  <script src="js/config.js"></script>
+
+  <!-- 2. Almacenamiento y funcionalidades -->
+  <script src="js/storage.js"></script>
+  <script src="js/promotions.js"></script>
+  <script src="js/favorites.js"></script>
+
+  <!-- 3. Lógica modular principal -->
+  <script src="js/menu.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/admin.js"></script>
+
+  <!-- 4. Inicialización (debe ir al final) -->
+  <script src="js/main.js"></script>
+
+  <!-- ========================================
+       SINCRONIZACIÓN DE MENÚ Y ESTILOS PERSONALIZADOS
+       ======================================== -->
+  <style>
+    /* Estilos del carrito - Aumentar visibilidad */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .cart-item-name {
+      flex: 1;
+      font-weight: bold;
+      color: #FFD700 !important;
+      font-size: 15px;
+    }
+
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 5px 10px;
+      border-radius: 6px;
+      margin: 0 10px;
+    }
+
+    .qty-btn {
+      background: #FFD700;
+      color: #333;
+      border: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+
+    .qty-btn:hover {
+      background: #fff;
+      color: #333;
+    }
+
+    .cart-item-price {
+      font-weight: bold;
+      color: #FFD700 !important;
+      min-width: 80px;
+      text-align: right;
+      font-size: 15px;
+    }
+
+    .cart-remove {
+      background: #fff;
+      color: #c0392b;
+      border: none;
+      padding: 5px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      margin-left: 8px;
+      transition: all 0.2s;
+      font-weight: bold;
+    }
+
+    .cart-remove:hover {
+      background: #FFD700;
+    }
+
+    /* Sincronización */
+    .sync-btn {
+      background: linear-gradient(135deg, #27ae60, #1da851);
+      color: #fff;
+      border: 2px solid #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    }
+
+    .sync-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(39, 174, 96, 0.5);
+      background: linear-gradient(135deg, #229954, #1a7d47);
+    }
+
+    .sync-btn:active {
+      transform: scale(0.98);
+    }
+
+    .sync-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #27ae60, #1da851);
+      color: #fff;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+      animation: slideDown 0.3s ease;
+      z-index: 9999;
+    }
+
+    @keyframes slideDown {
+      from {
+        transform: translateY(-30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+
+  <script>
+    /**
+     * FUNCIÓN DE SINCRONIZACIÓN
+     * Recarga el menú desde localStorage sin necesidad de recargar la página
+     */
+    function sincronizarMenu() {
+      // Obtener el menú actualizado desde localStorage
+      const menuActualizado = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
+
+      // Reemplazar el menú actual
+      menu = menuActualizado;
+
+      // Re-renderizar la página
+      buildFilters();
+      renderMenu('all');
+
+      // Mostrar notificación
+      mostrarNotificacionSync();
+    }
+
+    /**
+     * MOSTRAR NOTIFICACIÓN DE SINCRONIZACIÓN
+     */
+    function mostrarNotificacionSync() {
+      const notification = document.createElement('div');
+      notification.className = 'sync-notification';
+      notification.innerHTML = '✅ Menú sincronizado correctamente';
+      document.body.appendChild(notification);
+
+      // Auto-remover después de 3 segundos
+      setTimeout(() => {
+        notification.style.animation = 'slideDown 0.3s ease reverse';
+        setTimeout(() => notification.remove(), 300);
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>

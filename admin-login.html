@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Cima - Admin Login</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #FFD700;
+      --dark: #3d5a47;
+      --black: #0f1419;
+      --accent: #FF6B35;
+      --madera: #3E2A1C;
+      --madera2: #2A1C12;
+      --texto: #F0E0C8;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--madera) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--texto);
+    }
+
+    .login-container {
+      background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
+      border: 3px solid var(--accent);
+      border-radius: 20px;
+      padding: 50px 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo-section img {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+    }
+
+    .logo-section h1 {
+      color: var(--primary);
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .logo-section p {
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      color: var(--primary);
+      font-weight: bold;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--texto);
+      font-size: 16px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder {
+      color: rgba(240, 224, 200, 0.5);
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      color: var(--dark);
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 107, 53, 0.5);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .error-message {
+      background: rgba(231, 76, 60, 0.2);
+      border: 2px solid #e74c3c;
+      color: #ff9999;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+      font-size: 14px;
+    }
+
+    .error-message.show {
+      display: block;
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .footer-text {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(240, 224, 200, 0.6);
+      margin-top: 30px;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .spinner {
+      border: 4px solid rgba(255, 215, 0, 0.3);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 600px) {
+      .login-container {
+        margin: 20px;
+        padding: 40px 25px;
+      }
+
+      .logo-section h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="logo-section">
+      <img src="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png" alt="La Cima Logo">
+      <h1>🔐 Admin Panel</h1>
+      <p>La Cima Restaurante</p>
+    </div>
+
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="error-message" id="errorMessage"></div>
+
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input
+          type="text"
+          id="username"
+          placeholder="admin"
+          required
+          autocomplete="username"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="••••••••"
+          required
+          autocomplete="current-password"
+        >
+      </div>
+
+      <button type="submit" class="btn-login">Ingresar</button>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+      </div>
+    </form>
+
+    <div class="footer-text">
+      © 2026 La Cima Restaurante · Sistema Administrativo
+    </div>
+  </div>
+
+  <script>
+    const ADMIN_USER = "admin";
+    const ADMIN_PASS = "lacima2024";
+
+    function handleLogin(event) {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const errorMessage = document.getElementById("errorMessage");
+      const loading = document.getElementById("loading");
+      const form = document.getElementById("loginForm");
+
+      errorMessage.classList.remove("show");
+      loading.style.display = "none";
+
+      // Validación básica
+      if (!username || !password) {
+        showError("Usuario y contraseña son requeridos");
+        return;
+      }
+
+      // Mostrar loading
+      loading.style.display = "block";
+      form.style.opacity = "0.6";
+      form.style.pointerEvents = "none";
+
+      // Simular validación con pequeño delay
+      setTimeout(() => {
+        if (username === ADMIN_USER && password === ADMIN_PASS) {
+          // Guardar sesión
+          localStorage.setItem("lacimaAdminSession", "true");
+          localStorage.setItem("lacimaAdminLoginTime", new Date().getTime());
+
+          // Redirigir al panel
+          window.location.href = "admin-panel.html";
+        } else {
+          loading.style.display = "none";
+          form.style.opacity = "1";
+          form.style.pointerEvents = "auto";
+          showError("Usuario o contraseña incorrectos");
+          document.getElementById("password").value = "";
+          document.getElementById("password").focus();
+        }
+      }, 800);
+    }
+
+    function showError(message) {
+      const errorMessage = document.getElementById("errorMessage");
+      errorMessage.textContent = message;
+      errorMessage.classList.add("show");
+    }
+
+    // Verificar si ya hay sesión activa
+    window.addEventListener("load", function() {
+      const session = localStorage.getItem("lacimaAdminSession");
+      if (session === "true") {
+        window.location.href = "admin-panel.html";
+      }
+    });
+
+    // Permitir Enter para enviar
+    document.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        document.getElementById("loginForm").dispatchEvent(new Event("submit"));
+      }
+    });
+  </script>
+
+</body>
+</html>

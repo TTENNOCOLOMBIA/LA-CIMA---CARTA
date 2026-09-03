@@ -1,0 +1,122 @@
+/* ========================================
+   LA CIMA RESTAURANTE - ANIMACIONES
+   ======================================== */
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 8px 30px rgba(37, 211, 102, .8);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 12px 40px rgba(37, 211, 102, 1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fireBorder {
+  0% {
+    border-color: #FF6B35;
+    box-shadow: 0 0 15px rgba(255, 107, 53, .5), 0 4px 16px rgba(0, 0, 0, .3);
+  }
+  50% {
+    border-color: #FFD700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, .6), 0 4px 16px rgba(0, 0, 0, .3);
+  }
+  100% {
+    border-color: #FF6B35;
+    box-shadow: 0 0 15px rgba(255, 107, 53, .5), 0 4px 16px rgba(0, 0, 0, .3);
+  }
+}
+
+@keyframes fireGlow {
+  0% {
+    box-shadow: 0 0 20px rgba(255, 107, 53, .7), 0 6px 24px rgba(255, 107, 53, .35);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 215, 0, .8), 0 6px 24px rgba(255, 107, 53, .45);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 107, 53, .7), 0 6px 24px rgba(255, 107, 53, .35);
+  }
+}
+
+@keyframes launchPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 15px rgba(255, 215, 0, .6), 0 0 25px rgba(255, 107, 53, .4);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(255, 215, 0, .8), 0 0 35px rgba(255, 107, 53, .6);
+  }
+}
+
+@keyframes trailFade {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -20px) scale(0);
+  }
+}
+
+@keyframes osoBaila {
+  0% {
+    transform: translateY(0) rotate(-6deg) scale(1);
+  }
+  25% {
+    transform: translateY(-10px) rotate(0deg) scale(1.08);
+  }
+  50% {
+    transform: translateY(0) rotate(6deg) scale(1);
+  }
+  75% {
+    transform: translateY(-6px) rotate(0deg) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) rotate(-6deg) scale(1);
+  }
+}
+
+@keyframes osoSalta {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-18px) scale(1.2);
+  }
+}
