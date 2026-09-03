@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Cima - Admin Panel</title>
+  <title>La Cima - Panel Administrativo</title>
   <link rel="stylesheet" href="css/main.css">
   <style>
     * {
@@ -15,7 +15,6 @@
     :root {
       --primary: #FFD700;
       --dark: #3d5a47;
-      --black: #0f1419;
       --accent: #FF6B35;
       --madera: #3E2A1C;
       --madera2: #2A1C12;
@@ -32,40 +31,41 @@
       line-height: 1.6;
     }
 
-    .admin-container {
-      display: grid;
-      grid-template-columns: 250px 1fr;
+    /* ============ LAYOUT PRINCIPAL ============ */
+    .admin-wrapper {
+      display: flex;
       min-height: 100vh;
     }
 
     /* ============ SIDEBAR ============ */
     .sidebar {
+      width: 280px;
       background: linear-gradient(180deg, var(--madera) 0%, var(--madera2) 100%);
       border-right: 3px solid var(--accent);
       padding: 30px 0;
       position: fixed;
       left: 0;
       top: 0;
-      width: 250px;
       height: 100vh;
       overflow-y: auto;
-      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
     }
 
     .sidebar-header {
-      padding: 0 20px 30px;
-      border-bottom: 2px solid rgba(255, 215, 0, 0.3);
       text-align: center;
+      padding: 0 20px 30px;
+      border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+      margin-bottom: 30px;
     }
 
     .sidebar-logo {
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       margin: 0 auto 15px;
       border-radius: 50%;
       overflow: hidden;
       border: 3px solid var(--primary);
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
     }
 
     .sidebar-logo img {
@@ -76,27 +76,29 @@
 
     .sidebar-title {
       color: var(--primary);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
     .sidebar-nav {
-      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
     .nav-item {
       padding: 15px 20px;
-      color: var(--texto);
       cursor: pointer;
       border-left: 4px solid transparent;
       transition: all 0.3s ease;
+      color: var(--texto);
       font-size: 14px;
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .nav-item:hover {
@@ -106,7 +108,7 @@
     }
 
     .nav-item.active {
-      background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
+      background: rgba(255, 215, 0, 0.15);
       border-left-color: var(--primary);
       color: var(--primary);
     }
@@ -119,21 +121,20 @@
     .sidebar-footer {
       position: absolute;
       bottom: 20px;
-      left: 0;
-      right: 0;
-      padding: 20px;
-      border-top: 1px solid rgba(255, 215, 0, 0.2);
+      left: 20px;
+      right: 20px;
     }
 
     .btn-logout {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background: linear-gradient(135deg, var(--error), #c0392b);
       color: #fff;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 14px;
       transition: all 0.3s ease;
     }
 
@@ -144,8 +145,10 @@
 
     /* ============ MAIN CONTENT ============ */
     .main-content {
-      margin-left: 250px;
+      margin-left: 280px;
+      flex: 1;
       padding: 30px;
+      overflow-y: auto;
     }
 
     .header {
@@ -163,22 +166,35 @@
       font-weight: 900;
     }
 
-    .user-info {
+    .header-info {
       text-align: right;
-      font-size: 14px;
     }
 
-    .user-info p {
+    .header-info p {
       color: var(--texto);
+      font-size: 14px;
+      margin: 3px 0;
     }
 
-    /* ============ CONTENT SECTIONS ============ */
+    /* ============ SECCIONES ============ */
     .section {
       display: none;
+      animation: fadeIn 0.3s ease;
     }
 
     .section.active {
       display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ============ DASHBOARD ============ */
@@ -217,24 +233,76 @@
       font-weight: 600;
     }
 
-    /* ============ BUTTONS ============ */
+    /* ============ TABLAS ============ */
+    .table-container {
+      background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .table-header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .table-header h3 {
+      color: var(--primary);
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: rgba(255, 215, 0, 0.15);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    th {
+      padding: 15px;
+      color: var(--primary);
+      font-weight: bold;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    td {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+      color: var(--texto);
+      font-size: 13px;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 215, 0, 0.05);
+    }
+
+    /* ============ BOTONES ============ */
     .btn-group {
       display: flex;
       gap: 10px;
-      margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
     .btn-primary,
     .btn-secondary,
     .btn-success,
-    .btn-danger {
-      padding: 12px 24px;
+    .btn-danger,
+    .btn-small {
+      padding: 10px 18px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 13px;
       transition: all 0.3s ease;
     }
 
@@ -262,79 +330,13 @@
     .btn-primary:hover,
     .btn-secondary:hover,
     .btn-success:hover,
-    .btn-danger:hover {
+    .btn-danger:hover,
+    .btn-small:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
-    /* ============ TABLES ============ */
-    .table-container {
-      background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
-      border: 2px solid var(--accent);
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    thead {
-      background: rgba(255, 215, 0, 0.15);
-      border-bottom: 2px solid var(--accent);
-    }
-
-    th {
-      padding: 15px;
-      color: var(--primary);
-      font-weight: bold;
-      text-align: left;
-      font-size: 14px;
-    }
-
-    td {
-      padding: 12px 15px;
-      border-bottom: 1px solid rgba(255, 215, 0, 0.1);
-      color: var(--texto);
-      font-size: 14px;
-    }
-
-    tbody tr:hover {
-      background: rgba(255, 215, 0, 0.05);
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn-small {
-      padding: 6px 12px;
-      font-size: 12px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-edit {
-      background: var(--primary);
-      color: var(--dark);
-    }
-
-    .btn-delete {
-      background: var(--error);
-      color: #fff;
-    }
-
-    .btn-small:hover {
-      transform: scale(1.05);
-    }
-
-    /* ============ MODALS ============ */
+    /* ============ MODALES ============ */
     .modal {
       display: none;
       position: fixed;
@@ -342,8 +344,8 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 1000;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
       align-items: center;
       justify-content: center;
     }
@@ -353,25 +355,30 @@
     }
 
     .modal-content {
-      background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
-      border: 2px solid var(--accent);
-      border-radius: 12px;
+      background: var(--madera);
       padding: 30px;
+      border-radius: 12px;
       max-width: 500px;
       width: 90%;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      border: 2px solid var(--accent);
     }
 
     .modal-header {
-      color: var(--primary);
-      font-size: 24px;
-      font-weight: 900;
-      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .modal-title {
+      color: var(--primary);
+      font-size: 18px;
+      font-weight: bold;
     }
 
     .modal-close {
@@ -380,18 +387,24 @@
       color: var(--primary);
       font-size: 28px;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
 
+    .modal-close:hover {
+      color: var(--accent);
+    }
+
+    /* ============ FORMULARIOS ============ */
     .form-group {
       margin-bottom: 15px;
     }
 
     .form-group label {
       display: block;
+      margin-bottom: 6px;
       color: var(--primary);
-      margin-bottom: 5px;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .form-group input,
@@ -399,164 +412,250 @@
     .form-group select {
       width: 100%;
       padding: 10px;
-      border: 2px solid var(--primary);
+      border: 2px solid rgba(255, 215, 0, 0.3);
       border-radius: 6px;
+      font-size: 13px;
+      font-family: inherit;
       background: rgba(255, 255, 255, 0.05);
       color: var(--texto);
-      font-family: inherit;
-      font-size: 14px;
+      transition: all 0.3s ease;
     }
 
     .form-group input:focus,
     .form-group textarea:focus,
     .form-group select:focus {
       outline: none;
-      border-color: var(--accent);
+      border-color: var(--primary);
       background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 10px rgba(255, 107, 53, 0.3);
     }
 
-    /* ============ NOTIFICATIONS ============ */
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 20px;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: bold;
-      animation: slideIn 0.3s ease;
-      z-index: 2000;
-      max-width: 300px;
-    }
-
-    .notification.success {
-      background: var(--success);
-    }
-
-    .notification.error {
-      background: var(--error);
-    }
-
-    .notification.warning {
-      background: var(--warning);
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(400px);
-        opacity: 0;
+    /* ============ RESPONSIVO - TABLET Y MÓVIL ============ */
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 200px;
       }
-      to {
-        transform: translateX(0);
-        opacity: 1;
+
+      .main-content {
+        margin-left: 200px;
+        padding: 20px;
       }
     }
 
-    /* ============ EMPTY STATE ============ */
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: rgba(240, 224, 200, 0.6);
-    }
-
-    .empty-state-icon {
-      font-size: 48px;
-      margin-bottom: 15px;
-    }
-
-    /* ============ RESPONSIVE ============ */
     @media (max-width: 768px) {
-      .admin-container {
-        grid-template-columns: 1fr;
+      .admin-wrapper {
+        flex-direction: column;
       }
 
       .sidebar {
-        width: 100%;
-        height: auto;
-        position: static;
-        border-right: none;
-        border-bottom: 3px solid var(--accent);
-        padding: 20px 0;
+        position: fixed;
+        left: -280px;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        z-index: 2000;
+        transition: left 0.3s ease;
       }
 
-      .sidebar-nav {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        margin-top: 0;
-      }
-
-      .nav-item {
-        padding: 10px;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .sidebar-footer {
-        position: static;
-        padding: 20px;
-        border-top: 1px solid rgba(255, 215, 0, 0.2);
-        margin-top: 20px;
+      .sidebar.active {
+        left: 0;
       }
 
       .main-content {
         margin-left: 0;
-        padding: 20px;
+        padding: 15px;
+        min-height: 100vh;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
       }
 
       .header h1 {
         font-size: 24px;
       }
 
+      .header-info {
+        text-align: left;
+        width: 100%;
+      }
+
       .dashboard-grid {
         grid-template-columns: 1fr;
       }
 
+      table {
+        font-size: 12px;
+      }
+
+      th, td {
+        padding: 8px 10px;
+      }
+
+      .section-title {
+        font-size: 18px;
+      }
+
+      .btn-primary,
+      .btn-secondary,
+      .btn-success,
+      .btn-danger,
+      .btn-small {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
       .modal-content {
-        max-width: 90%;
+        width: 95%;
+        padding: 20px;
+      }
+
+      .btn-menu-toggle {
+        display: block;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 24px;
+        z-index: 999;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-menu-toggle:active {
+        transform: scale(0.95);
+      }
+    }
+
+    @media (min-width: 769px) {
+      .btn-menu-toggle {
+        display: none;
+      }
+    }
+
+    /* ============ UTILIDADES ============ */
+    .section-title {
+      color: var(--primary);
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .card {
+      background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 18px 30px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-align: center;
+      animation: slideDown 0.4s ease, slideOut 0.4s ease 4.5s forwards;
+      font-size: 16px;
+      min-width: 300px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+    }
+
+    .notification.success {
+      background: linear-gradient(135deg, #27ae60, #2ecc71);
+      border: 2px solid #27ae60;
+      color: #fff;
+    }
+
+    .notification.error {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      border: 2px solid #e74c3c;
+      color: #fff;
+    }
+
+    .notification.info {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      border: 2px solid #3498db;
+      color: #fff;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(400px);
       }
     }
   </style>
 </head>
 <body>
-
-  <div class="admin-container">
+  <div class="admin-wrapper">
     <!-- ============ SIDEBAR ============ -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-logo">
           <img src="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png" alt="Logo">
         </div>
-        <p class="sidebar-title">Admin Panel</p>
+        <p class="sidebar-title">Panel Admin</p>
       </div>
 
       <div class="sidebar-nav">
-        <div class="nav-item active" onclick="showSection('dashboard')">
+        <div class="nav-item active" onclick="showSection('dashboard', this)">
           <span class="nav-icon">📊</span>
           <span>Dashboard</span>
         </div>
-        <div class="nav-item" onclick="showSection('categorias')">
+        <div class="nav-item" onclick="showSection('categorias', this)">
           <span class="nav-icon">🏷️</span>
           <span>Categorías</span>
         </div>
-        <div class="nav-item" onclick="showSection('productos')">
+        <div class="nav-item" onclick="showSection('productos', this)">
           <span class="nav-icon">🍽️</span>
           <span>Productos</span>
         </div>
-        <div class="nav-item" onclick="showSection('precios')">
+        <div class="nav-item" onclick="showSection('precios', this)">
           <span class="nav-icon">💰</span>
           <span>Editar Precios</span>
         </div>
-        <div class="nav-item" onclick="showSection('imagenes')">
+        <div class="nav-item" onclick="showSection('imagenes', this)">
           <span class="nav-icon">🖼️</span>
           <span>Editar Imágenes</span>
         </div>
-        <div class="nav-item" onclick="showSection('descripciones')">
+        <div class="nav-item" onclick="showSection('descripciones', this)">
           <span class="nav-icon">📝</span>
           <span>Editar Descripciones</span>
         </div>
-        <div class="nav-item" onclick="showSection('backups')">
+        <div class="nav-item" onclick="showSection('analytics', this)">
+          <span class="nav-icon">📈</span>
+          <span>Estadísticas</span>
+        </div>
+        <div class="nav-item" onclick="showSection('backups', this)">
           <span class="nav-icon">💾</span>
           <span>Backups</span>
         </div>
@@ -569,17 +668,21 @@
 
     <!-- ============ MAIN CONTENT ============ -->
     <div class="main-content">
+      <button class="btn-menu-toggle" onclick="toggleSidebar()">☰</button>
       <div class="header">
-        <h1>🎛️ Panel Administrativo</h1>
-        <div class="user-info">
+        <div>
+          <h1>🎛️ Panel Administrativo</h1>
+        </div>
+        <div class="header-info">
           <p>Bienvenido, <strong>Admin</strong></p>
-          <p id="currentTime"></p>
+          <p id="currentTime">--:--:--</p>
+          <button onclick="mostrarEstadisticasRapidas()" style="margin-top:10px;padding:8px 16px;background:#FFD700;color:#000;border:none;border-radius:6px;font-weight:bold;cursor:pointer;font-size:12px;transition:all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">📊 Ver Estadísticas</button>
         </div>
       </div>
 
       <!-- ========== DASHBOARD ========== -->
       <div id="dashboard" class="section active">
-        <h2 style="color: var(--primary); margin-bottom: 20px;">📈 Dashboard</h2>
+        <h2 class="section-title">📈 Dashboard</h2>
         <div class="dashboard-grid">
           <div class="stat-card">
             <div class="stat-number" id="totalProductos">0</div>
@@ -594,20 +697,34 @@
             <div class="stat-label">Productos sin Precio</div>
           </div>
           <div class="stat-card">
+            <div class="stat-number" id="visitasTotal">0</div>
+            <div class="stat-label">Visitas Totales</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="pedidosTotal">0</div>
+            <div class="stat-label">Pedidos Totales</div>
+          </div>
+          <div class="stat-card">
             <div class="stat-number" id="ultimaModificacion">-</div>
             <div class="stat-label">Última Modificación</div>
           </div>
+        </div>
+
+        <!-- ========== SINCRONIZACIÓN FIREBASE ========== -->
+        <div style="margin-top: 30px; padding: 20px; background: rgba(255, 215, 0, 0.1); border: 2px solid #FFD700; border-radius: 10px; text-align: center;">
+          <p style="color: var(--primary); font-weight: bold; margin-bottom: 15px;">🔄 Sincronizar Menú a Firebase</p>
+          <button class="btn-primary" onclick="sincronizarTodoAFirebase()" style="background: linear-gradient(135deg, #FF6B35, #FFD700); padding: 15px 40px; font-size: 16px; font-weight: 900;">🚀 SINCRONIZAR AHORA</button>
+          <p style="color: var(--texto); font-size: 12px; margin-top: 10px;">Esto copiará todo el menú a Firebase para sincronización en tiempo real</p>
         </div>
       </div>
 
       <!-- ========== CATEGORÍAS ========== -->
       <div id="categorias" class="section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h2 style="color: var(--primary);">🏷️ Gestión de Categorías</h2>
-          <button class="btn-primary" onclick="openModalNuevaCategoria()">➕ Nueva Categoría</button>
+        <h2 class="section-title">🏷️ Gestión de Categorías</h2>
+        <div class="btn-group">
+          <button class="btn-primary" onclick="openModalCategoria()">➕ Nueva Categoría</button>
         </div>
-
-        <div id="categoriasTable" class="table-container">
+        <div class="table-container">
           <table>
             <thead>
               <tr>
@@ -625,120 +742,136 @@
 
       <!-- ========== PRODUCTOS ========== -->
       <div id="productos" class="section">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h2 style="color: var(--primary);">🍽️ Gestión de Productos</h2>
-          <button class="btn-primary" onclick="openModalNuevoProducto()">➕ Nuevo Producto</button>
+        <h2 class="section-title">✏️ Editar Nombre</h2>
+        <div class="btn-group">
+          <button class="btn-primary" onclick="openModalProducto()">➕ Nuevo Producto</button>
         </div>
-
-        <div id="productosTable" class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Categoría</th>
-                <th>Precio</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="productosBody">
-            </tbody>
-          </table>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+          <div style="flex: 1;">
+            <input type="text" id="nombreBuscador" placeholder="🔍 Busca un producto por nombre..." style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 2px solid #FFD700; border-radius: 6px; color: var(--texto); font-size: 14px;" oninput="filtrarProductosNombre()">
+          </div>
+          <div style="background: #FFD700; color: #000; padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 16px; min-width: 100px; text-align: center;">
+            Total: <span id="contadorNombre">0</span>
+          </div>
         </div>
+        <div id="productosGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
       </div>
 
-      <!-- ========== EDITAR PRECIOS ========== -->
+      <!-- ========== PRECIOS ========== -->
       <div id="precios" class="section">
-        <h2 style="color: var(--primary); margin-bottom: 20px;">💰 Edición Rápida de Precios</h2>
-
-        <div style="margin-bottom: 20px;">
-          <input type="text" id="searchProductos" placeholder="🔍 Buscar producto..." style="padding: 10px; border: 2px solid var(--primary); border-radius: 6px; width: 100%; max-width: 300px; background: rgba(255,255,255,0.05); color: var(--texto);">
+        <h2 class="section-title">💰 Editar Precios</h2>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+          <div style="flex: 1;">
+            <input type="text" id="preciosBuscador" placeholder="🔍 Busca un producto por nombre..." style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 2px solid #FFD700; border-radius: 6px; color: var(--texto); font-size: 14px;" oninput="filtrarProductosPrecios()">
+          </div>
+          <div style="background: #FFD700; color: #000; padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 16px; min-width: 100px; text-align: center;">
+            Total: <span id="contadorPrecios">0</span>
+          </div>
         </div>
-
-        <div id="preciosTable" class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Categoría</th>
-                <th>Precio Actual</th>
-                <th>Nuevo Precio</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody id="preciosBody">
-            </tbody>
-          </table>
+        <div id="preciosGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
+        <div id="preciosFooter" style="margin-top: 30px; text-align: center; display: none;">
+          <button class="btn-success" onclick="guardarTodosPreciosBtn()" style="font-size: 16px; padding: 15px 40px;">✅ Guardar Todos los Precios</button>
         </div>
       </div>
 
-      <!-- ========== EDITAR IMÁGENES ========== -->
+      <!-- ========== IMÁGENES ========== -->
       <div id="imagenes" class="section">
-        <h2 style="color: var(--primary); margin-bottom: 20px;">🖼️ Edición Rápida de Imágenes</h2>
-
-        <div style="margin-bottom: 20px;">
-          <input type="text" id="searchImagenes" placeholder="🔍 Buscar producto..." style="padding: 10px; border: 2px solid var(--primary); border-radius: 6px; width: 100%; max-width: 300px; background: rgba(255,255,255,0.05); color: var(--texto);">
+        <h2 class="section-title">🖼️ Editar Imágenes</h2>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+          <div style="flex: 1;">
+            <input type="text" id="imagenesBuscador" placeholder="🔍 Busca un producto por nombre..." style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 2px solid #FFD700; border-radius: 6px; color: var(--texto); font-size: 14px;" oninput="filtrarProductosImagenes()">
+          </div>
+          <div style="background: #FFD700; color: #000; padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 16px; min-width: 100px; text-align: center;">
+            Total: <span id="contadorImagenes">0</span>
+          </div>
         </div>
+        <div id="imagenesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
+      </div>
 
-        <div id="imagenesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+      <!-- ========== DESCRIPCIONES ========== -->
+      <div id="descripciones" class="section">
+        <h2 class="section-title">📝 Editar Descripciones</h2>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+          <div style="flex: 1;">
+            <input type="text" id="descripcionesBuscador" placeholder="🔍 Busca un producto por nombre..." style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 2px solid #FFD700; border-radius: 6px; color: var(--texto); font-size: 14px;" oninput="filtrarProductosDescripciones()">
+          </div>
+          <div style="background: #FFD700; color: #000; padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 16px; min-width: 100px; text-align: center;">
+            Total: <span id="contadorDescripciones">0</span>
+          </div>
+        </div>
+        <div id="descripcionesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
+        <div id="descripcionesFooter" style="margin-top: 30px; text-align: center; display: none;">
+          <button class="btn-success" onclick="guardarTodasDescripcionesBtn()" style="font-size: 16px; padding: 15px 40px;">✅ Guardar Todas las Descripciones</button>
         </div>
       </div>
 
-      <!-- ========== EDITAR DESCRIPCIONES ========== -->
-      <div id="descripciones" class="section">
-        <h2 style="color: var(--primary); margin-bottom: 20px;">📝 Edición de Descripciones</h2>
-
-        <div style="margin-bottom: 20px;">
-          <input type="text" id="searchDesc" placeholder="🔍 Buscar producto..." style="padding: 10px; border: 2px solid var(--primary); border-radius: 6px; width: 100%; max-width: 300px; background: rgba(255,255,255,0.05); color: var(--texto);">
+      <!-- ========== ESTADÍSTICAS ========== -->
+      <div id="analytics" class="section">
+        <h2 class="section-title">📈 Estadísticas</h2>
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="analyticsVisitasHoy">0</div>
+            <div class="stat-label">Visitas Hoy</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="analyticsVisitasTotal">0</div>
+            <div class="stat-label">Visitas Totales</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="analyticsPedidosHoy">0</div>
+            <div class="stat-label">Pedidos Hoy</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="analyticsPedidosTotal">0</div>
+            <div class="stat-label">Pedidos Totales</div>
+          </div>
         </div>
-
-        <div id="descripcionesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px;">
+        <div class="card">
+          <h3 style="color: var(--primary); margin-bottom: 15px;">🔧 Acciones</h3>
+          <div class="btn-group">
+            <button class="btn-secondary" onclick="exportAnalytics()">📥 Descargar Datos</button>
+            <button class="btn-danger" onclick="resetAnalytics()">🔄 Resetear Estadísticas</button>
+          </div>
         </div>
       </div>
 
       <!-- ========== BACKUPS ========== -->
       <div id="backups" class="section">
-        <h2 style="color: var(--primary); margin-bottom: 20px;">💾 Backups y Exportación</h2>
-
-        <div class="btn-group">
-          <button class="btn-success" onclick="descargarBackup()">⬇️ Descargar Backup</button>
-          <button class="btn-secondary" onclick="restaurarBackup()">⬆️ Restaurar desde Backup</button>
-          <button class="btn-danger" onclick="resetearDatos()">🔄 Resetear a Original</button>
+        <h2 class="section-title">💾 Sistema de Backups</h2>
+        <div class="card">
+          <h3 style="color: var(--primary); margin-bottom: 15px;">📦 Gestionar Datos</h3>
+          <div class="btn-group">
+            <button class="btn-primary" onclick="descargarBackup()">💾 Descargar Backup</button>
+            <button class="btn-secondary" onclick="subirBackup()">📤 Restaurar Backup</button>
+            <button class="btn-danger" onclick="resetearDatos()">⚠️ Resetear a Original</button>
+          </div>
         </div>
-
-        <div style="background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%); border: 2px solid var(--accent); border-radius: 12px; padding: 20px; margin-top: 30px;">
-          <h3 style="color: var(--primary); margin-bottom: 10px;">ℹ️ Información de Backups</h3>
-          <p style="color: var(--texto); margin-bottom: 10px;">• Los backups contienen toda la información del menú (categorías y productos)</p>
-          <p style="color: var(--texto); margin-bottom: 10px;">• Puedes descargar un backup en cualquier momento como respaldo</p>
-          <p style="color: var(--texto);">• Para restaurar, selecciona un archivo JSON previamente guardado</p>
+        <div class="card">
+          <p style="color: var(--texto); font-size: 13px;">
+            • Descarga un backup de tus datos (JSON)<br>
+            • Restaura un backup anterior<br>
+            • Resetea al menú original si algo sale mal
+          </p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ============ MODALS ============ -->
-
-  <!-- Modal Nueva Categoría -->
-  <div id="modalCategoria" class="modal">
+  <!-- ============ MODALES ============ -->
+  <div id="modalCategoria" class="modal" onclick="if(event.target === this) closeModal('modalCategoria')">
     <div class="modal-content">
       <div class="modal-header">
-        <span id="modalTitleCategoria">Nueva Categoría</span>
+        <span class="modal-title" id="modalTitleCategoria">Nueva Categoría</span>
         <button class="modal-close" onclick="closeModal('modalCategoria')">✕</button>
       </div>
       <form onsubmit="guardarCategoria(event)">
         <div class="form-group">
-          <label>Nombre de la Categoría *</label>
+          <label>Nombre *</label>
           <input type="text" id="categoriaNombre" required>
         </div>
         <div class="form-group">
           <label>Descripción</label>
           <textarea id="categoriaDesc"></textarea>
-        </div>
-        <div class="form-group">
-          <label>Tipo</label>
-          <select id="categoriaTipo">
-            <option value="plato">Plato</option>
-            <option value="galeria">Galería</option>
-          </select>
         </div>
         <div class="btn-group">
           <button type="submit" class="btn-success">💾 Guardar</button>
@@ -748,9 +881,70 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="js/config.js"></script>
-  <script src="js/storage.js"></script>
+  <div id="modalEstadisticas" class="modal" onclick="if(event.target === this) closeModal('modalEstadisticas')">
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <span class="modal-title">📊 Estadísticas de Visitas y Pedidos</span>
+        <button class="modal-close" onclick="closeModal('modalEstadisticas')">✕</button>
+      </div>
+      <div style="padding: 20px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+          <div style="background: rgba(255,215,0,0.1); border-left: 4px solid #FFD700; padding: 15px; border-radius: 6px;">
+            <p style="color: #FFD700; font-weight: bold; margin: 0 0 8px 0; font-size: 14px;">👥 Visitas Totales</p>
+            <p style="color: #FFD700; font-size: 32px; font-weight: 900; margin: 0;" id="estVisitasTotal">0</p>
+          </div>
+          <div style="background: rgba(255,107,53,0.1); border-left: 4px solid #FF6B35; padding: 15px; border-radius: 6px;">
+            <p style="color: #FF6B35; font-weight: bold; margin: 0 0 8px 0; font-size: 14px;">🛒 Pedidos Totales</p>
+            <p style="color: #FF6B35; font-size: 32px; font-weight: 900; margin: 0;" id="estPedidosTotal">0</p>
+          </div>
+        </div>
+
+        <div style="background: rgba(39,174,96,0.1); border: 2px solid #27ae60; border-radius: 8px; padding: 15px;">
+          <h4 style="color: #27ae60; margin: 0 0 12px 0;">📅 Hoy</h4>
+          <div style="display: flex; gap: 20px;">
+            <div>
+              <p style="color: var(--texto); font-size: 12px; margin: 0 0 6px 0;">👥 Visitas</p>
+              <p style="color: #27ae60; font-size: 24px; font-weight: bold; margin: 0;" id="estVisitasHoy">0</p>
+            </div>
+            <div>
+              <p style="color: var(--texto); font-size: 12px; margin: 0 0 6px 0;">🛒 Pedidos</p>
+              <p style="color: #27ae60; font-size: 24px; font-weight: bold; margin: 0;" id="estPedidosHoy">0</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="padding: 20px; border-top: 2px solid rgba(255,215,0,0.2); display: flex; gap: 10px;">
+        <button class="btn-secondary" onclick="exportarEstadisticas()" style="flex: 1;">📥 Descargar</button>
+        <button class="btn-primary" onclick="closeModal('modalEstadisticas')" style="flex: 1;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalProducto" class="modal" onclick="if(event.target === this) closeModal('modalProducto')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" id="modalTitleProducto">Nuevo Producto</span>
+        <button class="modal-close" onclick="closeModal('modalProducto')">✕</button>
+      </div>
+      <form onsubmit="guardarProducto(event)">
+        <div class="form-group">
+          <label>Nombre del Producto *</label>
+          <input type="text" id="productoNombre" required placeholder="Ingresa el nombre del producto">
+        </div>
+        <div class="btn-group">
+          <button type="submit" class="btn-success">💾 Guardar Nombre</button>
+          <button type="button" class="btn-secondary" onclick="closeModal('modalProducto')">Cancelar</button>
+        </div>
+        <input type="hidden" id="productoEditCat">
+        <input type="hidden" id="productoEditIdx">
+        <input type="hidden" id="productoCategoria">
+        <input type="hidden" id="productoPrecio">
+        <input type="hidden" id="productoDesc">
+        <input type="hidden" id="productoImg">
+      </form>
+    </div>
+  </div>
+
   <script>
     // Verificar sesión
     function checkSession() {
@@ -769,7 +963,7 @@
     }
 
     // Mostrar secciones
-    function showSection(sectionName) {
+    function showSection(sectionName, element) {
       // Ocultar todas las secciones
       document.querySelectorAll(".section").forEach(section => {
         section.classList.remove("active");
@@ -782,7 +976,9 @@
       document.querySelectorAll(".nav-item").forEach(item => {
         item.classList.remove("active");
       });
-      event.target.closest(".nav-item").classList.add("active");
+      if (element) {
+        element.classList.add("active");
+      }
 
       // Cargar datos si es necesario
       if (sectionName === "dashboard") {
@@ -797,6 +993,8 @@
         cargarImagenes();
       } else if (sectionName === "descripciones") {
         cargarDescripciones();
+      } else if (sectionName === "analytics") {
+        actualizarContadoresAnalytics();
       }
     }
 
@@ -821,7 +1019,32 @@
       document.getElementById("totalProductos").textContent = totalProds;
       document.getElementById("totalCategorias").textContent = Object.keys(menu).length;
       document.getElementById("sinPrecio").textContent = sinPrecio;
-      document.getElementById("ultimaModificacion").textContent = "Ahora";
+
+      // Actualizar contadores de analytics
+      actualizarContadoresAnalytics();
+    }
+
+    // Actualizar contadores de analytics
+    function actualizarContadoresAnalytics() {
+      if (typeof getAnalytics !== 'function') return;
+
+      const analytics = getAnalytics();
+
+      // Dashboard
+      if (document.getElementById("visitasTotal")) {
+        document.getElementById("visitasTotal").textContent = analytics.totalVisits;
+      }
+      if (document.getElementById("pedidosTotal")) {
+        document.getElementById("pedidosTotal").textContent = analytics.totalOrders;
+      }
+
+      // Analytics page
+      if (document.getElementById("analyticsVisitasHoy")) {
+        document.getElementById("analyticsVisitasHoy").textContent = analytics.todayVisits;
+        document.getElementById("analyticsVisitasTotal").textContent = analytics.totalVisits;
+        document.getElementById("analyticsPedidosHoy").textContent = analytics.todayOrders;
+        document.getElementById("analyticsPedidosTotal").textContent = analytics.totalOrders;
+      }
     }
 
     // Cargar categorías
@@ -842,7 +1065,6 @@
           <td>
             <div class="action-buttons">
               <button class="btn-small btn-edit" onclick="editarCategoria('${catKey}')">✏️ Editar</button>
-              <button class="btn-small btn-delete" onclick="eliminarCategoria('${catKey}')">🗑️ Eliminar</button>
             </div>
           </td>
         `;
@@ -853,51 +1075,109 @@
     // Cargar productos
     function cargarProductos() {
       const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
-      const tbody = document.getElementById("productosBody");
-      tbody.innerHTML = "";
+      const grid = document.getElementById("productosGrid");
+      grid.innerHTML = "";
+
+      let totalProductos = 0;
 
       Object.keys(menu).forEach(catKey => {
         if (Array.isArray(menu[catKey])) {
           menu[catKey].forEach((prod, idx) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-              <td><strong>${prod.name}</strong></td>
-              <td>${categoryInfo[catKey].label}</td>
-              <td>$${prod.price ? prod.price.toLocaleString("es-CO") : "Sin precio"}</td>
-              <td>
-                <div class="action-buttons">
-                  <button class="btn-small btn-edit" onclick="editarProducto('${catKey}', ${idx})">✏️ Editar</button>
-                  <button class="btn-small btn-delete" onclick="eliminarProducto('${catKey}', ${idx})">🗑️ Eliminar</button>
-                </div>
-              </td>
+            const card = document.createElement("div");
+            card.className = "card nombre-card";
+            card.setAttribute("data-nombre", prod.name.toLowerCase());
+            card.innerHTML = `
+              <h4 style="color: var(--primary); margin-bottom: 10px;">${prod.name}</h4>
+              <p style="color: var(--texto); font-size: 12px; margin-bottom: 15px;">Categoría: ${categoryInfo[catKey].label}</p>
+              <p style="color: var(--texto); font-size: 12px; margin-bottom: 15px;">Precio: $${prod.price ? prod.price.toLocaleString("es-CO") : "Sin precio"}</p>
+              <button class="btn-small btn-success" onclick="editarProducto('${catKey}', ${idx})" style="width:100%;">✏️ Editar Nombre</button>
             `;
-            tbody.appendChild(row);
+            grid.appendChild(card);
+            totalProductos++;
           });
         }
       });
+
+      document.getElementById("contadorNombre").textContent = totalProductos;
+      document.getElementById("nombreBuscador").value = "";
+    }
+
+    // Filtrar productos en editar nombre
+    function filtrarProductosNombre() {
+      const buscador = document.getElementById("nombreBuscador").value.toLowerCase();
+      const productos = document.querySelectorAll(".nombre-card");
+      let visibles = 0;
+
+      productos.forEach(prod => {
+        const nombre = prod.getAttribute("data-nombre");
+        if (nombre.includes(buscador)) {
+          prod.style.display = "";
+          visibles++;
+        } else {
+          prod.style.display = "none";
+        }
+      });
+
+      if (buscador === "") {
+        document.getElementById("contadorNombre").textContent = productos.length;
+      } else {
+        document.getElementById("contadorNombre").textContent = visibles;
+      }
     }
 
     // Cargar precios
     function cargarPrecios() {
       const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
-      const tbody = document.getElementById("preciosBody");
-      tbody.innerHTML = "";
+      const grid = document.getElementById("preciosGrid");
+      grid.innerHTML = "";
+
+      let totalProductos = 0;
 
       Object.keys(menu).forEach(catKey => {
         if (Array.isArray(menu[catKey])) {
           menu[catKey].forEach((prod, idx) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-              <td>${prod.name}</td>
-              <td>${categoryInfo[catKey].label}</td>
-              <td>$${prod.price ? prod.price.toLocaleString("es-CO") : "0"}</td>
-              <td><input type="number" value="${prod.price || 0}" id="precio_${catKey}_${idx}" style="width:100%; padding:6px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 4px;"></td>
-              <td><button class="btn-small btn-success" onclick="actualizarPrecio('${catKey}', ${idx})">✓ Actualizar</button></td>
+            const card = document.createElement("div");
+            card.className = "card precio-card";
+            card.setAttribute("data-nombre", prod.name.toLowerCase());
+            card.innerHTML = `
+              <h4 style="color: var(--primary); margin-bottom: 10px;">${prod.name}</h4>
+              <p style="color: var(--texto); font-size: 12px; margin-bottom: 10px;">Categoría: ${categoryInfo[catKey].label}</p>
+              <label style="color: var(--primary); font-weight: bold; margin-bottom: 8px; display: block;">Precio actual: $${prod.price ? prod.price.toLocaleString("es-CO") : "0"}</label>
+              <input type="number" value="${prod.price || 0}" id="precio_${catKey}_${idx}" placeholder="Nuevo precio" style="width:100%; padding:10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 6px; color: var(--texto); margin-bottom: 10px; font-family: inherit;">
+              <button class="btn-small btn-success" onclick="actualizarPrecio('${catKey}', ${idx})" style="width:100%;">✅ Guardar</button>
             `;
-            tbody.appendChild(row);
+            grid.appendChild(card);
+            totalProductos++;
           });
         }
       });
+
+      document.getElementById("contadorPrecios").textContent = totalProductos;
+      document.getElementById("preciosFooter").style.display = "block";
+      document.getElementById("preciosBuscador").value = "";
+    }
+
+    // Filtrar productos en precios
+    function filtrarProductosPrecios() {
+      const buscador = document.getElementById("preciosBuscador").value.toLowerCase();
+      const productos = document.querySelectorAll(".precio-card");
+      let visibles = 0;
+
+      productos.forEach(prod => {
+        const nombre = prod.getAttribute("data-nombre");
+        if (nombre.includes(buscador)) {
+          prod.style.display = "";
+          visibles++;
+        } else {
+          prod.style.display = "none";
+        }
+      });
+
+      if (buscador === "") {
+        document.getElementById("contadorPrecios").textContent = productos.length;
+      } else {
+        document.getElementById("contadorPrecios").textContent = visibles;
+      }
     }
 
     // Actualizar precio
@@ -905,11 +1185,37 @@
       const newPrice = parseInt(document.getElementById(`precio_${catKey}_${idx}`).value);
       const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
 
+      if (isNaN(newPrice) || newPrice <= 0) {
+        showNotification("El precio debe ser un número válido", "error");
+        return;
+      }
+
       if (menu[catKey] && menu[catKey][idx]) {
         menu[catKey][idx].price = newPrice;
         localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
-        showNotification("Precio actualizado correctamente", "success");
-        cargarPrecios();
+
+        console.log("📝 Guardando precio:", {
+          categoria: catKey,
+          indice: idx,
+          producto: menu[catKey][idx].name,
+          nuevoPrecio: newPrice
+        });
+
+        // Guardar en Firebase (con reintentos si es necesario)
+        if (typeof db !== 'undefined' && db !== null) {
+          sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
+        } else {
+          console.warn("⚠️ Firebase no está disponible, guardando solo en localStorage");
+        }
+
+        showNotification("✅ Precio actualizado correctamente", "success");
+        // Sincronizar cambios
+        sincronizarMenu();
+
+        // Recargar después de un pequeño delay
+        setTimeout(() => {
+          cargarPrecios();
+        }, 500);
       }
     }
 
@@ -919,21 +1225,51 @@
       const grid = document.getElementById("imagenesGrid");
       grid.innerHTML = "";
 
+      let totalProductos = 0;
+
       Object.keys(menu).forEach(catKey => {
         if (Array.isArray(menu[catKey])) {
           menu[catKey].forEach((prod, idx) => {
             const card = document.createElement("div");
-            card.style.cssText = "background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%); border: 2px solid var(--accent); border-radius: 12px; padding: 15px;";
+            card.className = "card producto-card";
+            card.setAttribute("data-nombre", prod.name.toLowerCase());
             card.innerHTML = `
               <img src="${prod.img || "https://via.placeholder.com/200"}" alt="${prod.name}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
               <p style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">${prod.name}</p>
-              <input type="text" value="${prod.img || ""}" id="img_${catKey}_${idx}" placeholder="URL de imagen" style="width:100%; padding:8px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 4px; margin-bottom: 10px; color: var(--texto);">
+              <input type="text" value="${prod.img || ""}" id="img_${catKey}_${idx}" placeholder="URL de imagen" style="width:100%; padding:8px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 4px; margin-bottom: 10px; color: var(--texto); font-family: inherit;">
               <button class="btn-small btn-success" onclick="actualizarImagen('${catKey}', ${idx})" style="width:100%;">Guardar Imagen</button>
             `;
             grid.appendChild(card);
+            totalProductos++;
           });
         }
       });
+
+      document.getElementById("contadorImagenes").textContent = totalProductos;
+      document.getElementById("imagenesBuscador").value = "";
+    }
+
+    // Filtrar productos en imágenes
+    function filtrarProductosImagenes() {
+      const buscador = document.getElementById("imagenesBuscador").value.toLowerCase();
+      const productos = document.querySelectorAll(".producto-card");
+      let visibles = 0;
+
+      productos.forEach(prod => {
+        const nombre = prod.getAttribute("data-nombre");
+        if (nombre.includes(buscador)) {
+          prod.style.display = "";
+          visibles++;
+        } else {
+          prod.style.display = "none";
+        }
+      });
+
+      if (buscador === "") {
+        document.getElementById("contadorImagenes").textContent = productos.length;
+      } else {
+        document.getElementById("contadorImagenes").textContent = visibles;
+      }
     }
 
     // Actualizar imagen
@@ -941,15 +1277,164 @@
       const newImg = document.getElementById(`img_${catKey}_${idx}`).value;
       const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
 
+      if (!newImg || newImg.trim() === "") {
+        showNotification("La URL de la imagen no puede estar vacía", "error");
+        return;
+      }
+
       if (menu[catKey] && menu[catKey][idx]) {
         menu[catKey][idx].img = newImg;
         localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
-        showNotification("Imagen actualizada correctamente", "success");
-        cargarImagenes();
+
+        console.log("📝 Guardando imagen:", {
+          categoria: catKey,
+          indice: idx,
+          producto: menu[catKey][idx].name,
+          nuevaImg: newImg
+        });
+
+        // Guardar en Firebase (con reintentos si es necesario)
+        if (typeof db !== 'undefined' && db !== null) {
+          sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
+        } else {
+          console.warn("⚠️ Firebase no está disponible, guardando solo en localStorage");
+        }
+
+        showNotification("✅ Imagen actualizada correctamente", "success");
+        sincronizarMenu();
+
+        // Recargar después de un pequeño delay para asegurar que se guardó
+        setTimeout(() => {
+          cargarImagenes();
+        }, 500);
       }
     }
 
-    // Guardar categoría
+    // Cargar descripciones
+    function cargarDescripciones() {
+      const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
+      const grid = document.getElementById("descripcionesGrid");
+      grid.innerHTML = "";
+
+      let totalProductos = 0;
+
+      Object.keys(menu).forEach(catKey => {
+        if (Array.isArray(menu[catKey])) {
+          menu[catKey].forEach((prod, idx) => {
+            const card = document.createElement("div");
+            card.className = "card descripcion-card";
+            card.setAttribute("data-nombre", prod.name.toLowerCase());
+            card.innerHTML = `
+              <h4 style="color: var(--primary); margin-bottom: 10px;">${prod.name}</h4>
+              <p style="color: var(--texto); font-size: 12px; margin-bottom: 10px;">Categoría: ${categoryInfo[catKey].label}</p>
+              <label style="color: var(--primary); font-weight: bold; margin-bottom: 8px; display: block;">Descripción:</label>
+              <textarea id="desc_${catKey}_${idx}" placeholder="Ingresa la descripción del producto" style="width:100%; padding:10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 6px; color: var(--texto); min-height: 80px; font-family: inherit; resize: vertical;">${prod.desc || ""}</textarea>
+              <button class="btn-small btn-success" onclick="actualizarDescripcion('${catKey}', ${idx})" style="width:100%; margin-top: 10px;">✅ Guardar</button>
+            `;
+            grid.appendChild(card);
+            totalProductos++;
+          });
+        }
+      });
+
+      document.getElementById("contadorDescripciones").textContent = totalProductos;
+      document.getElementById("descripcionesFooter").style.display = "block";
+      document.getElementById("descripcionesBuscador").value = "";
+    }
+
+    // Filtrar productos en descripciones
+    function filtrarProductosDescripciones() {
+      const buscador = document.getElementById("descripcionesBuscador").value.toLowerCase();
+      const productos = document.querySelectorAll(".descripcion-card");
+      let visibles = 0;
+
+      productos.forEach(prod => {
+        const nombre = prod.getAttribute("data-nombre");
+        if (nombre.includes(buscador)) {
+          prod.style.display = "";
+          visibles++;
+        } else {
+          prod.style.display = "none";
+        }
+      });
+
+      if (buscador === "") {
+        document.getElementById("contadorDescripciones").textContent = productos.length;
+      } else {
+        document.getElementById("contadorDescripciones").textContent = visibles;
+      }
+    }
+
+    // Actualizar descripción
+    function actualizarDescripcion(catKey, idx) {
+      const newDesc = document.getElementById(`desc_${catKey}_${idx}`).value;
+      const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
+
+      if (menu[catKey] && menu[catKey][idx]) {
+        menu[catKey][idx].desc = newDesc;
+        localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
+
+        console.log("📝 Guardando descripción:", {
+          categoria: catKey,
+          indice: idx,
+          producto: menu[catKey][idx].name,
+          nuevaDesc: newDesc
+        });
+
+        // Guardar en Firebase (con reintentos si es necesario)
+        if (typeof db !== 'undefined' && db !== null) {
+          sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
+        } else {
+          console.warn("⚠️ Firebase no está disponible, guardando solo en localStorage");
+        }
+
+        showNotification("✅ Descripción actualizada correctamente", "success");
+        sincronizarMenu();
+
+        // Recargar después de un pequeño delay
+        setTimeout(() => {
+          cargarDescripciones();
+        }, 500);
+      }
+    }
+
+    // Auxiliares - Modales
+    function openModalCategoria() {
+      document.getElementById("categoriaNombre").value = "";
+      document.getElementById("categoriaDesc").value = "";
+      document.getElementById("modalCategoria").classList.add("active");
+    }
+
+    function openModalProducto() {
+      document.getElementById("modalTitleProducto").textContent = "Nuevo Producto";
+      document.getElementById("productoNombre").value = "";
+      document.getElementById("productoPrecio").value = "0";
+      document.getElementById("productoDesc").value = "";
+      document.getElementById("productoImg").value = "";
+      document.getElementById("productoEditCat").value = "";
+      document.getElementById("productoEditIdx").value = "";
+
+      // Llenar el select de categorías
+      const select = document.getElementById("productoCategoria");
+      select.innerHTML = "";
+      select.disabled = false;
+      Object.keys(categoryInfo).forEach(catKey => {
+        const option = document.createElement("option");
+        option.value = catKey;
+        option.textContent = categoryInfo[catKey].label;
+        select.appendChild(option);
+      });
+
+      document.getElementById("modalProducto").classList.add("active");
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove("active");
+      }
+    }
+
     function guardarCategoria(event) {
       event.preventDefault();
       showNotification("Categoría guardada correctamente", "success");
@@ -957,35 +1442,161 @@
       cargarCategorias();
     }
 
-    // Funciones auxiliares
-    function openModal(modalId) {
-      document.getElementById(modalId).classList.add("active");
+    function guardarProducto(event) {
+      event.preventDefault();
+      const nombre = document.getElementById("productoNombre").value;
+      const categoria = document.getElementById("productoCategoria").value;
+      const precio = parseInt(document.getElementById("productoPrecio").value) || 0;
+      const desc = document.getElementById("productoDesc").value;
+      const img = document.getElementById("productoImg").value;
+      const editCat = document.getElementById("productoEditCat").value;
+      const editIdx = document.getElementById("productoEditIdx").value;
+
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+
+      if (editCat && editIdx !== "") {
+        // Editar producto existente
+        if (menu[editCat] && menu[editCat][editIdx]) {
+          menu[editCat][editIdx].name = nombre;
+          menu[editCat][editIdx].price = precio;
+          menu[editCat][editIdx].desc = desc;
+          menu[editCat][editIdx].img = img;
+
+          localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
+
+          // Guardar en Firebase
+          if (typeof db !== 'undefined' && db !== null) {
+            sincronizarProductoEnFirebase(editCat, editIdx, menu[editCat][editIdx]);
+          }
+
+          showNotification("✅ Producto actualizado correctamente", "success");
+          sincronizarMenu();
+
+          setTimeout(() => {
+            closeModal("modalProducto");
+            cargarProductos();
+          }, 300);
+        }
+      } else {
+        // Crear nuevo producto
+        if (!menu[categoria]) {
+          menu[categoria] = [];
+        }
+
+        const nuevoProducto = {
+          name: nombre,
+          price: precio,
+          desc: desc,
+          img: img,
+          icon: "🍽️"
+        };
+
+        menu[categoria].push(nuevoProducto);
+
+        localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
+
+        // Guardar en Firebase
+        if (typeof db !== 'undefined' && db !== null) {
+          sincronizarProductoEnFirebase(categoria, menu[categoria].length - 1, nuevoProducto);
+        }
+
+        showNotification("✅ Producto creado correctamente", "success");
+        sincronizarMenu();
+
+        setTimeout(() => {
+          closeModal("modalProducto");
+          cargarProductos();
+        }, 300);
+      }
     }
 
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove("active");
+    function guardarTodosPreciosBtn() {
+      showNotification("✅ Todos los precios se guardan automáticamente", "success");
     }
 
-    function openModalNuevaCategoria() {
-      document.getElementById("modalTitleCategoria").textContent = "Nueva Categoría";
-      document.getElementById("categoriaNombre").value = "";
-      document.getElementById("categoriaDesc").value = "";
-      openModal("modalCategoria");
+    function guardarTodasDescripcionesBtn() {
+      showNotification("✅ Todas las descripciones se guardan automáticamente", "success");
     }
 
-    function openModalNuevoProducto() {
-      showNotification("Abre desde gestión de productos", "info");
+    function mostrarEstadisticasRapidas() {
+      const today = new Date().toISOString().split('T')[0];
+      const analytics = JSON.parse(localStorage.getItem('lacimaAnalytics')) || {
+        totalVisits: 0,
+        totalOrders: 0,
+        dailyVisits: {},
+        dailyOrders: {},
+        lastVisitDate: null
+      };
+
+      document.getElementById("estVisitasTotal").textContent = analytics.totalVisits || 0;
+      document.getElementById("estPedidosTotal").textContent = analytics.totalOrders || 0;
+      document.getElementById("estVisitasHoy").textContent = analytics.dailyVisits?.[today] || 0;
+      document.getElementById("estPedidosHoy").textContent = analytics.dailyOrders?.[today] || 0;
+
+      document.getElementById("modalEstadisticas").classList.add("active");
+    }
+
+    function exportarEstadisticas() {
+      const analytics = JSON.parse(localStorage.getItem('lacimaAnalytics')) || {};
+      const dataStr = JSON.stringify(analytics, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'estadisticas-' + new Date().toISOString().split('T')[0] + '.json';
+      link.click();
+      showNotification("✅ Estadísticas descargadas", "success");
     }
 
     function showNotification(message, type = "success") {
       const notification = document.createElement("div");
       notification.className = `notification ${type}`;
-      notification.textContent = message;
+
+      // Agregar emoji según el tipo
+      let emoji = "✅";
+      if (type === "error") emoji = "❌";
+      if (type === "info") emoji = "ℹ️";
+
+      notification.textContent = `${emoji} ${message}`;
       document.body.appendChild(notification);
 
       setTimeout(() => {
         notification.remove();
-      }, 3000);
+      }, 5000);
+    }
+
+    function editarCategoria(catKey) {
+      showNotification("Editar categoría: " + categoryInfo[catKey].label, "info");
+    }
+
+    function editarProducto(catKey, idx) {
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+      const prod = menu[catKey][idx];
+
+      // Llenar el modal con los datos del producto
+      document.getElementById("modalTitleProducto").textContent = "Editar Producto";
+      document.getElementById("productoNombre").value = prod.name || "";
+      document.getElementById("productoPrecio").value = prod.price || 0;
+      document.getElementById("productoDesc").value = prod.desc || "";
+      document.getElementById("productoImg").value = prod.img || "";
+      document.getElementById("productoEditCat").value = catKey;
+      document.getElementById("productoEditIdx").value = idx;
+
+      // Llenar el select de categorías
+      const select = document.getElementById("productoCategoria");
+      select.innerHTML = "";
+      Object.keys(categoryInfo).forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat;
+        option.textContent = categoryInfo[cat].label;
+        option.selected = (cat === catKey);
+        select.appendChild(option);
+      });
+
+      // Deshabilitar el select de categoría al editar
+      select.disabled = true;
+
+      document.getElementById("modalProducto").classList.add("active");
     }
 
     function descargarBackup() {
@@ -1000,7 +1611,7 @@
       showNotification("Backup descargado correctamente", "success");
     }
 
-    function restaurarBackup() {
+    function subirBackup() {
       const input = document.createElement("input");
       input.type = "file";
       input.accept = ".json";
@@ -1012,6 +1623,7 @@
             const data = JSON.parse(event.target.result);
             localStorage.setItem("lacimaMenuV2", JSON.stringify(data));
             showNotification("Backup restaurado correctamente", "success");
+            location.reload();
           } catch {
             showNotification("Error al restaurar el backup", "error");
           }
@@ -1025,45 +1637,80 @@
       if (confirm("¿Estás seguro de que quieres resetear los datos al original? Esta acción no se puede deshacer.")) {
         localStorage.removeItem("lacimaMenuV2");
         showNotification("Datos reseteados al original", "success");
+        location.reload();
       }
     }
 
-    // Cargar descripciones
-    function cargarDescripciones() {
-      const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
-      const grid = document.getElementById("descripcionesGrid");
-      grid.innerHTML = "";
+    function exportAnalytics() {
+      if (typeof getAnalytics === 'function') {
+        const analytics = JSON.parse(localStorage.getItem('lacimaAnalytics')) || {};
+        const dataStr = JSON.stringify(analytics, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'analytics-' + new Date().toISOString().split('T')[0] + '.json';
+        link.click();
+      }
+    }
 
-      Object.keys(menu).forEach(catKey => {
-        if (Array.isArray(menu[catKey])) {
-          menu[catKey].forEach((prod, idx) => {
-            const card = document.createElement("div");
-            card.style.cssText = "background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%); border: 2px solid var(--accent); border-radius: 12px; padding: 20px;";
-            card.innerHTML = `
-              <h4 style="color: var(--primary); margin-bottom: 10px;">${prod.name}</h4>
-              <p style="color: var(--texto); font-size: 12px; margin-bottom: 10px;">Categoría: ${categoryInfo[catKey].label}</p>
-              <label style="color: var(--primary); font-weight: bold; margin-bottom: 8px; display: block;">Descripción:</label>
-              <textarea id="desc_${catKey}_${idx}" placeholder="Ingresa la descripción del producto" style="width:100%; padding:10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 6px; color: var(--texto); min-height: 80px; font-family: inherit; resize: vertical;">${prod.desc || ""}</textarea>
-              <button class="btn-small btn-success" onclick="actualizarDescripcion('${catKey}', ${idx})" style="width:100%; margin-top: 10px;">Guardar Descripción</button>
-            `;
-            grid.appendChild(card);
-          });
+    function resetAnalytics() {
+      if (confirm('¿Resetear las estadísticas?')) {
+        localStorage.removeItem('lacimaAnalytics');
+        location.reload();
+      }
+    }
+
+    function sincronizarMenu() {
+      // La sincronización se hace automáticamente cada 10 segundos en index.html
+      console.log("✓ Cambios guardados en localStorage");
+    }
+
+    // ========================================
+    // SINCRONIZAR TODO A FIREBASE
+    // ========================================
+
+    function sincronizarTodoAFirebase() {
+      const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
+
+      if (!menu || Object.keys(menu).length === 0) {
+        showNotification("No hay menú para sincronizar", "error");
+        return;
+      }
+
+      if (typeof db === 'undefined') {
+        showNotification("Firebase no está inicializado", "error");
+        return;
+      }
+
+      showNotification("Sincronizando menú a Firebase...", "info");
+
+      db.ref('menu').set(menu)
+        .then(() => {
+          showNotification("✅ ¡Menú sincronizado exitosamente a Firebase!", "success");
+          console.log("✅ Menú sincronizado:", menu);
+        })
+        .catch((error) => {
+          showNotification("❌ Error al sincronizar: " + error.message, "error");
+          console.error("Error:", error);
+        });
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.classList.toggle("active");
+    }
+
+    // Cerrar sidebar al hacer click fuera en celular
+    document.addEventListener("click", function(event) {
+      const sidebar = document.getElementById("sidebar");
+      const toggle = document.querySelector(".btn-menu-toggle");
+      if (window.innerWidth <= 768) {
+        if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+          sidebar.classList.remove("active");
         }
-      });
-    }
-
-    // Actualizar descripción
-    function actualizarDescripcion(catKey, idx) {
-      const newDesc = document.getElementById(`desc_${catKey}_${idx}`).value;
-      const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
-
-      if (menu[catKey] && menu[catKey][idx]) {
-        menu[catKey][idx].desc = newDesc;
-        localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
-        showNotification("Descripción actualizada correctamente", "success");
-        cargarDescripciones();
       }
-    }
+    });
 
     // Actualizar hora
     function actualizarHora() {
@@ -1076,9 +1723,24 @@
       checkSession();
       actualizarDashboard();
       setInterval(actualizarHora, 1000);
+      setInterval(actualizarContadoresAnalytics, 5000);
       actualizarHora();
     });
   </script>
 
+  <!-- ========================================
+       FIREBASE - SINCRONIZACIÓN EN TIEMPO REAL
+       ======================================== -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+  <script src="js/firebase-init.js"></script>
+  <script src="js/firebase-sync.js"></script>
+
+  <!-- Cargar datos del menú -->
+  <script src="js/config.js"></script>
+  <script src="js/menu.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
