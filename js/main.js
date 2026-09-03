@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
   buildFilters();
   buildSelect();
 
-  // Renderizar menú completo
-  renderMenu('all');
+  // Renderizar solo Entradas al abrir
+  renderMenu('Entradas');
 
   // Inicializar cupones por defecto
   initializeDefaultCoupons();
