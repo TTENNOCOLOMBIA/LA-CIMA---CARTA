@@ -8,6 +8,24 @@
 
 // ✨ LIMPIAR CARRITO AL CARGAR - Cada cliente comienza vacío
 let cart = [];
+
+// ========================================
+// FUNCIÓN PARA ABRIR WHATSAPP SIN POPUP
+// ========================================
+function abrirWhatsAppDirecto(numero, mensaje) {
+  // Detectar si es móvil
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    // Móvil: usar esquema whatsapp:// para abrir directo sin popup
+    const wa_url = `whatsapp://send?phone=${numero}&text=${encodeURIComponent(mensaje)}`;
+    window.location.href = wa_url;
+  } else {
+    // Desktop: usar wa.me que abre WhatsApp Web
+    const wa_url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+    window.open(wa_url, '_blank');
+  }
+}
 if (typeof localStorage !== 'undefined') {
   try {
     localStorage.removeItem('lacimaCart');
@@ -252,9 +270,8 @@ function sendOrder() {
 
   sendOrderToGoogleSheets(orderData);
 
-  const wa_url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(message)}`;
-
-  window.open(wa_url, '_blank');
+  // Abrir WhatsApp sin popup molesto (directo en móvil, web en desktop)
+  abrirWhatsAppDirecto(WA_NUMERO, message);
 
   // Limpiar carrito y datos
   cart = [];
@@ -474,9 +491,8 @@ function sendRealTimeOrder() {
 
   sendOrderToGoogleSheets(orderData);
 
-  // 7. ENVIAR al WhatsApp del número de domicilios
-  const wa_url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(message)}`;
-  window.open(wa_url, '_blank');
+  // 7. ENVIAR al WhatsApp del número de domicilios (sin popup molesto)
+  abrirWhatsAppDirecto(WA_NUMERO, message);
 
   // 8. CONFIRMAR y LIMPIAR
   alert('✅ ¡Pedido enviado! Revisa tu WhatsApp para confirmar.\n\nEl restaurante te contactará en breve.');
