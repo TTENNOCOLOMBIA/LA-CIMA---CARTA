@@ -862,7 +862,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <span class="modal-title" id="modalTitleCategoria">Nueva Categoría</span>
-        <button class="modal-close" onclick="closeModal('modalCategoria')">✕</button>
+        <button type="button" class="modal-close" onclick="closeModal('modalCategoria')">✕</button>
       </div>
       <form onsubmit="guardarCategoria(event)">
         <div class="form-group">
@@ -875,7 +875,7 @@
         </div>
         <div class="btn-group">
           <button type="submit" class="btn-success">💾 Guardar</button>
-          <button type="button" class="btn-secondary" onclick="closeModal('modalCategoria')">Cancelar</button>
+          <button type="button" class="btn-secondary" onclick="closeModal('modalCategoria'); return false;">Cancelar</button>
         </div>
       </form>
     </div>
@@ -924,7 +924,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <span class="modal-title" id="modalTitleProducto">Nuevo Producto</span>
-        <button class="modal-close" onclick="closeModal('modalProducto')">✕</button>
+        <button type="button" class="modal-close" onclick="closeModal('modalProducto')">✕</button>
       </div>
       <form onsubmit="guardarProducto(event)">
         <div class="form-group">
@@ -933,7 +933,7 @@
         </div>
         <div class="btn-group">
           <button type="submit" class="btn-success">💾 Guardar Nombre</button>
-          <button type="button" class="btn-secondary" onclick="closeModal('modalProducto')">Cancelar</button>
+          <button type="button" class="btn-secondary" onclick="closeModal('modalProducto'); return false;">Cancelar</button>
         </div>
         <input type="hidden" id="productoEditCat">
         <input type="hidden" id="productoEditIdx">
