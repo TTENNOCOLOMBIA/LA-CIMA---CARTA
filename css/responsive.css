@@ -226,4 +226,108 @@
     font-size: .85rem;
     padding: 10px 16px;
   }
+
+  /* ========================================
+     CARRITO RESPONSIVE MÓVIL
+     ======================================== */
+
+  .cart-modal-content {
+    max-width: 95%;
+    width: 95%;
+    max-height: 85vh;
+    padding: 20px;
+  }
+
+  .cart-modal-header {
+    font-size: 22px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+  }
+
+  .cart-modal-close {
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+  }
+
+  .cart-items-list {
+    max-height: 300px;
+    margin-bottom: 20px;
+  }
+
+  .cart-item {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 12px;
+    margin-bottom: 10px;
+    gap: 8px;
+  }
+
+  .cart-item-name {
+    flex: 1 1 100%;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFD700;
+    margin-bottom: 8px;
+    word-break: break-word;
+  }
+
+  .cart-item-qty {
+    flex: 1;
+    order: 2;
+    gap: 6px;
+  }
+
+  .qty-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    padding: 2px;
+  }
+
+  .cart-item-price {
+    flex: 1;
+    order: 3;
+    text-align: right;
+    font-size: 14px;
+    min-width: 60px;
+  }
+
+  .cart-remove {
+    flex: 0 1 28px;
+    order: 4;
+  }
+
+  .cart-totals {
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .total-row {
+    padding: 8px 0;
+    font-size: 14px;
+  }
+
+  .total-row.final {
+    font-size: 18px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .btn-option-factura,
+  .btn-option-simple,
+  .btn-send-order {
+    font-size: 14px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
 }

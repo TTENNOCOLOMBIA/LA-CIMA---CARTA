@@ -7,6 +7,10 @@
 // ========================================
 
 document.addEventListener('DOMContentLoaded', function() {
+  // ✨ LIMPIAR CARRITO AL CARGAR LA PÁGINA - Cada cliente comienza con carrito vacío
+  localStorage.removeItem('lacimaCart');
+  cart = [];
+
   // Construir filtros y select
   buildFilters();
   buildSelect();
@@ -17,10 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Inicializar cupones por defecto
   initializeDefaultCoupons();
 
-  // Cargar carrito desde localStorage
-  loadCartFromStorage();
-
-  // Inicializar carrito
+  // Inicializar carrito vacío (no cargar desde localStorage)
   updateCartUI();
 
   // Para evitar error si QRCode no está disponible
