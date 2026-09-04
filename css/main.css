@@ -16,20 +16,6 @@
   --texto: #F0E0C8;
 }
 
-/* Instrucción de categorías - DEBE SER VISIBLE */
-#instructionMessage {
-  display: block !important;
-  text-align: center !important;
-  padding: 20px 30px !important;
-  color: #FFD700 !important;
-  font-size: 1.1rem !important;
-  font-weight: 600 !important;
-  margin: 0 20px 20px !important;
-  border-radius: 12px !important;
-  background: rgba(0, 0, 0, 0.4) !important;
-  border: 2px solid #FFD700 !important;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -316,18 +302,6 @@ button {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
   border: 2px solid rgba(255, 107, 53, .3);
-}
-
-.instruction-message {
-  text-align: center;
-  padding: 20px 30px;
-  color: var(--primary);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 20px 20px;
-  border-radius: 12px;
-  background: rgba(0, 0, 0, .4);
-  border: 2px solid var(--primary);
 }
 
 .filter-btn {

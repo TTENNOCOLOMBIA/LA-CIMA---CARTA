@@ -232,13 +232,6 @@ function searchDishes(term) {
 function filterMenu(cat, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-
-  // Ocultar el mensaje de instrucción cuando se selecciona una categoría
-  const instructionMessage = document.getElementById('instructionMessage');
-  if (instructionMessage) {
-    instructionMessage.style.display = 'none';
-  }
-
   renderMenu(cat);
 }
 

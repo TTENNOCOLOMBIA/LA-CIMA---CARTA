@@ -15,12 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
   buildFilters();
   buildSelect();
 
-  // Mostrar mensaje de instrucción entre buscador y categorías
-  const instructionMessage = document.getElementById('instructionMessage');
-  if (instructionMessage) {
-    instructionMessage.style.display = 'block';
-  }
-
   // Inicializar cupones por defecto
   initializeDefaultCoupons();
 
