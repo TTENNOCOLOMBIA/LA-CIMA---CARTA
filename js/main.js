@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
   buildSelect();
 
   // Renderizar solo Entradas al abrir
-  renderMenu('Entradas');
+  renderMenu('entradas');
 
   // Inicializar cupones por defecto
   initializeDefaultCoupons();
