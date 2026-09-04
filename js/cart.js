@@ -354,3 +354,128 @@ function guardarFormularioSimple() {
   alert('✅ Datos confirmados.\n\nAhora presiona "Haz tu pedido en tiempo real" para continuar.');
   console.log('Datos confirmados:', datosFormularioSimple);
 }
+
+// ========================================
+// ENVÍO DE PEDIDO EN TIEMPO REAL - FUNCIÓN PRINCIPAL
+// ========================================
+
+function sendRealTimeOrder() {
+  // 1. VALIDAR que hay carrito
+  if (cart.length === 0) {
+    alert('⚠️ Tu carrito está vacío. Agrega productos antes de hacer un pedido.');
+    return;
+  }
+
+  // 2. VALIDAR que cliente completó datos básicos
+  const nombre = document.getElementById('customerName').value.trim();
+  const telefono = document.getElementById('customerPhone').value.trim();
+  const calle = document.getElementById('customerStreet').value.trim();
+  const barrio = document.getElementById('customerBarrio').value.trim();
+
+  if (!nombre || !telefono || !calle || !barrio) {
+    alert('⚠️ Por favor completa todos tus datos: Nombre, Teléfono, Dirección y Barrio');
+    return;
+  }
+
+  // 3. VALIDAR que tiene factura O datos simples
+  if (!datosFacturacion && !datosFormularioSimple) {
+    alert('⚠️ Por favor completa tus datos:\n- Llena los campos básicos (ya hecho) Y\n- Selecciona Factura Electrónica (opcional) O confirma sin factura');
+    return;
+  }
+
+  // 4. OBTENER ubicación con Google Maps (simulado por ahora, puedes integrar API real después)
+  const ubicacion = `${calle}, ${barrio}, Ipiales, Nariño`;
+
+  // 5. CONSTRUIR MENSAJE COMPLETO
+  const subtotal = getSubtotal();
+  const descuento = getTotalDiscount();
+  const subtotalConDescuento = subtotal - descuento;
+  const total = subtotalConDescuento + DOMICILIO;
+
+  // Productos
+  let productsList = cart.map(i =>
+    `• ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`
+  ).join('\n');
+
+  // Construir el mensaje
+  let messageParts = [
+    '*🚀 PEDIDO EN TIEMPO REAL - LA CIMA RESTAURANTE*',
+    '',
+    '*📦 PRODUCTOS:*'
+  ];
+
+  messageParts.push(productsList);
+  messageParts.push('');
+  messageParts.push('*💰 TOTALES:*');
+  messageParts.push('Subtotal: $' + subtotal.toLocaleString('es-CO'));
+
+  if (descuento > 0) {
+    messageParts.push((appliedCoupon ? appliedCoupon.description : 'Descuento') + ': -$' + descuento.toLocaleString('es-CO'));
+  }
+
+  messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
+  messageParts.push('─────────────────────');
+  messageParts.push('*TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + '*');
+  messageParts.push('');
+
+  // Datos del cliente
+  messageParts.push('*👤 DATOS DEL CLIENTE:*');
+  messageParts.push('Nombre: ' + nombre);
+  messageParts.push('Teléfono: ' + telefono);
+  messageParts.push('Dirección: ' + ubicacion);
+  messageParts.push('');
+
+  // Datos de factura (si aplica)
+  if (datosFacturacion) {
+    messageParts.push('*📄 FACTURA ELECTRÓNICA:*');
+    messageParts.push('Tipo Doc: ' + (datosFacturacion.tipoDoc === 'cc' ? 'Cédula' : 'NIT'));
+    messageParts.push('Documento: ' + datosFacturacion.numeroDoc);
+    messageParts.push('Nombre: ' + datosFacturacion.nombre);
+    messageParts.push('Correo: ' + datosFacturacion.correo);
+    messageParts.push('Teléfono: ' + datosFacturacion.telefono);
+    messageParts.push('Responsabilidad: ' + datosFacturacion.responsabilidad);
+    messageParts.push('Tributaria: ' + datosFacturacion.tributaria);
+    messageParts.push('');
+  }
+
+  messageParts.push('*📍 UBICACIÓN EN MAPS:*');
+  messageParts.push('https://maps.google.com/?q=' + encodeURIComponent(ubicacion));
+  messageParts.push('');
+  messageParts.push('─────────────────────');
+  messageParts.push('⏰ Pedido realizado: ' + new Date().toLocaleString('es-CO'));
+
+  const message = messageParts.join('\n');
+
+  // 6. GUARDAR pedido localmente
+  const orderData = {
+    customer: datosFormularioSimple || datosFacturacion,
+    products: cart,
+    totals: {
+      original: subtotal,
+      discount: descuento,
+      delivery: DOMICILIO,
+      final: total
+    },
+    coupon: appliedCoupon ? appliedCoupon.code : null,
+    location: ubicacion,
+    timestamp: new Date().toISOString()
+  };
+
+  sendOrderToGoogleSheets(orderData);
+
+  // 7. ENVIAR al WhatsApp del número de domicilios
+  const wa_url = `https://wa.me/${WA_NUMERO}?text=${encodeURIComponent(message)}`;
+  window.open(wa_url, '_blank');
+
+  // 8. CONFIRMAR y LIMPIAR
+  alert('✅ ¡Pedido enviado! Revisa tu WhatsApp para confirmar.\n\nEl restaurante te contactará en breve.');
+
+  // Limpiar
+  cart = [];
+  datosFacturacion = null;
+  datosFormularioSimple = null;
+  appliedCoupon = null;
+  updateCartUI();
+  clearCartFromStorage();
+  closeCart();
+}

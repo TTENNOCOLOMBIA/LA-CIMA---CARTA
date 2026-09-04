@@ -1727,3 +1727,63 @@ footer h4 {
     max-height: 600px;
   }
 }
+
+/* ========================================
+   BOTÓN PEDIDO EN TIEMPO REAL - ANIMADO
+   ======================================== */
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7),
+                0 0 20px rgba(255, 107, 53, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba(255, 107, 53, 0),
+                0 0 30px rgba(255, 107, 53, 0.7);
+    transform: scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 107, 53, 0),
+                0 0 20px rgba(255, 107, 53, 0.3);
+    transform: scale(1);
+  }
+}
+
+.btn-pedido-tiempo-real {
+  width: 100%;
+  padding: 20px 30px;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #FF6B35, #FF8C42);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+  animation: pulseGlow 2s infinite;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-pedido-tiempo-real:hover {
+  background: linear-gradient(135deg, #FF8C42, #FF6B35);
+  box-shadow: 0 12px 30px rgba(255, 107, 53, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-pedido-tiempo-real:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+}
+
+@media (max-width: 768px) {
+  .btn-pedido-tiempo-real {
+    padding: 18px 24px;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+}
