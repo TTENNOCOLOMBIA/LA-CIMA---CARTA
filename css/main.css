@@ -16,6 +16,58 @@
   --texto: #F0E0C8;
 }
 
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+@keyframes bounceArrows {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.2); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+  50% { text-shadow: 0 0 15px rgba(255, 215, 0, 0.9), 0 0 25px rgba(255, 215, 0, 0.6); }
+}
+
+/* ========================================
+   LETRERO DE CATEGORÍAS
+   ======================================== */
+
+.category-hint {
+  text-align: center;
+  padding: 15px 20px;
+  margin: 15px 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.category-hint .hint-text {
+  flex: 1;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+.category-hint .arrow-left,
+.category-hint .arrow-right {
+  font-size: 1.8rem;
+  animation: bounceArrows 1.5s ease-in-out infinite;
+  display: inline-block;
+}
+
+.category-hint .arrow-right {
+  animation-delay: 0.3s;
+}
+
 * {
   margin: 0;
   padding: 0;
