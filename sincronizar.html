@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Sincronizar La Cima - Firebase</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .status {
+            background: #f0f0f0;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-family: monospace;
+            min-height: 100px;
+            text-align: left;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: #333;
+        }
+        .status.success {
+            border-left-color: #10b981;
+            background: #ecfdf5;
+            color: #065f46;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #667eea;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Sincronizar La Cima</h1>
+        <p class="subtitle">Menú ↔️ Firebase</p>
+
+        <div class="status" id="status">⏳ Listo para sincronizar...</div>
+
+        <button onclick="sincronizar()" id="btn">
+            🚀 SINCRONIZAR AHORA
+        </button>
+    </div>
+
+    <script type="module">
+        // Menú completo y correcto (del 31 de agosto)
+        const defaultMenu = {
+            entradas: [
+                { name: "Mollejas Asadas", desc: "150 a 175g de molleja asada a la parrilla jugosas y suebes, acompañada de papa criolla, maduro y con una deliciosa salsa casera", price: 15000, icon: "🍖", img: "https://i.ibb.co/1YxPcdMb/file-000000007ed4820eb0189088baa97d5e.png" },
+                { name: "Chunchullo", desc: "Intestino delgado de res frito lentamente al punto de oro perfecto. Crujiente y crocante por fuera, tierno y jugoso por dentro. Servido con papa frita criolla recién hervida, salsas caseras y limón fresco que despierta cada bocado", price: 18000, icon: "🍢", img: "https://i.ibb.co/27Mk67t0/file-000000002130820eacb5b31afd0a8204.png" },
+                { name: "Chorizo pa' Picar", desc: "Chorizo de cerdo artesanal, ahumado al barril con especias caseras, asado a la parrilla al punto. Acompañado de papa dorada, arepa caliente, queso fresco derretido, limón ácido y nuestras salsas especiales. El clásico para abrir apetito", price: 12000, icon: "🌭", img: "https://i.ibb.co/hxQFgVJD/file-000000004a34820ea95eabcdf123ae7a.png" },
+                { name: "Empanadas x4", desc: "Cuatro empanadas crocantes de masa dorada y esponjosa, rellenas de queso con bocadillo de guayaba. Fritas al momento hasta crujía perfecta: tiernas y jugosas por dentro, doradas y crocantes por fuera", price: 8500, icon: "🥟", img: "https://i.ibb.co/d0cbFHH9/file-00000000f328820e99ec5ee4e42cfde5.png" },
+                { name: "Palitos de Queso x4", desc: "Cuatro palitos que explotan en el paladar: queso derretido y cremoso envuelto en masa crocante dorada. Tiernos adentro, crujientes en cada mordida. Acompañante irresistible que abre apetito y conquista cualquier mesa", price: 8500, icon: "🧀", img: "https://i.ibb.co/Hpgfy0P8/file-00000000a630820ebf35c713800abcbd.png" }
+            ],
+            infantil: [
+                { name: "PapiCono La Cima - Ranchera", desc: "Divertido cono de papas doradas con chorizo ahumado de cerdo, bañado en aguapanela y nuestras salsas. El favorito de los pequeños", price: 14000, icon: "🌭", img: "https://i.ibb.co/ccZJw4Pt/file-00000000f2f0820ea409edd555f465e4.png" },
+                { name: "PapiCono La Cima - Alitas", desc: "Cono de papas crujientes coronado con alitas broaster doradas y salsas a elección. Diversión y sabor en cada bocado", price: 16000, icon: "🍗", img: "https://i.ibb.co/HTNv2vgd/file-000000006f20820eaa357fd96d3b0b88.png" }
+            ],
+            diaria: [
+                { name: "Menú del día LA CIMA - Chuleta de Cerdo", desc: "Deliciosa sopa del día, chuleta de cerdo, arroz, ensalada fresca, papa y plátano. Incluye jugo natural y postre", price: 23000, icon: "🍲", img: "https://i.ibb.co/wNHnG43m/file-000000000b00820ea43061530b6f0cab.png" },
+                { name: "Menú del día LA CIMA - Bagre", desc: "Deliciosa sopa del día, bagre fresco, arroz, ensalada fresca, papa y plátano. Incluye jugo natural y postre", price: 23000, icon: "🐟", img: "https://i.ibb.co/8L4641sZ/file-00000000688c820e9571dea06db06bf9.png" }
+            ]
+        };
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVN_Mc-OX6bvCFKfCaDZJBSiDi3qKlipI",
+            authDomain: "la-cima-restaurante.firebaseapp.com",
+            databaseURL: "https://la-cima-restaurante-default-rtdb.firebaseio.com",
+            projectId: "la-cima-restaurante",
+            storageBucket: "la-cima-restaurante.appspot.com",
+            messagingSenderId: "841309570369",
+            appId: "1:841309570369:web:53dfc4b8ee6ba96c2c9e3a"
+        };
+
+        function log(msg, type = 'info') {
+            const el = document.getElementById('status');
+            const time = new Date().toLocaleTimeString('es-CO');
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : '⏳';
+            el.textContent += `\n${icon} [${time}] ${msg}`;
+            if (type === 'success') el.className = 'status success';
+            el.scrollTop = el.scrollHeight;
+        }
+
+        window.sincronizar = async function() {
+            document.getElementById('btn').disabled = true;
+            document.getElementById('btn').innerHTML = '<span class="spinner"></span>SINCRONIZANDO...';
+
+            try {
+                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js');
+                const { getDatabase, ref, set } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js');
+
+                log('Conectando a Firebase...');
+                const app = initializeApp(firebaseConfig);
+                const db = getDatabase(app);
+
+                log('Limpiando datos antiguos...');
+                const { remove } = await import('https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js');
+                await remove(ref(db, 'menu')).catch(() => {});
+
+                log('Cargando menú correcto...');
+                await set(ref(db, 'menu'), defaultMenu);
+
+                log('Guardando configuración...');
+                await set(ref(db, 'settings/sync_config'), {
+                    lastSync: new Date().toISOString(),
+                    autoSync: true,
+                    version: 'v1.0-Aug31-2026'
+                });
+
+                log('¡SINCRONIZACIÓN COMPLETADA!', 'success');
+                document.getElementById('btn').innerHTML = '✅ ¡LISTO!';
+
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+                document.getElementById('btn').disabled = false;
+                document.getElementById('btn').innerHTML = '🚀 REINTENTAR';
+            }
+        };
+    </script>
+</body>
+</html>

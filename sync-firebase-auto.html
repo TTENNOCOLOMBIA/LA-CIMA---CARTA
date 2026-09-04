@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sincronizando Firebase...</title>
+</head>
+<body style="font-family: Arial; text-align: center; padding: 50px; background: #f0f0f0;">
+    <h1>⏳ Sincronizando Firebase...</h1>
+    <p id="status">Conectando a Firebase...</p>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getDatabase, ref, set } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVN_Mc-OX6bvCFKfCaDZJBSiDi3qKlipI",
+            authDomain: "la-cima-restaurante.firebaseapp.com",
+            databaseURL: "https://la-cima-restaurante-default-rtdb.firebaseio.com",
+            projectId: "la-cima-restaurante",
+            storageBucket: "la-cima-restaurante.appspot.com",
+            messagingSenderId: "841309570369",
+            appId: "1:841309570369:web:53dfc4b8ee6ba96c2c9e3a"
+        };
+
+        // Menú completo y correcto
+        const defaultMenu = {
+            entradas: [
+                {
+                    name: "Mollejas Asadas",
+                    desc: "150 a 175g de molleja asada a la parrilla jugosas y suebes, acompañada de papa criolla, maduro y con una deliciosa salsa casera",
+                    price: 15000,
+                    icon: "🍖",
+                    img: "https://i.ibb.co/1YxPcdMb/file-000000007ed4820eb0189088baa97d5e.png"
+                },
+                {
+                    name: "Chunchullo",
+                    desc: "Intestino delgado de res frito lentamente al punto de oro perfecto. Crujiente y crocante por fuera, tierno y jugoso por dentro. Servido con papa frita criolla recién hervida, salsas caseras y limón fresco que despierta cada bocado",
+                    price: 18000,
+                    icon: "🍢",
+                    img: "https://i.ibb.co/27Mk67t0/file-000000002130820eacb5b31afd0a8204.png"
+                },
+                {
+                    name: "Chorizo pa' Picar",
+                    desc: "Chorizo de cerdo artesanal, ahumado al barril con especias caseras, asado a la parrilla al punto. Acompañado de papa dorada, arepa caliente, queso fresco derretido, limón ácido y nuestras salsas especiales. El clásico para abrir apetito",
+                    price: 12000,
+                    icon: "🌭",
+                    img: "https://i.ibb.co/hxQFgVJD/file-000000004a34820ea95eabcdf123ae7a.png"
+                },
+                {
+                    name: "Empanadas x4",
+                    desc: "Cuatro empanadas crocantes de masa dorada y esponjosa, rellenas de queso con bocadillo de guayaba. Fritas al momento hasta crujía perfecta: tiernas y jugosas por dentro, doradas y crocantes por fuera",
+                    price: 8500,
+                    icon: "🥟",
+                    img: "https://i.ibb.co/d0cbFHH9/file-00000000f328820e99ec5ee4e42cfde5.png"
+                },
+                {
+                    name: "Palitos de Queso x4",
+                    desc: "Cuatro palitos que explotan en el paladar: queso derretido y cremoso envuelto en masa crocante dorada. Tiernos adentro, crujientes en cada mordida. Acompañante irresistible que abre apetito y conquista cualquier mesa",
+                    price: 8500,
+                    icon: "🧀",
+                    img: "https://i.ibb.co/Hpgfy0P8/file-00000000a630820ebf35c713800abcbd.png"
+                }
+            ],
+            infantil: [
+                {
+                    name: "PapiCono La Cima - Ranchera",
+                    desc: "Divertido cono de papas doradas con chorizo ahumado de cerdo, bañado en aguapanela y nuestras salsas. El favorito de los pequeños",
+                    price: 14000,
+                    icon: "🌭",
+                    img: "https://i.ibb.co/ccZJw4Pt/file-00000000f2f0820ea409edd555f465e4.png"
+                },
+                {
+                    name: "PapiCono La Cima - Alitas",
+                    desc: "Cono de papas crujientes coronado con alitas broaster doradas y salsas a elección. Diversión y sabor en cada bocado",
+                    price: 16000,
+                    icon: "🍗",
+                    img: "https://i.ibb.co/HTNv2vgd/file-000000006f20820eaa357fd96d3b0b88.png"
+                }
+            ],
+            diaria: [
+                {
+                    name: "Menú del día LA CIMA - Chuleta de Cerdo",
+                    desc: "Deliciosa sopa del día, chuleta de cerdo, arroz, ensalada fresca, papa y plátano. Incluye jugo natural y postre",
+                    price: 23000,
+                    icon: "🍲",
+                    img: "https://i.ibb.co/wNHnG43m/file-000000000b00820ea43061530b6f0cab.png"
+                },
+                {
+                    name: "Menú del día LA CIMA - Bagre",
+                    desc: "Deliciosa sopa del día, bagre fresco, arroz, ensalada fresca, papa y plátano. Incluye jugo natural y postre",
+                    price: 23000,
+                    icon: "🐟",
+                    img: "https://i.ibb.co/8L4641sZ/file-00000000688c820e9571dea06db06bf9.png"
+                }
+            ]
+        };
+
+        async function syncNow() {
+            try {
+                document.getElementById('status').textContent = '🔗 Conectando a Firebase...';
+
+                const app = initializeApp(firebaseConfig);
+                const db = getDatabase(app);
+
+                document.getElementById('status').textContent = '📤 Sincronizando menú...';
+
+                await set(ref(db, 'menu'), defaultMenu);
+
+                document.getElementById('status').textContent = '⚙️ Guardando configuración...';
+
+                await set(ref(db, 'settings/sync_config'), {
+                    lastSync: new Date().toISOString(),
+                    autoSync: true,
+                    syncDirection: 'admin_to_firebase',
+                    preventStaleData: true,
+                    version: 'v1.0-Aug31-2026'
+                });
+
+                document.getElementById('status').innerHTML = '✅ <strong>¡SINCRONIZACIÓN EXITOSA!</strong><br><br>Firebase está actualizado con el menú correcto del 31 de agosto.';
+
+                setTimeout(() => {
+                    window.location.href = 'http://localhost:8000/';
+                }, 2000);
+
+            } catch (error) {
+                document.getElementById('status').innerHTML = '❌ Error: ' + error.message;
+                console.error(error);
+            }
+        }
+
+        window.addEventListener('load', syncNow);
+    </script>
+</body>
+</html>
