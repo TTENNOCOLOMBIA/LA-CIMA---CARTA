@@ -367,7 +367,7 @@ button {
 }
 
 .filter-btn {
-  padding: 10px 18px;
+  padding: 12px 16px;
   border: 2px solid var(--accent);
   background: rgba(0, 0, 0, .25);
   color: var(--texto);
@@ -376,17 +376,44 @@ button {
   font-weight: 600;
   font-size: .9rem;
   transition: all .25s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .15);
+}
+
+.filter-btn .icon {
+  font-size: 1.2rem;
+  display: inline-block;
+}
+
+.filter-btn .badge {
+  background: rgba(255, 255, 255, .2);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: .75rem;
+  font-weight: bold;
+  margin-left: 4px;
 }
 
 .filter-btn:hover {
   background: var(--accent);
   color: #fff;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 107, 53, .3);
 }
 
 .filter-btn.active {
-  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent) 0%, #FF8C42 100%);
   color: #fff;
+  border-color: #FF4500;
+  box-shadow: 0 8px 20px rgba(255, 107, 53, .5), inset 0 1px 0 rgba(255, 255, 255, .2);
+  font-weight: 700;
+}
+
+.filter-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* ========================================

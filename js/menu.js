@@ -42,7 +42,10 @@ function buildFilters() {
   f.innerHTML = '';
   const keys = Object.keys(categoryInfo);
   keys.forEach((k, idx) => {
-    f.innerHTML += '<button class="filter-btn' + (idx === 0 ? ' active' : '') + '" onclick="filterMenu(\'' + k + '\',this)">' + categoryInfo[k].label + '</button>';
+    const count = (menu[k] && menu[k].length) ? menu[k].length : 0;
+    const icon = categoryInfo[k].icon || '🍽️';
+    const badgeClass = count === 0 ? ' disabled' : '';
+    f.innerHTML += '<button class="filter-btn' + (idx === 0 ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><span class="icon">' + icon + '</span> <span class="label">' + categoryInfo[k].label + '</span> <span class="badge">' + count + '</span></button>';
   });
 }
 
