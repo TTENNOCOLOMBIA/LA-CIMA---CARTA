@@ -15,8 +15,12 @@ document.addEventListener('DOMContentLoaded', function() {
   buildFilters();
   buildSelect();
 
-  // Renderizar solo Entradas al abrir
-  renderMenu('entradas');
+  // NO renderizar nada automáticamente - esperar a que el usuario seleccione una categoría
+  // El usuario debe presionar un botón de categoría para ver los productos
+  const menuGrid = document.getElementById('menuGrid');
+  if (menuGrid) {
+    menuGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #FFD700; font-size: 18px;">👇 Selecciona una categoría para ver los productos 👇</div>';
+  }
 
   // Inicializar cupones por defecto
   initializeDefaultCoupons();
