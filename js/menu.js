@@ -105,7 +105,11 @@ function cardHTML(cat, d, i) {
   const badge = esLanzamiento ? '<div class="badge-launch">🎊 LANZAMIENTO -10%</div>' : (esDestacado ? '<div class="badge-star">⭐ El más pedido</div>' : '');
   const cardClass = 'dish-card' + (esLanzamiento ? ' lanzamiento' : '') + (esDestacado ? ' destacado' : '');
 
-  return '<div class="' + cardClass + '">' + badge + '<div class="dish-image' + noimgClass + '" ' + imgStyle + ' ' + clickFoto + '>' + icono + placeholder + '</div><div class="dish-content"><div class="dish-name">' + d.name + '</div><div class="dish-description">' + d.desc + '</div>' + priceHtml + '<div class="dish-buttons"><button class="btn-cart" ' + btnDisabled + ' onclick="addToCart(\'' + d.name + '\', ' + d.price + ')">' + btnText + '</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\'' + cat + '\',' + i + ')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\'' + cat + '\',' + i + ')">🗑️ Borrar</button></div></div></div>';
+  // Escapar comillas en el nombre del producto
+  const safeProductName = d.name.replace(/'/g, "\\'");
+  const safeCat = cat.replace(/'/g, "\\'");
+
+  return '<div class="' + cardClass + '">' + badge + '<div class="dish-image' + noimgClass + '" ' + imgStyle + ' ' + clickFoto + '>' + icono + placeholder + '</div><div class="dish-content"><div class="dish-name">' + d.name + '</div><div class="dish-description">' + d.desc + '</div>' + priceHtml + '<div class="dish-buttons"><button class="btn-cart btn-cart-animate" ' + btnDisabled + ' onclick="addToCart(\'' + safeProductName + '\', ' + d.price + ')">' + btnText + '</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\'' + safeCat + '\',' + i + ')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\'' + safeCat + '\',' + i + ')">🗑️ Borrar</button></div></div></div>';
 }
 
 function galleryHTML(cat, d, i) {
