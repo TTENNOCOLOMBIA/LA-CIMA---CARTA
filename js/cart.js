@@ -74,6 +74,7 @@ function marcarProductoEnCarrito(productName) {
 }
 
 function updateCartUI() {
+  // ✨ ORDEN INVERSO: Los últimos productos agregados aparecen primero
   const count = cart.reduce((sum, i) => sum + i.qty, 0);
   document.getElementById('cartCount').textContent = count;
 
