@@ -383,10 +383,15 @@ function sendRealTimeOrder() {
     return;
   }
 
-  // 3. VALIDAR que tiene factura O datos simples
+  // 3. SI NO HAY FACTURA, GUARDAR AUTOMÁTICAMENTE DATOS SIMPLES
   if (!datosFacturacion && !datosFormularioSimple) {
-    alert('⚠️ Por favor completa tus datos:\n- Llena los campos básicos (ya hecho) Y\n- Selecciona Factura Electrónica (opcional) O confirma sin factura');
-    return;
+    datosFormularioSimple = {
+      tipo: 'simple',
+      nombre: nombre,
+      telefono: telefono,
+      calle: calle,
+      barrio: barrio
+    };
   }
 
   // 4. OBTENER ubicación con Google Maps (simulado por ahora, puedes integrar API real después)
