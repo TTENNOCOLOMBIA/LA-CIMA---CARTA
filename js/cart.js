@@ -87,7 +87,12 @@ function updateCartUI() {
     return;
   }
 
-  itemsList.innerHTML = cart.map((item, idx) => `<div class="cart-item"><div class="cart-item-name">${item.name}</div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button></div><div class="cart-item-price">$${(item.price * item.qty).toLocaleString('es-CO')}</div><button class="cart-remove" onclick="removeFromCart(${idx})">✕</button></div>`).join('');
+  // ✨ Mostrar últimos productos primero (orden inverso)
+  const displayCart = [...cart].reverse();
+  itemsList.innerHTML = displayCart.map((item, displayIdx) => {
+    const actualIdx = cart.length - 1 - displayIdx; // Índice correcto en el array original
+    return `<div class="cart-item"><div class="cart-item-name">${item.name}</div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${actualIdx}, -1)">−</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty(${actualIdx}, 1)">+</button></div><div class="cart-item-price">$${(item.price * item.qty).toLocaleString('es-CO')}</div><button class="cart-remove" onclick="removeFromCart(${actualIdx})">✕</button></div>`;
+  }).join('');
 
   document.getElementById('cartForm').classList.add('show');
   updateTotals();
