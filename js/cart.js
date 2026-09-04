@@ -125,11 +125,30 @@ function updateTotals() {
 }
 
 function openCart() {
-  document.getElementById('cartModal').classList.add('active');
+  const modal = document.getElementById('cartModal');
+  if (modal) {
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+    modal.style.visibility = 'visible';
+    modal.style.opacity = '1';
+    modal.style.zIndex = '999';
+
+    // Scroll al top del modal para ver el resumen
+    modal.scrollTop = 0;
+
+    // Log para verificación
+    console.log('✅ Carrito abierto - cliente puede ver su pedido');
+  }
 }
 
 function closeCart() {
-  document.getElementById('cartModal').classList.remove('active');
+  const modal = document.getElementById('cartModal');
+  if (modal) {
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+    modal.style.visibility = 'hidden';
+    modal.style.opacity = '0';
+  }
 }
 
 // ========================================
