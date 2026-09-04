@@ -338,7 +338,7 @@
 
     /* ============ MODALES ============ */
     .modal {
-      display: none;
+      display: none !important;
       position: fixed;
       top: 0;
       left: 0;
@@ -348,10 +348,16 @@
       z-index: 2000;
       align-items: center;
       justify-content: center;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
 
     .modal.active {
-      display: flex;
+      display: flex !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
     }
 
     .modal-content {
@@ -637,7 +643,7 @@
         </div>
         <div class="nav-item" onclick="showSection('productos', this)">
           <span class="nav-icon">🍽️</span>
-          <span>Productos</span>
+          <span>Evitar</span>
         </div>
         <div class="nav-item" onclick="showSection('precios', this)">
           <span class="nav-icon">💰</span>
@@ -1432,8 +1438,23 @@
       try {
         const modal = document.getElementById(modalId);
         if (modal) {
+          // Remover clase active
           modal.classList.remove("active");
-          modal.style.display = "none";
+
+          // Forzar display none con !important
+          modal.style.display = "none !important";
+          modal.style.visibility = "hidden";
+          modal.style.pointerEvents = "none";
+          modal.style.opacity = "0";
+
+          // También resetear el atributo class
+          if (modal.className.includes("active")) {
+            modal.className = modal.className.replace("active", "").trim();
+          }
+
+          // Forzar repaint
+          void modal.offsetHeight;
+
           console.log(`✅ Modal ${modalId} cerrado`);
           return false;
         }
