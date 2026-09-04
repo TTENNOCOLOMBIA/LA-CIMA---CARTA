@@ -39,16 +39,27 @@ function addToCart(name, price) {
 
 // Función para marcar producto como agregado al carrito
 function marcarProductoEnCarrito(productName) {
-  // Buscar botón de agregar para este producto
-  const buttons = document.querySelectorAll('button');
-  buttons.forEach(btn => {
+  // Buscar botones "btn-cart" que correspondan a este producto
+  const cartButtons = document.querySelectorAll('.btn-cart');
+
+  cartButtons.forEach(btn => {
     const onclick = btn.getAttribute('onclick') || '';
-    // Si el botón es de agregar este producto
-    if (onclick.includes('addToCart') && onclick.includes(`"${productName}"`)) {
+
+    // Si el botón es para este producto específico
+    if (onclick.includes(`'${productName}'`) || onclick.includes(`"${productName}"`)) {
+      // Marcar como agregado
       btn.classList.add('btn-in-cart');
-      btn.style.backgroundColor = '#2563EB';
+
+      // Cambiar estilo a AZUL
+      btn.style.background = 'linear-gradient(135deg, #2563EB, #1D4ED8)';
       btn.style.color = '#fff';
-      btn.innerHTML = `✓ En carrito`;
+      btn.style.boxShadow = '0 4px 12px rgba(37, 99, 235, 0.5)';
+
+      // Cambiar texto
+      btn.textContent = '✓ En carrito';
+
+      // Opcionalmente, deshabilitar múltiples clics
+      btn.style.cursor = 'default';
     }
   });
 }
