@@ -6,7 +6,16 @@
 // VARIABLES GLOBALES
 // ========================================
 
+// ✨ LIMPIAR CARRITO AL CARGAR - Cada cliente comienza vacío
 let cart = [];
+if (typeof localStorage !== 'undefined') {
+  try {
+    localStorage.removeItem('lacimaCart');
+    console.log('✨ Carrito limpiado en localStorage al inicializar');
+  } catch (e) {
+    console.warn('⚠️ No se pudo limpiar localStorage:', e);
+  }
+}
 
 // ========================================
 // FUNCIONES DEL CARRITO
