@@ -1383,14 +1383,15 @@ footer h4 {
   background: transparent;
   color: #FFD700;
   border: 2px solid #FFD700;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s;
   flex-shrink: 0;
   text-align: center;
+  white-space: nowrap;
 }
 
 .cart-modal-close:hover {
