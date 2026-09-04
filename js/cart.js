@@ -408,7 +408,7 @@ function sendRealTimeOrder() {
       const tipoDoc = document.getElementById('tipoDoc')?.value;
       const numeroDoc = document.getElementById('numeroDoc')?.value;
       const nombreFactura = document.getElementById('nombreFactura')?.value;
-      const correo = document.getElementById('correo')?.value;
+      const correo = document.getElementById('correoFactura')?.value;
       const telefonoFactura = document.getElementById('telefonoFactura')?.value;
       const responsabilidad = document.getElementById('responsabilidad')?.value;
       const tributaria = document.getElementById('tributaria')?.value;
