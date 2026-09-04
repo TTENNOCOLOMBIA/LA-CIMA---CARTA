@@ -209,13 +209,10 @@ function sendOrder() {
     messageParts.push(`Responsabilidad: ${datosFacturacion.responsabilidad}`);
     messageParts.push(`Tributaria: ${datosFacturacion.tributaria}`);
   } else if (datosFormularioSimple) {
-    messageParts.push('*👤 CLIENTE (SIN FACTURA):*');
+    messageParts.push('*👤 DATOS DEL CLIENTE:*');
     messageParts.push(`Nombre: ${datosFormularioSimple.nombre}`);
     messageParts.push(`Teléfono: ${datosFormularioSimple.telefono}`);
-    if (datosFormularioSimple.correo) messageParts.push(`Correo: ${datosFormularioSimple.correo}`);
     messageParts.push(`Dirección: ${datosFormularioSimple.calle}, ${datosFormularioSimple.barrio}`);
-    if (datosFormularioSimple.complemento) messageParts.push(`Complemento: ${datosFormularioSimple.complemento}`);
-    if (datosFormularioSimple.notas) messageParts.push(`Notas: ${datosFormularioSimple.notas}`);
   }
 
   messageParts.push('');
@@ -341,7 +338,7 @@ function guardarFormularioSimple() {
 
   // Validar campos requeridos
   if (!nombre || !telefono || !calle || !barrio) {
-    alert('⚠️ Por favor completa los campos requeridos: Nombre, Teléfono, Calle y Barrio');
+    alert('⚠️ Por favor completa los campos requeridos: Nombre, Teléfono, Dirección y Barrio');
     return;
   }
 
@@ -350,13 +347,10 @@ function guardarFormularioSimple() {
     tipo: 'simple',
     nombre: nombre,
     telefono: telefono,
-    correo: document.getElementById('correoSimple').value,
     calle: calle,
-    barrio: barrio,
-    complemento: document.getElementById('customerComplement').value,
-    notas: document.getElementById('customerNotes').value
+    barrio: barrio
   };
 
   alert('✅ Datos confirmados.\n\nAhora presiona "Haz tu pedido en tiempo real" para continuar.');
-  console.log('Datos simples guardados:', datosFormularioSimple);
+  console.log('Datos confirmados:', datosFormularioSimple);
 }
