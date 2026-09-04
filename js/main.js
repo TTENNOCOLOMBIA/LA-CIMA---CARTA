@@ -8,8 +8,8 @@
 
 document.addEventListener('DOMContentLoaded', function() {
   // ✨ LIMPIAR CARRITO AL CARGAR LA PÁGINA - Cada cliente comienza con carrito vacío
-  localStorage.removeItem('lacimaCart');
-  cart = [];
+  clearCartFromStorage(); // Usar la función de storage.js
+  cart = []; // Limpiar variable global
 
   // Construir filtros y select
   buildFilters();
@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Inicializar carrito vacío (no cargar desde localStorage)
   updateCartUI();
+
+  console.log('✨ Carrito limpiado al cargar página');
 
   // Para evitar error si QRCode no está disponible
   generateQR = function() {};
