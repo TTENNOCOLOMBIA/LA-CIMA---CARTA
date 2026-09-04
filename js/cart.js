@@ -400,7 +400,36 @@ function sendRealTimeOrder() {
     return;
   }
 
-  // 3. SI NO HAY FACTURA, GUARDAR AUTOMÁTICAMENTE DATOS SIMPLES
+  // 3. INTENTAR GUARDAR FACTURA SI ESTÁ ABIERTA (aunque no haya guardado explícitamente)
+  if (!datosFacturacion) {
+    const formularioFactura = document.getElementById('formularioFactura');
+    if (formularioFactura && formularioFactura.style.display !== 'none') {
+      // Formulario de factura está abierto - intentar guardar
+      const tipoDoc = document.getElementById('tipoDoc')?.value;
+      const numeroDoc = document.getElementById('numeroDoc')?.value;
+      const nombreFactura = document.getElementById('nombreFactura')?.value;
+      const correo = document.getElementById('correo')?.value;
+      const telefonoFactura = document.getElementById('telefonoFactura')?.value;
+      const responsabilidad = document.getElementById('responsabilidad')?.value;
+      const tributaria = document.getElementById('tributaria')?.value;
+
+      // Si hay datos, guardarlos automáticamente
+      if (tipoDoc && numeroDoc && nombreFactura && correo && telefonoFactura && responsabilidad && tributaria) {
+        datosFacturacion = {
+          tipo: 'factura',
+          tipoDoc,
+          numeroDoc,
+          nombre: nombreFactura,
+          correo,
+          telefono: telefonoFactura,
+          responsabilidad,
+          tributaria
+        };
+      }
+    }
+  }
+
+  // 4. SI NO HAY FACTURA, GUARDAR AUTOMÁTICAMENTE DATOS SIMPLES
   if (!datosFacturacion && !datosFormularioSimple) {
     datosFormularioSimple = {
       tipo: 'simple',
