@@ -958,7 +958,7 @@ footer h4 {
   right: 28px;
   width: 75px;
   height: 75px;
-  background: linear-gradient(135deg, #25D366, #1da851);
+  background: linear-gradient(135deg, #2563EB, #1D4ED8);
   color: #fff;
   border-radius: 50%;
   display: flex;
@@ -966,7 +966,7 @@ footer h4 {
   justify-content: center;
   font-size: 36px;
   cursor: pointer;
-  box-shadow: 0 8px 30px rgba(37, 211, 102, .8);
+  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.9);
   z-index: 90;
   animation: pulse 2.5s ease-in-out infinite;
   border: 3px solid #fff;
@@ -975,14 +975,14 @@ footer h4 {
 
 .cart-icon:hover {
   transform: scale(1.15);
-  box-shadow: 0 12px 40px rgba(37, 211, 102, 1);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 1);
 }
 
 .cart-count {
   position: absolute;
   top: -8px;
   right: -8px;
-  background: #FF6B35;
+  background: #0EA5E9;
   color: #fff;
   width: 32px;
   height: 32px;
@@ -992,6 +992,7 @@ footer h4 {
   justify-content: center;
   font-weight: bold;
   font-size: 14px;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.6);
   border: 2px solid var(--madera);
 }
 
@@ -1255,6 +1256,48 @@ footer h4 {
   from {
     opacity: 0;
     transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   ESTILOS DE CARRITO MEJORADOS
+   ======================================== */
+
+/* Botón cuando producto está en el carrito */
+.btn-in-cart {
+  background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.5) !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-in-cart:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.7) !important;
+}
+
+.btn-in-cart::before {
+  content: "✓ ";
+  margin-right: 4px;
+}
+
+/* Mejora visual del modal del carrito */
+#cartModal {
+  transition: all 0.3s ease;
+}
+
+#cartModal.active {
+  animation: slideInUp 0.4s ease;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
   to {
     opacity: 1;

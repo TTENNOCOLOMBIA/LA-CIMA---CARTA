@@ -30,8 +30,27 @@ function addToCart(name, price) {
     });
   }
 
+  // ✨ Marcar botón como agregado (AZUL) ✨
+  marcarProductoEnCarrito(name);
+
   updateCartUI();
   openCart();
+}
+
+// Función para marcar producto como agregado al carrito
+function marcarProductoEnCarrito(productName) {
+  // Buscar botón de agregar para este producto
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(btn => {
+    const onclick = btn.getAttribute('onclick') || '';
+    // Si el botón es de agregar este producto
+    if (onclick.includes('addToCart') && onclick.includes(`"${productName}"`)) {
+      btn.classList.add('btn-in-cart');
+      btn.style.backgroundColor = '#2563EB';
+      btn.style.color = '#fff';
+      btn.innerHTML = `✓ En carrito`;
+    }
+  });
 }
 
 function updateCartUI() {
