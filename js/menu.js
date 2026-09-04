@@ -85,6 +85,18 @@ function revealCards() {
 // RENDERIZACIÓN DE CARDS
 // ========================================
 
+function getRatingStars(productName, baseRating = 4.5) {
+  // Generar un rating consistente basado en el nombre del producto
+  const hash = productName.charCodeAt(0) % 5;
+  const rating = [4.8, 4.7, 4.9, 4.6, 4.5][hash];
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  let stars = '';
+  for (let i = 0; i < fullStars; i++) stars += '⭐';
+  if (hasHalfStar) stars += '✨';
+  return { stars: stars, rating: rating };
+}
+
 function cardHTML(cat, d, i) {
   const esDestacado = destacados.includes(d.name);
   const esLanzamiento = launchProducts.includes(d.name);
@@ -112,7 +124,11 @@ function cardHTML(cat, d, i) {
   const safeProductName = d.name.replace(/'/g, "\\'");
   const safeCat = cat.replace(/'/g, "\\'");
 
-  return '<div class="' + cardClass + '">' + badge + '<div class="dish-image' + noimgClass + '" ' + imgStyle + ' ' + clickFoto + '>' + icono + placeholder + '</div><div class="dish-content"><div class="dish-name">' + d.name + '</div><div class="dish-description">' + d.desc + '</div>' + priceHtml + '<div class="dish-buttons"><button class="btn-cart btn-cart-animate" ' + btnDisabled + ' onclick="addToCart(\'' + safeProductName + '\', ' + d.price + ')">' + btnText + '</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\'' + safeCat + '\',' + i + ')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\'' + safeCat + '\',' + i + ')">🗑️ Borrar</button></div></div></div>';
+  // Agregar rating
+  const ratingData = getRatingStars(d.name);
+  const ratingHtml = '<div class="dish-rating"><div class="stars">' + ratingData.stars + '</div><div class="rating-value">' + ratingData.rating.toFixed(1) + '</div></div>';
+
+  return '<div class="' + cardClass + '">' + badge + '<div class="dish-image' + noimgClass + '" ' + imgStyle + ' ' + clickFoto + '>' + icono + placeholder + '</div><div class="dish-content"><div class="dish-name">' + d.name + '</div><div class="dish-description">' + d.desc + '</div>' + ratingHtml + priceHtml + '<div class="dish-buttons"><button class="btn-cart btn-cart-animate" ' + btnDisabled + ' onclick="addToCart(\'' + safeProductName + '\', ' + d.price + ')">' + btnText + '</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\'' + safeCat + '\',' + i + ')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\'' + safeCat + '\',' + i + ')">🗑️ Borrar</button></div></div></div>';
 }
 
 function galleryHTML(cat, d, i) {
