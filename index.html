@@ -326,6 +326,52 @@
   </div>
 
   <!-- ========================================
+       MODAL DE NOTAS PERSONALIZADAS
+       ======================================== -->
+  <div class="notes-modal" id="notesModal">
+    <div class="notes-modal-content">
+      <div class="notes-modal-header">
+        <h3 id="notesModalTitle">📝 Personalizar Producto</h3>
+        <button class="notes-modal-close" onclick="closeNotesModal()">✕</button>
+      </div>
+
+      <div class="notes-modal-body">
+        <div class="product-name-info" id="productNameInfo"></div>
+
+        <div class="notes-section">
+          <label for="notesTextarea" class="notes-label">Agrega tus preferencias especiales:</label>
+          <textarea
+            id="notesTextarea"
+            class="notes-textarea"
+            placeholder="Ej: Bajo en sal, sin cebolla, con mucho hielo, sabor extra, etc..."
+            maxlength="200"
+          ></textarea>
+          <div class="notes-counter">
+            <span id="notesCounter">0</span>/200 caracteres
+          </div>
+        </div>
+
+        <div class="suggested-tags">
+          <label>Sugerencias rápidas:</label>
+          <div class="tags-container">
+            <button type="button" class="tag-btn" onclick="addTag('Bajo en sal')">🧂 Bajo en sal</button>
+            <button type="button" class="tag-btn" onclick="addTag('Sin cebolla')">🧅 Sin cebolla</button>
+            <button type="button" class="tag-btn" onclick="addTag('Con hielo')">❄️ Con hielo</button>
+            <button type="button" class="tag-btn" onclick="addTag('Sabor extra')">🌶️ Sabor extra</button>
+            <button type="button" class="tag-btn" onclick="addTag('Bien cocido')">🔥 Bien cocido</button>
+            <button type="button" class="tag-btn" onclick="addTag('Poco cocido')">🥩 Poco cocido</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="notes-modal-footer">
+        <button type="button" class="btn-cancel" onclick="closeNotesModal()">❌ Cancelar</button>
+        <button type="button" class="btn-save-notes" onclick="saveNotes()">✅ Guardar Notas</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
        IMAGE MODAL
        ======================================== -->
   <div class="image-modal" id="imageModal">

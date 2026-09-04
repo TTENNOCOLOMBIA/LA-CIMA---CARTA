@@ -9,6 +9,10 @@
 // ✨ LIMPIAR CARRITO AL CARGAR - Cada cliente comienza vacío
 let cart = [];
 
+// Variable para manejar notas personalizadas
+let currentProductForNotes = null;
+let tempNotes = '';
+
 // ========================================
 // FUNCIÓN PARA ABRIR WHATSAPP SIN POPUP
 // ========================================
@@ -55,7 +59,8 @@ function addToCart(name, price, category = '', icon = '') {
       price,
       qty: 1,
       category: category || getDefaultCategory(name),
-      icon: icon || getDefaultIcon(name)
+      icon: icon || getDefaultIcon(name),
+      notes: ''
     });
   }
 
@@ -135,6 +140,17 @@ function updateCartUI() {
     const icon = item.icon || '🍽️';
     const unitPrice = item.price;
     const totalPrice = item.price * item.qty;
+    const hasNotes = item.notes && item.notes.trim().length > 0;
+    const notesDisplay = hasNotes ? `
+      <div class="cart-item-notes">
+        <div class="notes-label">📝 Notas:</div>
+        <div class="notes-text">${item.notes}</div>
+        <button class="edit-notes-btn" onclick="openNotesModal('${item.name.replace(/'/g, "\\'")}')" title="Editar notas">✏️ Editar</button>
+      </div>
+    ` : `
+      <button class="add-notes-btn" onclick="openNotesModal('${item.name.replace(/'/g, "\\'")}')" title="Agregar notas">📝 Agregar notas</button>
+    `;
+
     return `
       <div class="cart-item">
         <div class="cart-item-header">
@@ -153,6 +169,7 @@ function updateCartUI() {
             <span class="cart-item-total-price">$${totalPrice.toLocaleString('es-CO')}</span>
           </div>
         </div>
+        ${notesDisplay}
         <button class="cart-remove" onclick="removeFromCart(${actualIdx})">✕</button>
       </div>
     `;
@@ -579,4 +596,94 @@ function sendRealTimeOrder() {
   updateCartUI();
   clearCartFromStorage();
   closeCart();
+}
+
+// ========================================
+// FUNCIONES DE NOTAS PERSONALIZADAS
+// ========================================
+
+function openNotesModal(productName) {
+  const modal = document.getElementById('notesModal');
+  const titleEl = document.getElementById('notesModalTitle');
+  const infoEl = document.getElementById('productNameInfo');
+  const textarea = document.getElementById('notesTextarea');
+  
+  // Buscar el producto en el carrito para obtener su información
+  const cartItem = cart.find(i => i.name === productName);
+  
+  if (cartItem) {
+    titleEl.textContent = '📝 Personalizar: ' + productName;
+    infoEl.innerHTML = '<div class="product-info-badge"><span class="product-icon">' + cartItem.icon + '</span><span class="product-name">' + productName + '</span></div>';
+    textarea.value = cartItem.notes || '';
+    currentProductForNotes = cartItem;
+    tempNotes = cartItem.notes || '';
+  }
+  
+  updateNotesCounter();
+  modal.classList.add('active');
+  modal.style.display = 'flex';
+  modal.style.visibility = 'visible';
+  modal.style.opacity = '1';
+  textarea.focus();
+}
+
+function closeNotesModal() {
+  const modal = document.getElementById('notesModal');
+  modal.classList.remove('active');
+  modal.style.display = 'none';
+  modal.style.visibility = 'hidden';
+  modal.style.opacity = '0';
+  currentProductForNotes = null;
+  tempNotes = '';
+}
+
+function addTag(tag) {
+  const textarea = document.getElementById('notesTextarea');
+  const currentText = textarea.value;
+  
+  if (currentText && !currentText.endsWith(' ')) {
+    textarea.value = currentText + ', ' + tag;
+  } else {
+    textarea.value = (currentText ? currentText + ', ' : '') + tag;
+  }
+  
+  updateNotesCounter();
+  textarea.focus();
+}
+
+function updateNotesCounter() {
+  const textarea = document.getElementById('notesTextarea');
+  const counter = document.getElementById('notesCounter');
+  counter.textContent = textarea.value.length;
+}
+
+function saveNotes() {
+  const textarea = document.getElementById('notesTextarea');
+  const notes = textarea.value.trim();
+  
+  if (currentProductForNotes) {
+    currentProductForNotes.notes = notes;
+    updateCartUI();
+    saveCartToStorage();
+    closeNotesModal();
+  }
+}
+
+// Event listener para el contador de caracteres
+document.addEventListener('DOMContentLoaded', function() {
+  const textarea = document.getElementById('notesTextarea');
+  if (textarea) {
+    textarea.addEventListener('input', updateNotesCounter);
+  }
+});
+
+function addToCartWithNotes(name, price, category = '', icon = '') {
+  // Primero agregar al carrito normalmente
+  addToCart(name, price, category, icon);
+  
+  // Luego abrir el modal de notas para que el usuario pueda personalizarlo
+  // Esperar a que el carrito se actualice
+  setTimeout(() => {
+    openNotesModal(name);
+  }, 300);
 }
