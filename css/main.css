@@ -1393,6 +1393,8 @@ footer h4 {
   flex-shrink: 0;
   text-align: center;
   white-space: nowrap;
+  order: 1;
+  margin-left: 8px;
 }
 
 .cart-modal-close:hover {
