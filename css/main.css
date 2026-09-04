@@ -1417,9 +1417,9 @@ footer h4 {
   .cart-items-list {
     max-height: unset !important;
     height: auto !important;
-    overflow-y: unset !important;
-    overflow: unset !important;
-    min-height: 100px !important;
+    overflow: visible !important;
+    min-height: 150px !important;
+    display: block !important;
   }
 }
 
