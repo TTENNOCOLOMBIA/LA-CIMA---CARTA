@@ -144,8 +144,29 @@
       </div>
 
       <div class="cart-form" id="cartForm">
-        <h4 style="color:#1e90ff;font-size:22px;font-weight:bold;margin-bottom:20px;">Tus Datos 💙</h4>
+        <!-- Progress Indicator -->
+        <div class="form-progress">
+          <div class="progress-steps">
+            <div class="progress-step active" data-step="1">
+              <div class="progress-circle">1</div>
+              <div class="progress-label">Datos</div>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="2">
+              <div class="progress-circle">2</div>
+              <div class="progress-label">Factura</div>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step" data-step="3">
+              <div class="progress-circle">✓</div>
+              <div class="progress-label">Envío</div>
+            </div>
+          </div>
+        </div>
 
+        <h4 style="color:#1e90ff;font-size:22px;font-weight:bold;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
+          <span style="font-size:28px;">👤</span> Tus Datos 💙
+        </h4>
 
         <!-- FORMULARIO FACTURA ELECTRÓNICA -->
         <div class="form-section" id="formularioFactura" style="display:none;">

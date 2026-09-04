@@ -39,7 +39,7 @@ if (typeof localStorage !== 'undefined') {
 // FUNCIONES DEL CARRITO
 // ========================================
 
-function addToCart(name, price) {
+function addToCart(name, price, category = '', icon = '') {
   if (price === 0) {
     alert('Este plato aún no tiene precio. Consultá con La Cima por WhatsApp para conocer el costo.');
     return;
@@ -53,7 +53,9 @@ function addToCart(name, price) {
     cart.push({
       name,
       price,
-      qty: 1
+      qty: 1,
+      category: category || getDefaultCategory(name),
+      icon: icon || getDefaultIcon(name)
     });
   }
 
@@ -62,6 +64,26 @@ function addToCart(name, price) {
 
   updateCartUI();
   openCart();
+}
+
+// Función auxiliar para obtener categoría por defecto basada en el nombre
+function getDefaultCategory(name) {
+  const nameLower = name.toLowerCase();
+  if (nameLower.includes('pechuga') || nameLower.includes('cerdo') || nameLower.includes('pollo')) return 'parrilla';
+  if (nameLower.includes('arepa') || nameLower.includes('empanada') || nameLower.includes('bandeja')) return 'entradas';
+  if (nameLower.includes('sopa') || nameLower.includes('caldo')) return 'sopas';
+  return 'menu';
+}
+
+// Función auxiliar para obtener icono por defecto
+function getDefaultIcon(name) {
+  const nameLower = name.toLowerCase();
+  if (nameLower.includes('pechuga') || nameLower.includes('cerdo')) return '🔥';
+  if (nameLower.includes('sopa')) return '🍲';
+  if (nameLower.includes('arepa') || nameLower.includes('empanada')) return '🥟';
+  if (nameLower.includes('postre') || nameLower.includes('dulce')) return '🍰';
+  if (nameLower.includes('bebida') || nameLower.includes('jugo')) return '🥤';
+  return '🍽️';
 }
 
 // Función para marcar producto como agregado al carrito
@@ -110,7 +132,30 @@ function updateCartUI() {
   const displayCart = [...cart].reverse();
   itemsList.innerHTML = displayCart.map((item, displayIdx) => {
     const actualIdx = cart.length - 1 - displayIdx; // Índice correcto en el array original
-    return `<div class="cart-item"><div class="cart-item-name">${item.name}</div><div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${actualIdx}, -1)">−</button><span>${item.qty}</span><button class="qty-btn" onclick="changeQty(${actualIdx}, 1)">+</button></div><div class="cart-item-price">$${(item.price * item.qty).toLocaleString('es-CO')}</div><button class="cart-remove" onclick="removeFromCart(${actualIdx})">✕</button></div>`;
+    const icon = item.icon || '🍽️';
+    const unitPrice = item.price;
+    const totalPrice = item.price * item.qty;
+    return `
+      <div class="cart-item">
+        <div class="cart-item-header">
+          <span class="cart-item-icon">${icon}</span>
+          <div class="cart-item-name">${item.name}</div>
+        </div>
+        <div class="cart-item-details">
+          <div class="cart-item-unit-price">$${unitPrice.toLocaleString('es-CO')} c/u</div>
+          <div class="cart-item-qty">
+            <button class="qty-btn qty-minus" onclick="changeQty(${actualIdx}, -1)">−</button>
+            <span class="qty-value">${item.qty}</span>
+            <button class="qty-btn qty-plus" onclick="changeQty(${actualIdx}, 1)">+</button>
+          </div>
+          <div class="cart-item-total">
+            <span class="cart-item-total-label">Total:</span>
+            <span class="cart-item-total-price">$${totalPrice.toLocaleString('es-CO')}</span>
+          </div>
+        </div>
+        <button class="cart-remove" onclick="removeFromCart(${actualIdx})">✕</button>
+      </div>
+    `;
   }).join('');
 
   document.getElementById('cartForm').classList.add('show');
