@@ -229,8 +229,13 @@
             <label>Barrio *</label>
             <input type="text" id="customerBarrio" required placeholder="Ej: Barrio Puenes">
           </div>
+        </div>
 
-          <button type="button" class="btn-confirm-map" onclick="guardarFormularioSimple()" style="background:#27ae60;margin-top:15px;">✅ Continuar con mi Pedido</button>
+        <!-- OPCIÓN DE FACTURA ELECTRÓNICA -->
+        <div style="display:flex;gap:15px;margin-bottom:20px;margin-top:20px;flex-direction:column;">
+          <button type="button" class="btn-option-factura" onclick="toggleFormularioFactura(event)">
+            💳 Factura Electrónica (Opcional)
+          </button>
         </div>
 
         <!-- BOTÓN FINAL ENVIAR PEDIDO -->
