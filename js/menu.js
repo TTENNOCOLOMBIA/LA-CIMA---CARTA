@@ -160,6 +160,11 @@ function renderMenu(category) {
       a.style.display = 'flex';
     });
   }
+
+  // ✨ SCROLL AUTOMÁTICO suave hacia los productos
+  setTimeout(() => {
+    c.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
 }
 
 // ========================================
