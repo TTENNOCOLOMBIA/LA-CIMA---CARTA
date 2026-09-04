@@ -1438,8 +1438,9 @@ footer h4 {
 
 .cart-item {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 15px;
   background: rgba(255, 215, 0, 0.1);
   border-left: 4px solid #FFD700;
@@ -1449,15 +1450,20 @@ footer h4 {
 }
 
 .cart-item-name {
-  flex: 1;
+  flex: 1 1 100%;
   font-weight: bold;
   color: #FFD700;
+  font-size: 16px;
+  margin-bottom: 10px;
+  word-break: break-word;
 }
 
 .cart-item-qty {
   display: flex;
   gap: 10px;
   align-items: center;
+  flex: 0 1 auto;
+  order: 2;
 }
 
 .qty-btn {
@@ -1480,9 +1486,11 @@ footer h4 {
 .cart-item-price {
   color: #FFD700;
   font-weight: bold;
-  font-size: 16px;
-  min-width: 80px;
+  font-size: 18px;
+  min-width: 100px;
   text-align: right;
+  flex: 0 1 auto;
+  order: 3;
 }
 
 .cart-remove {
@@ -1495,6 +1503,8 @@ footer h4 {
   cursor: pointer;
   font-weight: bold;
   transition: all 0.2s;
+  flex: 0 1 auto;
+  order: 4;
 }
 
 .cart-remove:hover {
