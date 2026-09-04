@@ -1466,8 +1466,17 @@
     function guardarCategoria(event) {
       event.preventDefault();
       showNotification("Categoría guardada correctamente", "success");
-      closeModal("modalCategoria");
-      cargarCategorias();
+
+      setTimeout(() => {
+        // Cerrar modal de forma directa
+        const modal = document.getElementById("modalCategoria");
+        if (modal) {
+          modal.classList.remove("active");
+          modal.style.display = "none";
+          modal.style.visibility = "hidden";
+        }
+        cargarCategorias();
+      }, 300);
     }
 
     function guardarProducto(event) {
@@ -1501,7 +1510,13 @@
           sincronizarMenu();
 
           setTimeout(() => {
-            closeModal("modalProducto");
+            // Cerrar modal de forma directa
+            const modal = document.getElementById("modalProducto");
+            if (modal) {
+              modal.classList.remove("active");
+              modal.style.display = "none";
+              modal.style.visibility = "hidden";
+            }
             cargarProductos();
           }, 300);
         }
@@ -1532,7 +1547,13 @@
         sincronizarMenu();
 
         setTimeout(() => {
-          closeModal("modalProducto");
+          // Cerrar modal de forma directa
+          const modal = document.getElementById("modalProducto");
+          if (modal) {
+            modal.classList.remove("active");
+            modal.style.display = "none";
+            modal.style.visibility = "hidden";
+          }
           cargarProductos();
         }, 300);
       }
