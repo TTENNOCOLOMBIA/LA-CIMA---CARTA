@@ -862,7 +862,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <span class="modal-title" id="modalTitleCategoria">Nueva Categoría</span>
-        <button type="button" class="modal-close" onclick="closeModal('modalCategoria')">✕</button>
+        <button type="button" class="modal-close" onclick="event.stopPropagation(); closeModal('modalCategoria'); return false;">✕</button>
       </div>
       <form onsubmit="guardarCategoria(event)">
         <div class="form-group">
@@ -924,7 +924,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <span class="modal-title" id="modalTitleProducto">Nuevo Producto</span>
-        <button type="button" class="modal-close" onclick="closeModal('modalProducto')">✕</button>
+        <button type="button" class="modal-close" onclick="event.stopPropagation(); closeModal('modalProducto'); return false;">✕</button>
       </div>
       <form onsubmit="guardarProducto(event)">
         <div class="form-group">
@@ -1429,9 +1429,16 @@
     }
 
     function closeModal(modalId) {
-      const modal = document.getElementById(modalId);
-      if (modal) {
-        modal.classList.remove("active");
+      try {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          modal.classList.remove("active");
+          modal.style.display = "none";
+          console.log(`✅ Modal ${modalId} cerrado`);
+          return false;
+        }
+      } catch (error) {
+        console.error(`Error cerrando modal ${modalId}:`, error);
       }
     }
 
