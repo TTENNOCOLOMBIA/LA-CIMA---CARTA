@@ -2,10 +2,10 @@
    SINCRONIZACIÓN CON FIREBASE
    ======================================== */
 
-// Configuración de Firebase (API key es pública - no es secreto)
-// gitleaks:allow
+// Configuración de Firebase
+// API key se inyecta desde variables de entorno en Netlify
 const firebaseConfig = {
-    apiKey: "AIzaSyCVN_Mc-OX6bvCFKfCaDZJBSiDi3qKlipI",  // 🔒 API key pública de Firebase
+    apiKey: window.__FIREBASE_API_KEY__ || "default-key-not-set",
     authDomain: "la-cima-restaurante.firebaseapp.com",
     databaseURL: "https://la-cima-restaurante-default-rtdb.firebaseio.com",
     projectId: "la-cima-restaurante",

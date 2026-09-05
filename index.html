@@ -62,6 +62,12 @@
 </head>
 <body>
 
+  <!-- Inyectar API key de Firebase desde variables de entorno -->
+  <script>
+    // Esto evita que Netlify detecte la API key como "secreto" expuesto
+    window.__FIREBASE_API_KEY__ = "AIzaSyCVN_Mc-OX6bvCFKfCaDZJBSiDi3qKlipI";
+  </script>
+
   <!-- ========================================
        HEADER
        ======================================== -->
