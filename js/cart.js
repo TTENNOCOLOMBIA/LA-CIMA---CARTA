@@ -518,9 +518,13 @@ function sendRealTimeOrder() {
   const total = subtotalConDescuento + DOMICILIO;
 
   // Productos
-  let productsList = cart.map(i =>
-    `• ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`
-  ).join('\n');
+  let productsList = cart.map(i => {
+    let line = `• ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`;
+    if (i.notes && i.notes.trim().length > 0) {
+      line += `\n  📝 ${i.notes}`;
+    }
+    return line;
+  }).join('\n');
 
   // Construir el mensaje
   let messageParts = [
