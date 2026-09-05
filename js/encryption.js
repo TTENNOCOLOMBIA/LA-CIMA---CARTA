@@ -22,6 +22,12 @@ function encryptCustomerData(data) {
   }
 
   try {
+    // Validar que CryptoJS esté disponible
+    if (typeof CryptoJS === 'undefined' || !CryptoJS.AES) {
+      console.warn('⚠️ CryptoJS no está disponible, datos NO encriptados');
+      return JSON.stringify(data);
+    }
+
     // Convertir objeto a JSON string
     const jsonString = JSON.stringify(data);
 
@@ -49,6 +55,16 @@ function decryptCustomerData(encryptedData) {
   }
 
   try {
+    // Validar que CryptoJS esté disponible
+    if (typeof CryptoJS === 'undefined' || !CryptoJS.AES) {
+      console.warn('⚠️ CryptoJS no está disponible, intentando JSON parse');
+      try {
+        return JSON.parse(encryptedData);
+      } catch (e) {
+        return null;
+      }
+    }
+
     // Desencriptar
     const decrypted = CryptoJS.AES.decrypt(
       encryptedData,
@@ -158,6 +174,11 @@ function decryptFromStorage(key) {
 
 function generateHash(data) {
   try {
+    if (typeof CryptoJS === 'undefined' || !CryptoJS.SHA256) {
+      console.warn('⚠️ CryptoJS no está disponible para hash');
+      return null;
+    }
+
     const hash = CryptoJS.SHA256(JSON.stringify(data)).toString();
     return hash;
   } catch (error) {
