@@ -2,11 +2,26 @@
 # NETLIFY CONFIGURATION - LA CIMA RESTAURANTE
 # ========================================
 
-# Build command que genera configuración desde variables de entorno
+# Build command
 [build]
-  command = "node build-config.js && echo 'Production build'"
+  command = "echo 'Production build'"
   publish = "."
   functions = "netlify/functions"
+
+# ========================================
+# ESCANEO DE SECRETOS
+# ========================================
+# Netlify busca los VALORES de las variables de entorno dentro de los
+# archivos publicados y bloquea el deploy si los encuentra.
+#
+# Se omiten solo estas dos porque NO son secretos:
+#  - WHATSAPP_NUMBER: el número está a la vista en la web a propósito
+#    (index.html y js/config.js) para que los clientes escriban.
+#  - NODE_ENV: su valor es "production", una palabra común.
+#
+# ADMIN_PASSWORD y ENCRYPTION_KEY siguen protegidas por el escáner.
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "WHATSAPP_NUMBER,NODE_ENV"
 
 # Environment variables (configurar en dashboard de Netlify)
 # - ADMIN_PASSWORD

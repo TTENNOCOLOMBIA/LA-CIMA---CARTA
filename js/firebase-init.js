@@ -3,9 +3,8 @@
    ======================================== */
 
 // Configuración de Firebase
-// API key se inyecta desde variables de entorno en Netlify
 const firebaseConfig = {
-    apiKey: window.__FIREBASE_API_KEY__ || "default-key-not-set",
+    apiKey: "AIzaSyCVN_Mc-OX6bvCFKfCaDZJBSiDi3qKlipI",
     authDomain: "la-cima-restaurante.firebaseapp.com",
     databaseURL: "https://la-cima-restaurante-default-rtdb.firebaseio.com",
     projectId: "la-cima-restaurante",
