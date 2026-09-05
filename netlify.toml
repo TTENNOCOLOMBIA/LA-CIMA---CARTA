@@ -108,11 +108,21 @@
 # REDIRECTS PARA SEGURIDAD
 # ========================================
 
-# Bloquear acceso público a la documentación interna (.md).
-# Se publicaba toda la carpeta raíz, así que archivos como
-# SETUP-SEGURIDAD.md quedaban legibles desde internet.
+# Bloquear acceso público a la documentación interna.
+# Se publica toda la carpeta raíz (publish = "."), así que los .md
+# quedaban legibles desde internet; SETUP-SEGURIDAD.md llegó a exponer
+# la contraseña del admin. Ahora viven en docs/ y esa ruta se bloquea.
+#
+# Nota: Netlify NO soporta comodines de extensión ("/*.md" no funciona).
+# El splat solo aplica a segmentos de ruta completos, como "/docs/*".
 [[redirects]]
-  from = "/*.md"
+  from = "/docs/*"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
   to = "/index.html"
   status = 404
   force = true
