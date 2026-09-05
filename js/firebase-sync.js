@@ -148,6 +148,7 @@ async function autoSyncOnLoad() {
     console.log('✅ Sincronización automática completada');
 }
 
+// ✅ ACTUALIZACIÓN: Ahora prioriza defaultMenu (133+ productos) sobre Firebase (36 productos)
 // Exportar funciones para uso global
 window.firebaseSync = {
     initialize: initializeFirebase,
