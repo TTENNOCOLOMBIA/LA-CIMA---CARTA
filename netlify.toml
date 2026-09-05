@@ -23,7 +23,13 @@
 
   [headers.values]
     # Content Security Policy - Protege contra XSS
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.gstatic.com https://*.firebaseapp.com 'unsafe-inline'; style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss: https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com; frame-src https://player.vimeo.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
+    # Nota: script-src permite cualquier host HTTPS en vez de listar
+    # dominios uno por uno. Firebase (gstatic.com) importa sub-módulos
+    # internos dinámicamente desde rutas que una lista explícita de
+    # dominios no cubre de forma confiable. Sigue bloqueado: http:,
+    # data:/blob: como origen de script, y todo lo demás (object-src,
+    # frame-ancestors, form-action) permanece restrictivo.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; frame-src https://player.vimeo.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
 
     # X-Frame-Options - Protege contra clickjacking
     X-Frame-Options = "SAMEORIGIN"
