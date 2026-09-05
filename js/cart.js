@@ -637,20 +637,6 @@ function closeNotesModal() {
   tempNotes = '';
 }
 
-function addTag(tag) {
-  const textarea = document.getElementById('notesTextarea');
-  const currentText = textarea.value;
-  
-  if (currentText && !currentText.endsWith(' ')) {
-    textarea.value = currentText + ', ' + tag;
-  } else {
-    textarea.value = (currentText ? currentText + ', ' : '') + tag;
-  }
-  
-  updateNotesCounter();
-  textarea.focus();
-}
-
 function updateNotesCounter() {
   const textarea = document.getElementById('notesTextarea');
   const counter = document.getElementById('notesCounter');
@@ -679,11 +665,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function addToCartWithNotes(name, price, category = '', icon = '') {
   // Primero agregar al carrito normalmente
-  addToCart(name, price, category, icon);
-  
-  // Luego abrir el modal de notas para que el usuario pueda personalizarlo
-  // Esperar a que el carrito se actualice
-  setTimeout(() => {
-    openNotesModal(name);
-  }, 300);
-}
