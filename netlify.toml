@@ -46,7 +46,9 @@
     # dominios no cubre de forma confiable. Sigue bloqueado: http:,
     # data:/blob: como origen de script, y todo lo demás (object-src,
     # frame-ancestors, form-action) permanece restrictivo.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; frame-src https://player.vimeo.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
+    # frame-src incluye identity.netlify.com porque el widget de Netlify
+    # Identity (login del panel de admin) se renderiza dentro de un iframe.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; frame-src https://player.vimeo.com https://maps.google.com https://identity.netlify.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
 
     # X-Frame-Options - Protege contra clickjacking
     X-Frame-Options = "SAMEORIGIN"
@@ -123,6 +125,36 @@
 
 [[redirects]]
   from = "/README.md"
+  to = "/index.html"
+  status = 404
+  force = true
+
+# Herramientas de mantenimiento de Firebase. Estaban públicas y sin ningún
+# login, y escriben directo en la base de datos; firebase-admin.html incluso
+# ejecuta remove(ref(db, '/')), que borra la base entera.
+# Se bloquean: proteger admin-panel.html no sirve de nada si estas puertas
+# quedan abiertas. Siguen en el repo para uso local (abrir el archivo desde
+# el disco), pero ya no se sirven desde el sitio.
+[[redirects]]
+  from = "/firebase-admin.html"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/firebase-sync.html"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/sincronizar.html"
+  to = "/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/sync-firebase-auto.html"
   to = "/index.html"
   status = 404
   force = true

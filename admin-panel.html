@@ -951,20 +951,46 @@
     </div>
   </div>
 
+  <!-- Widget de Netlify Identity: debe cargar antes del script de abajo,
+       que lo usa para verificar la sesión. -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
   <script>
-    // Verificar sesión
+    // Verificar sesión contra Netlify Identity.
+    //
+    // Antes esto era: localStorage.getItem("lacimaAdminSession") !== "true"
+    // Cualquiera podía entrar escribiendo en la consola del navegador
+    //   localStorage.setItem("lacimaAdminSession","true")
+    // Ahora la sesión es un JWT que solo emite el servidor de Netlify tras
+    // validar la contraseña, y no se puede falsificar desde el navegador.
     function checkSession() {
-      const session = localStorage.getItem("lacimaAdminSession");
-      if (session !== "true") {
+      if (typeof netlifyIdentity === "undefined") {
         window.location.href = "admin-login.html";
+        return;
       }
+
+      netlifyIdentity.on("init", function (user) {
+        if (!user) window.location.href = "admin-login.html";
+      });
+
+      netlifyIdentity.on("logout", function () {
+        window.location.href = "admin-login.html";
+      });
+
+      netlifyIdentity.init();
     }
+
+    // Se verifica de inmediato, sin esperar al evento "load", para redirigir
+    // cuanto antes si no hay sesión.
+    checkSession();
 
     function logout() {
       if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
-        localStorage.removeItem("lacimaAdminSession");
-        localStorage.removeItem("lacimaAdminLoginTime");
-        window.location.href = "admin-login.html";
+        if (typeof netlifyIdentity !== "undefined") {
+          netlifyIdentity.logout(); // el evento "logout" hace la redirección
+        } else {
+          window.location.href = "admin-login.html";
+        }
       }
     }
 
@@ -1768,8 +1794,9 @@
     }
 
     // Inicializar
+    // Nota: checkSession() ya se llamó arriba, apenas cargó el script. No
+    // repetirla aquí: netlifyIdentity.init() debe ejecutarse una sola vez.
     window.addEventListener("load", function() {
-      checkSession();
       actualizarDashboard();
       setInterval(actualizarHora, 1000);
       setInterval(actualizarContadoresAnalytics, 5000);

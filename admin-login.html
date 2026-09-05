@@ -199,110 +199,70 @@
       <p>La Cima Restaurante</p>
     </div>
 
-    <form id="loginForm" onsubmit="handleLogin(event)">
-      <div class="error-message" id="errorMessage"></div>
+    <!-- El login lo gestiona Netlify Identity. La contraseña nunca llega
+         a este código ni viaja al navegador: se valida en el servidor de
+         Netlify. Antes había un formulario propio con la contraseña
+         escrita en este archivo, visible para cualquiera. -->
+    <div class="error-message" id="errorMessage"></div>
 
-      <div class="form-group">
-        <label for="username">Usuario</label>
-        <input
-          type="text"
-          id="username"
-          placeholder="admin"
-          required
-          autocomplete="username"
-        >
-      </div>
+    <button type="button" class="btn-login" id="btnLogin" onclick="abrirLogin()">
+      Ingresar
+    </button>
 
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="••••••••"
-          required
-          autocomplete="current-password"
-        >
-      </div>
-
-      <button type="submit" class="btn-login">Ingresar</button>
-
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-      </div>
-    </form>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+    </div>
 
     <div class="footer-text">
       © 2026 La Cima Restaurante · Sistema Administrativo
     </div>
   </div>
 
+  <!-- Widget de Netlify Identity. Debe cargar antes del script de abajo. -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
   <script>
-    const ADMIN_USER = "admin";
-    const ADMIN_PASS = "lacima2024";
+    // El acceso lo gestiona Netlify Identity: la contraseña se valida en
+    // el servidor y nunca aparece en este archivo. El registro está en
+    // "Invite only", así que solo entran las personas invitadas desde
+    // el panel de Netlify (Identity → Invite users).
 
-    function handleLogin(event) {
-      event.preventDefault();
+    function mostrarError(mensaje) {
+      const el = document.getElementById("errorMessage");
+      el.textContent = mensaje;
+      el.classList.add("show");
+    }
 
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      const errorMessage = document.getElementById("errorMessage");
-      const loading = document.getElementById("loading");
-      const form = document.getElementById("loginForm");
-
-      errorMessage.classList.remove("show");
-      loading.style.display = "none";
-
-      // Validación básica
-      if (!username || !password) {
-        showError("Usuario y contraseña son requeridos");
+    function abrirLogin() {
+      if (typeof netlifyIdentity === "undefined") {
+        mostrarError("No se pudo cargar el sistema de acceso. Revisa tu conexión y recarga la página.");
         return;
       }
-
-      // Mostrar loading
-      loading.style.display = "block";
-      form.style.opacity = "0.6";
-      form.style.pointerEvents = "none";
-
-      // Simular validación con pequeño delay
-      setTimeout(() => {
-        if (username === ADMIN_USER && password === ADMIN_PASS) {
-          // Guardar sesión
-          localStorage.setItem("lacimaAdminSession", "true");
-          localStorage.setItem("lacimaAdminLoginTime", new Date().getTime());
-
-          // Redirigir al panel
-          window.location.href = "admin-panel.html";
-        } else {
-          loading.style.display = "none";
-          form.style.opacity = "1";
-          form.style.pointerEvents = "auto";
-          showError("Usuario o contraseña incorrectos");
-          document.getElementById("password").value = "";
-          document.getElementById("password").focus();
-        }
-      }, 800);
+      document.getElementById("errorMessage").classList.remove("show");
+      netlifyIdentity.open("login");
     }
 
-    function showError(message) {
-      const errorMessage = document.getElementById("errorMessage");
-      errorMessage.textContent = message;
-      errorMessage.classList.add("show");
-    }
+    if (typeof netlifyIdentity === "undefined") {
+      mostrarError("No se pudo cargar el sistema de acceso. Revisa tu conexión y recarga la página.");
+    } else {
+      // Si ya hay sesión abierta, entrar directo al panel
+      netlifyIdentity.on("init", function (user) {
+        if (user) window.location.href = "admin-panel.html";
+      });
 
-    // Verificar si ya hay sesión activa
-    window.addEventListener("load", function() {
-      const session = localStorage.getItem("lacimaAdminSession");
-      if (session === "true") {
+      netlifyIdentity.on("login", function () {
+        document.getElementById("btnLogin").style.display = "none";
+        document.getElementById("loading").style.display = "block";
         window.location.href = "admin-panel.html";
-      }
-    });
+      });
 
-    // Permitir Enter para enviar
-    document.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        document.getElementById("loginForm").dispatchEvent(new Event("submit"));
-      }
-    });
+      netlifyIdentity.on("error", function (err) {
+        mostrarError("No se pudo iniciar sesión. Intenta de nuevo.");
+        console.error("Netlify Identity:", err);
+      });
+
+      netlifyIdentity.init();
+    }
   </script>
 
 </body>
