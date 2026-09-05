@@ -293,7 +293,7 @@ function sendOrder() {
 
   // AGREGAR DATOS SEGÚN TIPO (FACTURA o SIMPLE)
   if (datosFacturacion) {
-    messageParts.push('*🟢 📄 FACTURA ELECTRÓNICA:*');
+    messageParts.push('*✅ 📄 FACTURA ELECTRÓNICA:*');
     messageParts.push(`Tipo Doc: ${datosFacturacion.tipoDoc === 'cc' ? 'Cédula' : 'NIT'}`);
     messageParts.push(`Documento: ${datosFacturacion.numeroDoc}`);
     messageParts.push(`Nombre: ${datosFacturacion.nombre}`);
@@ -302,14 +302,14 @@ function sendOrder() {
     messageParts.push(`Responsabilidad: ${datosFacturacion.responsabilidad}`);
     messageParts.push(`Tributaria: ${datosFacturacion.tributaria}`);
   } else if (datosFormularioSimple) {
-    messageParts.push('*🟢 👤 DATOS DEL CLIENTE:*');
+    messageParts.push('*✅ 👤 DATOS DEL CLIENTE:*');
     messageParts.push(`Nombre: ${datosFormularioSimple.nombre}`);
     messageParts.push(`Teléfono: ${datosFormularioSimple.telefono}`);
     messageParts.push(`Dirección: ${datosFormularioSimple.calle}, ${datosFormularioSimple.barrio}`);
   }
 
   messageParts.push('');
-  messageParts.push('*🟢 📦 PRODUCTOS:*');
+  messageParts.push('*✅ 📦 PRODUCTOS:*');
   messageParts.push(productsList);
   messageParts.push('');
   messageParts.push('*🔴 💰 TOTALES:*');
@@ -568,7 +568,7 @@ function sendRealTimeOrder() {
     messageParts.push('');
   }
 
-  messageParts.push('*🔵 📍 UBICACIÓN EN MAPS:*');
+  messageParts.push('*📍 UBICACIÓN EN MAPS:*');
   messageParts.push('https://maps.google.com/?q=' + encodeURIComponent(ubicacion));
   messageParts.push('');
   messageParts.push('─────────────────────');
