@@ -549,6 +549,8 @@ function sendRealTimeOrder() {
   messageParts.push('══════════════════════════════════════');
   messageParts.push('*🔴 *** TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + ' ***');
   messageParts.push('');
+  messageParts.push('🔴 *ESTADO: PEDIDO RECIBIDO - PENDIENTE DE PREPARACIÓN*');
+  messageParts.push('');
 
   // Datos del cliente
   messageParts.push('═══════════════════════════════════════');
@@ -560,6 +562,7 @@ function sendRealTimeOrder() {
   messageParts.push('');
 
   // Datos de factura (si aplica)
+  console.log('📄 DEBUGG - datosFacturacion:', datosFacturacion);
   if (datosFacturacion) {
     messageParts.push('═══════════════════════════════════════');
     messageParts.push('');
@@ -572,6 +575,8 @@ function sendRealTimeOrder() {
     messageParts.push('Responsabilidad: ' + datosFacturacion.responsabilidad);
     messageParts.push('Tributaria: ' + datosFacturacion.tributaria);
     messageParts.push('');
+  } else {
+    console.log('⚠️ DEBUGG - datosFacturacion ES NULL');
   }
 
   messageParts.push('═══════════════════════════════════════');
