@@ -45,6 +45,39 @@ async function syncMenuFromFirebase() {
         const menuRef = ref(firebaseDb, 'menu');
         const snapshot = await get(menuRef);
 
+        // 📊 Contar productos en ambas fuentes
+        let firebaseProductCount = 0;
+        let defaultMenuProductCount = 0;
+
+        if (snapshot.exists()) {
+            const firebaseMenu = snapshot.val();
+            // Contar productos de Firebase
+            if (firebaseMenu && typeof firebaseMenu === 'object') {
+                Object.values(firebaseMenu).forEach(category => {
+                    if (Array.isArray(category)) {
+                        firebaseProductCount += category.length;
+                    }
+                });
+            }
+        }
+
+        // Contar productos en defaultMenu
+        if (typeof window.defaultMenu !== 'undefined' && window.defaultMenu) {
+            Object.values(window.defaultMenu).forEach(category => {
+                if (Array.isArray(category)) {
+                    defaultMenuProductCount += category.length;
+                }
+            });
+        }
+
+        console.log(`📊 Firebase: ${firebaseProductCount} productos | defaultMenu: ${defaultMenuProductCount} productos`);
+
+        // ✅ Usar el menú que tenga MÁS productos
+        if (defaultMenuProductCount >= firebaseProductCount) {
+            console.log('✅ Priorizando defaultMenu (más productos)');
+            return true;
+        }
+
         if (snapshot.exists()) {
             const firebaseMenu = snapshot.val();
             console.log('📥 Menú sincronizado desde Firebase:', firebaseMenu);
