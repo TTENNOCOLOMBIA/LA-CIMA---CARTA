@@ -18,13 +18,43 @@
   <!-- Favicon -->
   <link rel="icon" href="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png">
 
+  <!-- ========================================
+       SEGURIDAD - CONTENT SECURITY POLICY
+       ======================================== -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline';
+    style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
+    img-src 'self' https: data:;
+    font-src 'self' https: data:;
+    connect-src 'self' https: wss:;
+    frame-src https://player.vimeo.com https://maps.google.com;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'self';
+    upgrade-insecure-requests;
+  ">
+
   <!-- Estilos CSS -->
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/responsive.css">
 
+  <!-- ========================================
+       LIBRERÍAS DE SEGURIDAD
+       ======================================== -->
+  <!-- Crypto-JS para encriptación -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.0/crypto-js.min.js"></script>
+
+  <!-- DOMPurify para sanitizar HTML -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+
   <!-- QRCode Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- MÓDULO DE ENCRIPTACIÓN (Debe cargar primero) -->
+  <script src="js/encryption.js"></script>
 </head>
 <body>
 

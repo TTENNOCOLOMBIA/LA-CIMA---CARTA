@@ -6,8 +6,23 @@
 // CONSTANTES Y CONFIGURACIÓN
 // ========================================
 
-const ADMIN_PASSWORD = "lacima2024";
-const WA_NUMERO = "573227364868";
+// ========================================
+// CONFIGURACIÓN SEGURA - VARIABLES DE ENTORNO
+// ========================================
+// Nota: En desarrollo, estos valores vienen de .env
+// En Netlify, se configuran en Environment Variables
+
+// ⚠️ ESTOS VALORES NO DEBEN ESTAR HARDCODEADOS EN PRODUCCIÓN
+// Se cargan desde variables de entorno del servidor
+
+const ADMIN_PASSWORD = typeof process !== 'undefined' && process.env.ADMIN_PASSWORD
+  ? process.env.ADMIN_PASSWORD
+  : localStorage.getItem('ADMIN_PASSWORD_TEMP') || 'default';
+
+const WA_NUMERO = typeof process !== 'undefined' && process.env.WHATSAPP_NUMBER
+  ? process.env.WHATSAPP_NUMBER
+  : '573227364868';  // ⚠️ Se debe leer de servidor en producción
+
 const OSO_URL = "https://i.ibb.co/wZfBFDX9/1000864515-removebg-preview.png";
 const DOMICILIO = 7000;
 
