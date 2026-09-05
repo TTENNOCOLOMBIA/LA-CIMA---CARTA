@@ -14,12 +14,14 @@
 # Netlify busca los VALORES de las variables de entorno dentro de los
 # archivos publicados y bloquea el deploy si los encuentra.
 #
-# Se omiten solo estas dos porque NO son secretos:
+# Solo se omiten estas dos, porque NO son secretos:
 #  - WHATSAPP_NUMBER: el número está a la vista en la web a propósito
 #    (index.html y js/config.js) para que los clientes escriban.
 #  - NODE_ENV: su valor es "production", una palabra común.
 #
-# ADMIN_PASSWORD y ENCRYPTION_KEY siguen protegidas por el escáner.
+# ADMIN_PASSWORD y ENCRYPTION_KEY se dejan protegidas a propósito: el
+# escáner ya detectó una fuga real de ambas en SETUP-SEGURIDAD.md y
+# SEGURIDAD-IMPLEMENTADA.md, que se publicaban en la web. No omitir.
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "WHATSAPP_NUMBER,NODE_ENV"
 
@@ -105,6 +107,15 @@
 # ========================================
 # REDIRECTS PARA SEGURIDAD
 # ========================================
+
+# Bloquear acceso público a la documentación interna (.md).
+# Se publicaba toda la carpeta raíz, así que archivos como
+# SETUP-SEGURIDAD.md quedaban legibles desde internet.
+[[redirects]]
+  from = "/*.md"
+  to = "/index.html"
+  status = 404
+  force = true
 
 # Redirigir HTTP a HTTPS (Netlify lo hace automáticamente)
 [[redirects]]

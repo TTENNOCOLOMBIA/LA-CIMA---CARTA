@@ -17,9 +17,9 @@
    - Agregar las siguientes:
 
    ```
-   ADMIN_PASSWORD = LaC1ma2024SecurePassword!@#
+   ADMIN_PASSWORD = <PON_AQUI_TU_CONTRASEÑA>
    WHATSAPP_NUMBER = 573227364868
-   ENCRYPTION_KEY = your-secret-encryption-key-min-32-chars-long
+   ENCRYPTION_KEY = <PON_AQUI_TU_CLAVE_DE_CIFRADO>
    NODE_ENV = production
    ```
 

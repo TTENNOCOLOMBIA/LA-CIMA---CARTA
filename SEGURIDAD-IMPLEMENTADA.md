@@ -271,9 +271,9 @@ Cache-Control: public, max-age=3600       (Cache seguro)
 2. Seleccionar sitio "cimarestaurante"
 3. Ir a "Settings" → "Environment"
 4. Agregar variables:
-   - `ADMIN_PASSWORD` = LaC1ma2024SecurePassword!@#
+   - `ADMIN_PASSWORD` = <PON_AQUI_TU_CONTRASEÑA>
    - `WHATSAPP_NUMBER` = 573227364868
-   - `ENCRYPTION_KEY` = your-secret-encryption-key-min-32-chars
+   - `ENCRYPTION_KEY` = <PON_AQUI_TU_CLAVE_DE_CIFRADO>
 
 ### PASO 2: Commitear cambios
 
