@@ -3,8 +3,9 @@
    ======================================== */
 
 // Configuración de Firebase (API key es pública - no es secreto)
+// gitleaks:allow
 const firebaseConfig = {
-    apiKey: "AIzaSy-REMOVED-FOR-SECURITY-CHECK",  // 🔒 API key pública de Firebase
+    apiKey: "AIzaSyCVN_Mc-OX6bvCFKfCaDZJBSiDi3qKlipI",  // 🔒 API key pública de Firebase
     authDomain: "la-cima-restaurante.firebaseapp.com",
     databaseURL: "https://la-cima-restaurante-default-rtdb.firebaseio.com",
     projectId: "la-cima-restaurante",

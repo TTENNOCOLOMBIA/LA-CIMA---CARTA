@@ -1,0 +1,9 @@
+# Ignora falsos positivos de seguridad
+# Firebase API keys son públicas y no son secretos verdaderos
+
+# Firebase configuration (public keys, safe to expose)
+AIzaSyCVN_Mc-OX6bvCFKfCaDZJBSiDi3qKlipI
+
+# La Cima Restaurante IDs (public identifiers)
+841309570369
+1:841309570369:web:53dfc4b8ee6ba96c2c9e3a
