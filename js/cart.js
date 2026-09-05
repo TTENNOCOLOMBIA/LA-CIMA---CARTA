@@ -278,13 +278,16 @@ function sendOrder() {
   const descuento = getTotalDiscount();
   const total = (subtotal - descuento) + DOMICILIO;
 
-  let productsList = cart.map(i => {
-    let line = `- ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`;
-    if (i.notes && i.notes.trim().length > 0) {
-      line += `\n  📝 Notas: ${i.notes}`;
-    }
-    return line;
-  }).join('\n');
+  // Productos (sin notas)
+  let productsList = cart.map(i =>
+    `- ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`
+  ).join('\n');
+
+  // Notas especiales (agrupar todas)
+  let notasEspeciales = cart
+    .filter(i => i.notes && i.notes.trim().length > 0)
+    .map(i => `${i.name}: ${i.notes}`)
+    .join('\n');
 
   let messageParts = [
     '*🚀 PEDIDO EN TIEMPO REAL - LA CIMA RESTAURANTE*\n'
@@ -305,6 +308,14 @@ function sendOrder() {
     messageParts.push(`Nombre: ${datosFormularioSimple.nombre}`);
     messageParts.push(`Teléfono: ${datosFormularioSimple.telefono}`);
     messageParts.push(`Dirección: ${datosFormularioSimple.calle}, ${datosFormularioSimple.barrio}`);
+  }
+
+  // Agregar notas especiales (lo más importante)
+  if (notasEspeciales) {
+    messageParts.push('');
+    messageParts.push('*🚨 NOTAS ESPECIALES (IMPORTANTE):*');
+    messageParts.push(notasEspeciales);
+    messageParts.push('────────────────────────');
   }
 
   messageParts.push('');
@@ -517,22 +528,32 @@ function sendRealTimeOrder() {
   const subtotalConDescuento = subtotal - descuento;
   const total = subtotalConDescuento + DOMICILIO;
 
-  // Productos
-  let productsList = cart.map(i => {
-    let line = `• ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`;
-    if (i.notes && i.notes.trim().length > 0) {
-      line += `\n  📝 ${i.notes}`;
-    }
-    return line;
-  }).join('\n');
+  // Productos (sin notas)
+  let productsList = cart.map(i =>
+    `• ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`
+  ).join('\n');
+
+  // Notas especiales (agrupar todas)
+  let notasEspeciales = cart
+    .filter(i => i.notes && i.notes.trim().length > 0)
+    .map(i => `${i.name}: ${i.notes}`)
+    .join('\n');
 
   // Construir el mensaje
   let messageParts = [
     '*🚀 PEDIDO EN TIEMPO REAL - LA CIMA RESTAURANTE*',
-    '',
-    '*📦 PRODUCTOS:*'
+    ''
   ];
 
+  // Agregar notas especiales al inicio (lo más importante)
+  if (notasEspeciales) {
+    messageParts.push('*🚨 NOTAS ESPECIALES (IMPORTANTE):*');
+    messageParts.push(notasEspeciales);
+    messageParts.push('────────────────────────');
+    messageParts.push('');
+  }
+
+  messageParts.push('*📦 PRODUCTOS:*');
   messageParts.push(productsList);
   messageParts.push('');
   messageParts.push('*💰 TOTALES:*');
