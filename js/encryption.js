@@ -9,7 +9,10 @@
 // CONSTANTES DE ENCRIPTACIÓN
 // ========================================
 
-const ENCRYPTION_SECRET = 'LaC1ma@2024SecureKey12345678';  // Min 32 caracteres
+// 🔐 ENCRYPTIÓN KEY desde .env o por defecto
+const ENCRYPTION_SECRET = typeof process !== 'undefined' && process.env.ENCRYPTION_KEY
+  ? process.env.ENCRYPTION_KEY
+  : 'your-secret-encryption-key-min-32-chars-long';
 
 // ========================================
 // FUNCIÓN PARA ENCRIPTAR DATOS
