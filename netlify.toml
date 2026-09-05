@@ -43,8 +43,22 @@
     # HSTS - Fuerza HTTPS (incluye subdomios por 1 año)
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
 
-    # Esperaba que me hayas protegido contra la caducidad de cache
-    Cache-Control = "public, max-age=3600"
+# ========================================
+# HEADERS PARA HTML - SIN CACHE AGRESIVO
+# ========================================
+# Crítico: el HTML debe revalidarse siempre para que cambios de CSP,
+# scripts, etc. lleguen de inmediato. Cachear HTML agresivamente
+# causa que usuarios vean versiones desactualizadas por horas.
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 # ========================================
 # HEADERS ESPECÍFICOS PARA JS
@@ -53,7 +67,10 @@
 [[headers]]
   for = "/js/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    # Sin "immutable": no hay versionado de nombres de archivo (hash),
+    # así que un cache de 1 año "immutable" impediría que los usuarios
+    # reciban futuros arreglos de bugs. max-age corto + revalidación.
+    Cache-Control = "public, max-age=300, must-revalidate"
 
 # ========================================
 # HEADERS PARA CSS
@@ -62,7 +79,7 @@
 [[headers]]
   for = "/css/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=300, must-revalidate"
 
 # ========================================
 # REDIRECTS PARA SEGURIDAD
