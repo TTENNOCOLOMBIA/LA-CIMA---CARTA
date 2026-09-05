@@ -527,16 +527,18 @@ function sendRealTimeOrder() {
     return line;
   }).join('\n');
 
-  // Construir el mensaje con colores de semáforo
+  // Construir el mensaje con separadores visuales + emojis
   let messageParts = [
-    '*🚀 PEDIDO EN TIEMPO REAL - LA CIMA RESTAURANTE*',
+    '🚀 *PEDIDO EN TIEMPO REAL - LA CIMA RESTAURANTE*',
+    '══════════════════════════════════════',
     ''
   ];
 
-  messageParts.push('*🟢 📦 PRODUCTOS:*');
+  messageParts.push('📦 *PRODUCTOS:*');
   messageParts.push(productsList);
+  messageParts.push('══════════════════════════════════════');
   messageParts.push('');
-  messageParts.push('*💰 TOTALES:*');
+  messageParts.push('💰 *TOTALES:*');
   messageParts.push('Subtotal: $' + subtotal.toLocaleString('es-CO'));
 
   if (descuento > 0) {
@@ -544,12 +546,14 @@ function sendRealTimeOrder() {
   }
 
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
-  messageParts.push('─────────────────────');
-  messageParts.push('*🔴 TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + '*');
+  messageParts.push('══════════════════════════════════════');
+  messageParts.push('*🔴 *** TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + ' ***');
   messageParts.push('');
 
   // Datos del cliente
-  messageParts.push('*🟢 👤 DATOS DEL CLIENTE:*');
+  messageParts.push('═══════════════════════════════════════');
+  messageParts.push('');
+  messageParts.push('👤 *DATOS DEL CLIENTE:*');
   messageParts.push('Nombre: ' + nombre);
   messageParts.push('Teléfono: ' + telefono);
   messageParts.push('Dirección: ' + ubicacion);
@@ -557,7 +561,9 @@ function sendRealTimeOrder() {
 
   // Datos de factura (si aplica)
   if (datosFacturacion) {
-    messageParts.push('*🟢 📄 FACTURA ELECTRÓNICA:*');
+    messageParts.push('═══════════════════════════════════════');
+    messageParts.push('');
+    messageParts.push('📄 *FACTURA ELECTRÓNICA:*');
     messageParts.push('Tipo Doc: ' + (datosFacturacion.tipoDoc === 'cc' ? 'Cédula' : 'NIT'));
     messageParts.push('Documento: ' + datosFacturacion.numeroDoc);
     messageParts.push('Nombre: ' + datosFacturacion.nombre);
@@ -568,7 +574,9 @@ function sendRealTimeOrder() {
     messageParts.push('');
   }
 
-  messageParts.push('*📍 UBICACIÓN EN MAPS:*');
+  messageParts.push('═══════════════════════════════════════');
+  messageParts.push('');
+  messageParts.push('📍 *UBICACIÓN EN MAPS:*');
   messageParts.push('https://maps.google.com/?q=' + encodeURIComponent(ubicacion));
   messageParts.push('');
   messageParts.push('─────────────────────');
