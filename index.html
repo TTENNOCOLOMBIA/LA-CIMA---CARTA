@@ -45,7 +45,11 @@
        LIBRERÍAS DE SEGURIDAD
        ======================================== -->
   <!-- Crypto-JS para encriptación -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.0/crypto-js.min.js"></script>
+  <!-- Nota: el build minificado de cdnjs (4.1.0/crypto-js.min.js) falla
+       silenciosamente al ejecutarse en este entorno (TypeError interno
+       "reading 'extend'"), dejando window.CryptoJS undefined. Confirmado
+       con prueba directa. El build de jsdelivr sí funciona correctamente. -->
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
 
   <!-- DOMPurify para sanitizar HTML -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
