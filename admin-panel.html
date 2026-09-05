@@ -1790,12 +1790,20 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
   <script src="js/firebase-init.js"></script>
 
-  <!-- Cargar datos del menú -->
+  <!-- Datos del menú: config.js aporta categoryInfo, defaultMenu.js los
+       133 productos. Ambos los usa el JS de este panel.
+
+       NO cargar aquí menu.js, cart.js ni main.js: son de la carta
+       pública (index.html) y en este panel solo hacen daño.
+         · menu.js define closeModal() sin parámetro y pisa la
+           closeModal(modalId) de este panel (línea 1437, 10 usos).
+           Además busca #imageModal, que aquí no existe.
+         · main.js llama clearCartFromStorage() de storage.js, que este
+           panel no carga → ReferenceError.
+         · cart.js no se usa en absoluto.
+       Verificado: 0 usos de sus funciones y variables globales. -->
   <script src="js/config.js"></script>
   <script src="js/defaultMenu.js"></script>
-  <script src="js/menu.js"></script>
-  <script src="js/cart.js"></script>
   <script src="js/analytics.js"></script>
-  <script src="js/main.js"></script>
 </body>
 </html>
