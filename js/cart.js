@@ -291,51 +291,21 @@ function sendOrder() {
     '*🚀 PEDIDO EN TIEMPO REAL - LA CIMA RESTAURANTE*\n'
   ];
 
-  // ⚠️ SEGURIDAD: NO enviar datos personales completos por WhatsApp
-  // Los datos se guardan encriptados en el servidor
-
+  // AGREGAR DATOS SEGÚN TIPO (FACTURA o SIMPLE)
   if (datosFacturacion) {
     messageParts.push('*✅ 📄 FACTURA ELECTRÓNICA:*');
     messageParts.push(`Tipo Doc: ${datosFacturacion.tipoDoc === 'cc' ? 'Cédula' : 'NIT'}`);
-
-    // 🔐 ENMASCARAR documento (solo mostrar primeros y últimos 2 dígitos)
-    const docMasked = sanitizeInput(datosFacturacion.numeroDoc);
-    const docDisplay = docMasked.substring(0, 2) + '***' + docMasked.substring(docMasked.length - 2);
-    messageParts.push(`Documento: ${docDisplay}`);
-
-    messageParts.push(`Nombre: ${sanitizeInput(datosFacturacion.nombre)}`);
-
-    // 🔐 NO enviar correo completo
-    const emailParts = sanitizeInput(datosFacturacion.correo).split('@');
-    messageParts.push(`Correo: ${emailParts[0].substring(0, 2)}***@${emailParts[1] || 'seguro'}`);
-
-    // 🔐 NO enviar teléfono completo
-    const telMasked = sanitizeInput(datosFacturacion.telefono);
-    const telDisplay = telMasked.substring(0, 2) + '***' + telMasked.substring(telMasked.length - 2);
-    messageParts.push(`Teléfono: ${telDisplay}`);
-
-    messageParts.push(`Responsabilidad: ${sanitizeInput(datosFacturacion.responsabilidad)}`);
-    messageParts.push(`Tributaria: ${sanitizeInput(datosFacturacion.tributaria)}`);
+    messageParts.push(`Documento: ${datosFacturacion.numeroDoc}`);
+    messageParts.push(`Nombre: ${datosFacturacion.nombre}`);
+    messageParts.push(`Correo: ${datosFacturacion.correo}`);
+    messageParts.push(`Teléfono: ${datosFacturacion.telefono}`);
+    messageParts.push(`Responsabilidad: ${datosFacturacion.responsabilidad}`);
+    messageParts.push(`Tributaria: ${datosFacturacion.tributaria}`);
   } else if (datosFormularioSimple) {
     messageParts.push('*✅ 👤 DATOS DEL CLIENTE:*');
-    messageParts.push(`Nombre: ${sanitizeInput(datosFormularioSimple.nombre)}`);
-
-    // 🔐 NO enviar teléfono completo
-    const telMasked = sanitizeInput(datosFormularioSimple.telefono);
-    const telDisplay = telMasked.substring(0, 2) + '***' + telMasked.substring(telMasked.length - 2);
-    messageParts.push(`Teléfono: ${telDisplay}`);
-
-    messageParts.push(`Dirección: ${sanitizeInput(datosFormularioSimple.calle)}, ${sanitizeInput(datosFormularioSimple.barrio)}`);
-  }
-
-  // 🔐 GUARDAR DATOS SENSIBLES ENCRIPTADOS EN LOCALSTORAGE (no en WhatsApp)
-  const customerData = datosFacturacion || datosFormularioSimple;
-  if (customerData) {
-    encryptToStorage('customerData', {
-      ...customerData,
-      timestamp: new Date().toISOString(),
-      ip: 'client',  // En futuro, obtenido del servidor
-    });
+    messageParts.push(`Nombre: ${datosFormularioSimple.nombre}`);
+    messageParts.push(`Teléfono: ${datosFormularioSimple.telefono}`);
+    messageParts.push(`Dirección: ${datosFormularioSimple.calle}, ${datosFormularioSimple.barrio}`);
   }
 
   messageParts.push('');
@@ -580,53 +550,28 @@ function sendRealTimeOrder() {
   messageParts.push('*🔴 *** TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + ' ***');
   messageParts.push('');
 
-  // 🔐 SEGURIDAD: Datos del cliente (enmascarados)
+  // Datos del cliente
   messageParts.push('═══════════════════════════════════════');
   messageParts.push('');
   messageParts.push('👤 *DATOS DEL CLIENTE:*');
-  messageParts.push('Nombre: ' + sanitizeInput(nombre));
-
-  // 🔐 NO enviar teléfono completo
-  const telMasked = sanitizeInput(telefono);
-  const telDisplay = telMasked.substring(0, 2) + '***' + telMasked.substring(telMasked.length - 2);
-  messageParts.push('Teléfono: ' + telDisplay);
-
-  // 🔐 NO enviar dirección completa (solo barrio)
-  const barrio = ubicacion.split(',')[1]?.trim() || 'Ipiales';
-  messageParts.push('Dirección: ' + sanitizeInput(barrio) + ' (detalles guardados en servidor)');
+  messageParts.push('Nombre: ' + nombre);
+  messageParts.push('Teléfono: ' + telefono);
+  messageParts.push('Dirección: ' + ubicacion);
   messageParts.push('');
 
-  // 🔐 Datos de factura (si aplica) - también enmascarados
+  // Datos de factura (si aplica)
   if (datosFacturacion) {
     messageParts.push('═══════════════════════════════════════');
     messageParts.push('');
     messageParts.push('📄 *FACTURA ELECTRÓNICA:*');
     messageParts.push('Tipo Doc: ' + (datosFacturacion.tipoDoc === 'cc' ? 'Cédula' : 'NIT'));
-
-    // 🔐 Enmascarar documento
-    const docMasked = sanitizeInput(datosFacturacion.numeroDoc);
-    const docDisplay = docMasked.substring(0, 2) + '***' + docMasked.substring(docMasked.length - 2);
-    messageParts.push('Documento: ' + docDisplay);
-
-    messageParts.push('Nombre: ' + sanitizeInput(datosFacturacion.nombre));
-
-    // 🔐 NO enviar correo completo
-    const emailParts = sanitizeInput(datosFacturacion.correo).split('@');
-    messageParts.push('Correo: ' + emailParts[0].substring(0, 2) + '***@' + (emailParts[1] || 'seguro'));
-
-    messageParts.push('Responsabilidad: ' + sanitizeInput(datosFacturacion.responsabilidad));
-    messageParts.push('Tributaria: ' + sanitizeInput(datosFacturacion.tributaria));
+    messageParts.push('Documento: ' + datosFacturacion.numeroDoc);
+    messageParts.push('Nombre: ' + datosFacturacion.nombre);
+    messageParts.push('Correo: ' + datosFacturacion.correo);
+    messageParts.push('Teléfono: ' + datosFacturacion.telefono);
+    messageParts.push('Responsabilidad: ' + datosFacturacion.responsabilidad);
+    messageParts.push('Tributaria: ' + datosFacturacion.tributaria);
     messageParts.push('');
-  }
-
-  // 🔐 GUARDAR DATOS SENSIBLES ENCRIPTADOS
-  const allCustomerData = datosFormularioSimple || datosFacturacion;
-  if (allCustomerData) {
-    encryptToStorage('customerData_realtime', {
-      ...allCustomerData,
-      fullAddress: ubicacion,
-      timestamp: new Date().toISOString(),
-    });
   }
 
   messageParts.push('═══════════════════════════════════════');
