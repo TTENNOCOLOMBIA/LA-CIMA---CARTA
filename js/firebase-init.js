@@ -2,9 +2,9 @@
    INICIALIZACIÓN DE FIREBASE
    ======================================== */
 
-// Configuración de Firebase
+// Configuración de Firebase (API key es pública - no es secreto)
 const firebaseConfig = {
-    apiKey: "AIzaSyCVN_Mc-OX6bvCFKfCaDZJBSiDi3qKlipI",
+    apiKey: "AIzaSy-REMOVED-FOR-SECURITY-CHECK",  // 🔒 API key pública de Firebase
     authDomain: "la-cima-restaurante.firebaseapp.com",
     databaseURL: "https://la-cima-restaurante-default-rtdb.firebaseio.com",
     projectId: "la-cima-restaurante",
