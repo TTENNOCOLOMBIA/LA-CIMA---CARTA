@@ -4,6 +4,9 @@
 .env.*.local
 .env.production.local
 
+# Archivos generados (contienen secretos)
+js/firebase-config-generated.js
+
 # Node modules
 node_modules/
 package-lock.json
