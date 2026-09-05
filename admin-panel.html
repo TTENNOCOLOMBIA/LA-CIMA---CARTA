@@ -1780,10 +1780,15 @@
   <!-- ========================================
        FIREBASE - SINCRONIZACIÓN EN TIEMPO REAL
        ======================================== -->
+  <!-- Este panel usa el SDK "compat" vía firebase-init.js, que expone
+       la variable global `db` y sincronizarProductoEnFirebase().
+       NO cargar aquí js/firebase-sync.js: usa el SDK modular v10 y
+       declara otra vez `const firebaseConfig`, lo que provoca
+       "Identifier 'firebaseConfig' has already been declared" y aborta
+       el archivo entero. El panel no usa ninguna de sus funciones. -->
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
   <script src="js/firebase-init.js"></script>
-  <script src="js/firebase-sync.js"></script>
 
   <!-- Cargar datos del menú -->
   <script src="js/config.js"></script>
