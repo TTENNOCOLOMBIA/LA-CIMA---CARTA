@@ -278,16 +278,14 @@ function sendOrder() {
   const descuento = getTotalDiscount();
   const total = (subtotal - descuento) + DOMICILIO;
 
-  // Productos (sin notas)
-  let productsList = cart.map(i =>
-    `- ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`
-  ).join('\n');
-
-  // Notas especiales (agrupar todas)
-  let notasEspeciales = cart
-    .filter(i => i.notes && i.notes.trim().length > 0)
-    .map(i => `${i.name}: ${i.notes}`)
-    .join('\n');
+  // Productos (con notas)
+  let productsList = cart.map(i => {
+    let line = `- ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`;
+    if (i.notes && i.notes.trim().length > 0) {
+      line += `\n  🟡 ${i.notes}`;
+    }
+    return line;
+  }).join('\n');
 
   let messageParts = [
     '*🚀 PEDIDO EN TIEMPO REAL - LA CIMA RESTAURANTE*\n'
@@ -295,7 +293,7 @@ function sendOrder() {
 
   // AGREGAR DATOS SEGÚN TIPO (FACTURA o SIMPLE)
   if (datosFacturacion) {
-    messageParts.push('*📄 FACTURA ELECTRÓNICA:*');
+    messageParts.push('*🟢 📄 FACTURA ELECTRÓNICA:*');
     messageParts.push(`Tipo Doc: ${datosFacturacion.tipoDoc === 'cc' ? 'Cédula' : 'NIT'}`);
     messageParts.push(`Documento: ${datosFacturacion.numeroDoc}`);
     messageParts.push(`Nombre: ${datosFacturacion.nombre}`);
@@ -304,25 +302,17 @@ function sendOrder() {
     messageParts.push(`Responsabilidad: ${datosFacturacion.responsabilidad}`);
     messageParts.push(`Tributaria: ${datosFacturacion.tributaria}`);
   } else if (datosFormularioSimple) {
-    messageParts.push('*👤 DATOS DEL CLIENTE:*');
+    messageParts.push('*🟢 👤 DATOS DEL CLIENTE:*');
     messageParts.push(`Nombre: ${datosFormularioSimple.nombre}`);
     messageParts.push(`Teléfono: ${datosFormularioSimple.telefono}`);
     messageParts.push(`Dirección: ${datosFormularioSimple.calle}, ${datosFormularioSimple.barrio}`);
   }
 
-  // Agregar notas especiales (lo más importante)
-  if (notasEspeciales) {
-    messageParts.push('');
-    messageParts.push('*🚨 NOTAS ESPECIALES (IMPORTANTE):*');
-    messageParts.push(notasEspeciales);
-    messageParts.push('────────────────────────');
-  }
-
   messageParts.push('');
-  messageParts.push('*🍽️ PRODUCTOS:*');
+  messageParts.push('*🟢 📦 PRODUCTOS:*');
   messageParts.push(productsList);
   messageParts.push('');
-  messageParts.push('*💰 TOTALES:*');
+  messageParts.push('*🔴 💰 TOTALES:*');
   messageParts.push('Subtotal: $' + subtotal.toLocaleString('es-CO'));
 
   if (descuento > 0) {
@@ -330,7 +320,7 @@ function sendOrder() {
   }
 
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
-  messageParts.push('TOTAL: $' + total.toLocaleString('es-CO'));
+  messageParts.push('*🔴 TOTAL: $' + total.toLocaleString('es-CO') + '*');
 
   const message = messageParts.filter(p => p !== '').join('\n');
 
@@ -528,32 +518,22 @@ function sendRealTimeOrder() {
   const subtotalConDescuento = subtotal - descuento;
   const total = subtotalConDescuento + DOMICILIO;
 
-  // Productos (sin notas)
-  let productsList = cart.map(i =>
-    `• ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`
-  ).join('\n');
+  // Productos (con notas)
+  let productsList = cart.map(i => {
+    let line = `• ${i.name} x${i.qty} = $${(i.price * i.qty).toLocaleString('es-CO')}`;
+    if (i.notes && i.notes.trim().length > 0) {
+      line += `\n  🟡 ${i.notes}`;
+    }
+    return line;
+  }).join('\n');
 
-  // Notas especiales (agrupar todas)
-  let notasEspeciales = cart
-    .filter(i => i.notes && i.notes.trim().length > 0)
-    .map(i => `${i.name}: ${i.notes}`)
-    .join('\n');
-
-  // Construir el mensaje
+  // Construir el mensaje con colores de semáforo
   let messageParts = [
     '*🚀 PEDIDO EN TIEMPO REAL - LA CIMA RESTAURANTE*',
     ''
   ];
 
-  // Agregar notas especiales al inicio (lo más importante)
-  if (notasEspeciales) {
-    messageParts.push('*🚨 NOTAS ESPECIALES (IMPORTANTE):*');
-    messageParts.push(notasEspeciales);
-    messageParts.push('────────────────────────');
-    messageParts.push('');
-  }
-
-  messageParts.push('*📦 PRODUCTOS:*');
+  messageParts.push('*🟢 📦 PRODUCTOS:*');
   messageParts.push(productsList);
   messageParts.push('');
   messageParts.push('*💰 TOTALES:*');
@@ -565,11 +545,11 @@ function sendRealTimeOrder() {
 
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
   messageParts.push('─────────────────────');
-  messageParts.push('*TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + '*');
+  messageParts.push('*🔴 TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + '*');
   messageParts.push('');
 
   // Datos del cliente
-  messageParts.push('*👤 DATOS DEL CLIENTE:*');
+  messageParts.push('*🟢 👤 DATOS DEL CLIENTE:*');
   messageParts.push('Nombre: ' + nombre);
   messageParts.push('Teléfono: ' + telefono);
   messageParts.push('Dirección: ' + ubicacion);
@@ -577,7 +557,7 @@ function sendRealTimeOrder() {
 
   // Datos de factura (si aplica)
   if (datosFacturacion) {
-    messageParts.push('*📄 FACTURA ELECTRÓNICA:*');
+    messageParts.push('*🟢 📄 FACTURA ELECTRÓNICA:*');
     messageParts.push('Tipo Doc: ' + (datosFacturacion.tipoDoc === 'cc' ? 'Cédula' : 'NIT'));
     messageParts.push('Documento: ' + datosFacturacion.numeroDoc);
     messageParts.push('Nombre: ' + datosFacturacion.nombre);
@@ -588,7 +568,7 @@ function sendRealTimeOrder() {
     messageParts.push('');
   }
 
-  messageParts.push('*📍 UBICACIÓN EN MAPS:*');
+  messageParts.push('*🔵 📍 UBICACIÓN EN MAPS:*');
   messageParts.push('https://maps.google.com/?q=' + encodeURIComponent(ubicacion));
   messageParts.push('');
   messageParts.push('─────────────────────');
