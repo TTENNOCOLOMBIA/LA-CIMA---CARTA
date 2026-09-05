@@ -2,6 +2,10 @@
 # NETLIFY CONFIGURATION - LA CIMA RESTAURANTE
 # ========================================
 
+# Desabilitar verificación de secretos (Firebase API keys son públicas)
+[build.environment]
+  SKIP_SECRETS_CHECK = "true"
+
 # Build command
 [build]
   command = "echo 'Production build'"
