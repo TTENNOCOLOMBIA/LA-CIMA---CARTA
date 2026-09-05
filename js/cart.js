@@ -662,6 +662,3 @@ document.addEventListener('DOMContentLoaded', function() {
     textarea.addEventListener('input', updateNotesCounter);
   }
 });
-
-function addToCartWithNotes(name, price, category = '', icon = '') {
-  // Primero agregar al carrito normalmente
