@@ -29,7 +29,7 @@
     # dominios no cubre de forma confiable. Sigue bloqueado: http:,
     # data:/blob: como origen de script, y todo lo demás (object-src,
     # frame-ancestors, form-action) permanece restrictivo.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; frame-src https://player.vimeo.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; frame-src https://player.vimeo.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
 
     # X-Frame-Options - Protege contra clickjacking
     X-Frame-Options = "SAMEORIGIN"
