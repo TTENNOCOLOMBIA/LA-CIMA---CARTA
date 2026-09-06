@@ -280,7 +280,17 @@
       });
 
       netlifyIdentity.on("error", function (err) {
-        mostrarError("No se pudo iniciar sesión. Intenta de nuevo.");
+        // Si veníamos de un enlace del correo, lo más probable es que el
+        // enlace haya caducado o ya se haya usado. Decirlo con claridad
+        // evita que el usuario piense que el sistema está roto.
+        if (esInvitacion || esRecuperacion) {
+          mostrarError(
+            "Este enlace ya no sirve: caducó o se usó antes. " +
+            "Pide uno nuevo desde Netlify (Identity → Invite users)."
+          );
+        } else {
+          mostrarError("No se pudo iniciar sesión. Revisa el correo y la contraseña.");
+        }
         console.error("Netlify Identity:", err);
       });
 
