@@ -47,7 +47,12 @@
       left: 0;
       top: 0;
       height: 100vh;
-      overflow-y: auto;
+      /* En columna: cabecera, menú (que crece y hace scroll) y pie al fondo.
+         El pie estaba en position:absolute y al añadirle un segundo botón
+         creció hacia arriba y tapó los elementos del menú. */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       z-index: 1000;
       box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
     }
@@ -86,6 +91,12 @@
       display: flex;
       flex-direction: column;
       gap: 0;
+      /* Ocupa el espacio libre y hace scroll si el menú crece.
+         min-height:0 es imprescindible: sin él, un hijo flex no se encoge
+         por debajo de su contenido y el scroll nunca aparece. */
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
     }
 
     .nav-item {
@@ -119,10 +130,13 @@
     }
 
     .sidebar-footer {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
+      /* Antes: position:absolute + bottom:20px. Al meter un segundo botón
+         se salía del hueco reservado y se montaba sobre el menú.
+         Con el sidebar en flex column, margin-top:auto lo pega al fondo
+         empujando el espacio sobrante hacia arriba, sin solaparse. */
+      margin-top: auto;
+      padding: 20px 20px 0;
+      flex-shrink: 0;
     }
 
     .btn-logout {
