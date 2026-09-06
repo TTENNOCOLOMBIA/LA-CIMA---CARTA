@@ -17,6 +17,14 @@ let tempNotes = '';
 // FUNCIÓN PARA ABRIR WHATSAPP SIN POPUP
 // ========================================
 function abrirWhatsAppDirecto(numero, mensaje) {
+  // Contar el pedido. Esta función solo se usa para enviar pedidos, así que
+  // es el punto exacto donde contarlos. Va antes de abrir WhatsApp porque en
+  // móvil la línea siguiente saca al usuario de la página.
+  // No se espera la respuesta: si el contador falla, el pedido sale igual.
+  if (typeof registrarPedido === 'function') {
+    registrarPedido();
+  }
+
   // Detectar si es móvil
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 

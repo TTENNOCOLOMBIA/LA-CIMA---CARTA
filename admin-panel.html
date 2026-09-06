@@ -1729,25 +1729,25 @@
     }
 
     function mostrarEstadisticasRapidas() {
-      const today = new Date().toISOString().split('T')[0];
-      const analytics = JSON.parse(localStorage.getItem('lacimaAnalytics')) || {
-        totalVisits: 0,
-        totalOrders: 0,
-        dailyVisits: {},
-        dailyOrders: {},
-        lastVisitDate: null
-      };
+      // Los contadores viven en Firebase, no en localStorage: ahí solo
+      // estarían las visitas de este equipo. js/analytics.js los lee y los
+      // deja listos en getAnalytics(), que ya calcula el "hoy" con la hora
+      // de Colombia (con UTC, lo de después de las 19:00 contaría al día
+      // siguiente y el restaurante cierra de noche).
+      const analytics = (typeof getAnalytics === 'function')
+        ? getAnalytics()
+        : { totalVisits: 0, totalOrders: 0, todayVisits: 0, todayOrders: 0 };
 
       document.getElementById("estVisitasTotal").textContent = analytics.totalVisits || 0;
       document.getElementById("estPedidosTotal").textContent = analytics.totalOrders || 0;
-      document.getElementById("estVisitasHoy").textContent = analytics.dailyVisits?.[today] || 0;
-      document.getElementById("estPedidosHoy").textContent = analytics.dailyOrders?.[today] || 0;
+      document.getElementById("estVisitasHoy").textContent = analytics.todayVisits || 0;
+      document.getElementById("estPedidosHoy").textContent = analytics.todayOrders || 0;
 
       document.getElementById("modalEstadisticas").classList.add("active");
     }
 
     function exportarEstadisticas() {
-      const analytics = JSON.parse(localStorage.getItem('lacimaAnalytics')) || {};
+      const analytics = (typeof getAnalytics === 'function') ? getAnalytics() : {};
       const dataStr = JSON.stringify(analytics, null, 2);
       const dataBlob = new Blob([dataStr], { type: 'application/json' });
       const url = URL.createObjectURL(dataBlob);
@@ -1853,7 +1853,7 @@
 
     function exportAnalytics() {
       if (typeof getAnalytics === 'function') {
-        const analytics = JSON.parse(localStorage.getItem('lacimaAnalytics')) || {};
+        const analytics = getAnalytics();
         const dataStr = JSON.stringify(analytics, null, 2);
         const dataBlob = new Blob([dataStr], { type: 'application/json' });
         const url = URL.createObjectURL(dataBlob);
@@ -1865,10 +1865,28 @@
     }
 
     function resetAnalytics() {
-      if (confirm('¿Resetear las estadísticas?')) {
-        localStorage.removeItem('lacimaAnalytics');
-        location.reload();
+      // Los contadores están en Firebase y los comparten todos los equipos,
+      // así que borrar localStorage no haría nada. Se ponen a cero a través
+      // de la función del servidor, que comprueba la sesión.
+      if (!confirm('¿Poner a cero las visitas y los pedidos?\n\nAfecta a todos los equipos y no se puede deshacer.')) {
+        return;
       }
+
+      if (typeof guardarEnFirebase !== 'function') {
+        showNotification("Falta cargar firebase-init.js", "error");
+        return;
+      }
+
+      // Escribir null en Firebase elimina la rama entera.
+      guardarEnFirebase('analytics', null, 'estadísticas')
+        .then(function (ok) {
+          if (ok) {
+            showNotification("✅ Estadísticas puestas a cero", "success");
+            setTimeout(function () { location.reload(); }, 1200);
+          } else {
+            showNotification("❌ No se pudo. ¿Sigues con la sesión iniciada?", "error");
+          }
+        });
     }
 
     function sincronizarMenu() {

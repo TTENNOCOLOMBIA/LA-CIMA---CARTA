@@ -23,10 +23,15 @@
 
 const DB_URL = "https://la-cima-restaurante-default-rtdb.firebaseio.com";
 
-// Solo se permite escribir dentro de menu/. Acepta "menu",
-// "menu/entradas" y "menu/entradas/0". Nada más.
-// Sin esto, un fallo del panel podría sobrescribir otras ramas de la base.
-const RUTA_PERMITIDA = /^menu(\/[A-Za-z0-9_-]+){0,2}$/;
+// Solo se permite escribir dentro de estas ramas. Acepta por ejemplo "menu",
+// "menu/entradas" y "menu/entradas/0"; analytics se admite para poder poner
+// los contadores a cero desde el panel.
+// Sin esta lista, un fallo del panel podría sobrescribir cualquier parte
+// de la base.
+const RUTAS_PERMITIDAS = [
+  /^menu(\/[A-Za-z0-9_-]+){0,2}$/,
+  /^analytics(\/[A-Za-z0-9_.-]+){0,2}$/
+];
 
 // Tope de tamaño, por si algo se descontrola en el cliente.
 const MAX_BYTES = 2 * 1024 * 1024; // 2 MB
@@ -74,7 +79,7 @@ exports.handler = async (event, context) => {
 
   const { ruta, datos } = cuerpo;
 
-  if (typeof ruta !== "string" || !RUTA_PERMITIDA.test(ruta)) {
+  if (typeof ruta !== "string" || !RUTAS_PERMITIDAS.some((r) => r.test(ruta))) {
     return respuesta(400, { error: "Ruta no permitida" });
   }
   if (datos === undefined) {
