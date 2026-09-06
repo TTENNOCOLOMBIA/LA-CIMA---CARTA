@@ -265,6 +265,29 @@
           : "Cambiar mi contraseña";
       }
 
+      // Cuando el enlace del correo ya se usó o caducó, el widget a veces no
+      // abre nada ni lanza ningún error: el botón se queda mudo y no hay
+      // forma de entrar con la contraseña de siempre. Para evitar ese
+      // callejón sin salida, si a los 5 segundos no se ha abierto ningún
+      // formulario, se vuelve al acceso normal.
+      var formularioAbierto = false;
+      netlifyIdentity.on("open", function () {
+        formularioAbierto = true;
+      });
+
+      if (esInvitacion || esRecuperacion) {
+        setTimeout(function () {
+          if (formularioAbierto) return;
+          esInvitacion = false;
+          esRecuperacion = false;
+          document.getElementById("btnLogin").textContent = "Ingresar";
+          mostrarError(
+            "Ese enlace del correo ya no sirve. " +
+            "Pulsa Ingresar y entra con tu correo y contraseña."
+          );
+        }, 5000);
+      }
+
       // Si ya hay sesión abierta, entrar directo al panel.
       // No redirigir si hay un token pendiente: primero hay que completarlo.
       netlifyIdentity.on("init", function (user) {
