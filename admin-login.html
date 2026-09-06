@@ -303,13 +303,23 @@
       });
 
       netlifyIdentity.on("error", function (err) {
-        // Si veníamos de un enlace del correo, lo más probable es que el
-        // enlace haya caducado o ya se haya usado. Decirlo con claridad
-        // evita que el usuario piense que el sistema está roto.
-        if (esInvitacion || esRecuperacion) {
+        // Si veníamos de un enlace del correo, lo normal es que ya se haya
+        // usado o haya caducado. Hay que devolver el botón al acceso normal:
+        // si se queda en "Cambiar mi contraseña" el usuario no tiene forma de
+        // entrar con la contraseña que ya tiene.
+        if (esRecuperacion) {
+          esRecuperacion = false;
+          document.getElementById("btnLogin").textContent = "Ingresar";
           mostrarError(
-            "Este enlace ya no sirve: caducó o se usó antes. " +
-            "Pide uno nuevo desde Netlify (Identity → Invite users)."
+            "Ese enlace ya no sirve. Pulsa Ingresar y entra con tu correo " +
+            "y tu contraseña de siempre."
+          );
+        } else if (esInvitacion) {
+          esInvitacion = false;
+          document.getElementById("btnLogin").textContent = "Ingresar";
+          mostrarError(
+            "Esa invitación ya se usó o caducó. Si ya creaste tu contraseña, " +
+            "pulsa Ingresar. Si no, pide una invitación nueva desde Netlify."
           );
         } else {
           mostrarError("No se pudo iniciar sesión. Revisa el correo y la contraseña.");
