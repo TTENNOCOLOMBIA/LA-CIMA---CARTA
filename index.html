@@ -6,6 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>La Cima Restaurante - Carta Digital</title>
 
+  <!-- Netlify Identity manda los enlaces de invitación y de recuperación de
+       contraseña a la RAÍZ del sitio, con el token en el hash:
+         https://cimarestaurante.netlify.app/#invite_token=XXXX
+       Esta página es la carta pública y no carga el widget de Identity, así
+       que sin esto el enlace del correo no hace nada: el usuario ve la carta
+       y no puede crear su contraseña.
+       Se reenvía a admin-login.html, que sí tiene el widget y procesa el
+       token. Va lo más arriba posible para actuar antes de cargar la carta. -->
+  <script>
+    (function () {
+      var h = window.location.hash || "";
+      if (/^#(invite_token|recovery_token|confirmation_token|email_change_token)=/.test(h)) {
+        window.location.replace("admin-login.html" + h);
+      }
+    })();
+  </script>
+
   <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="La Cima Restaurante - Carta Digital 🍽️">
   <meta property="og:description" content="ESTO ES COLOMBIA 🇨🇴">

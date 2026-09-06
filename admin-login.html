@@ -239,15 +239,34 @@
         return;
       }
       document.getElementById("errorMessage").classList.remove("show");
-      netlifyIdentity.open("login");
+      // Con un invite_token hay que abrir el formulario de registro, no el
+      // de acceso: la cuenta todavía no existe, se está creando.
+      var conInvitacion = /^#invite_token=/.test(window.location.hash || "");
+      netlifyIdentity.open(conInvitacion ? "signup" : "login");
     }
 
     if (typeof netlifyIdentity === "undefined") {
       mostrarError("No se pudo cargar el sistema de acceso. Revisa tu conexión y recarga la página.");
     } else {
-      // Si ya hay sesión abierta, entrar directo al panel
+      // ¿Venimos del correo de invitación o de recuperar contraseña?
+      // El token llega en el hash de la URL. index.html reenvía aquí esos
+      // enlaces, porque Netlify los manda a la raíz del sitio.
+      var hash = window.location.hash || "";
+      var esInvitacion = /^#invite_token=/.test(hash);
+      var esRecuperacion = /^#recovery_token=/.test(hash);
+
+      if (esInvitacion || esRecuperacion) {
+        document.getElementById("btnLogin").textContent = esInvitacion
+          ? "Crear mi contraseña"
+          : "Cambiar mi contraseña";
+      }
+
+      // Si ya hay sesión abierta, entrar directo al panel.
+      // No redirigir si hay un token pendiente: primero hay que completarlo.
       netlifyIdentity.on("init", function (user) {
-        if (user) window.location.href = "admin-panel.html";
+        if (user && !esInvitacion && !esRecuperacion) {
+          window.location.href = "admin-panel.html";
+        }
       });
 
       netlifyIdentity.on("login", function () {
