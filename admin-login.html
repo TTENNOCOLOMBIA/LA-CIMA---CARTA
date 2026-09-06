@@ -285,6 +285,20 @@
       });
 
       netlifyIdentity.init();
+
+      // Si llegamos desde el correo (invitación o recuperación), abrir el
+      // formulario solo: el usuario ya hizo clic en el enlace, no debería
+      // tener que pulsar nada más. El botón queda como respaldo por si el
+      // widget tarda o algo falla.
+      if (esInvitacion || esRecuperacion) {
+        setTimeout(function () {
+          try {
+            netlifyIdentity.open(esInvitacion ? "signup" : "login");
+          } catch (e) {
+            console.error("No se pudo abrir el formulario:", e);
+          }
+        }, 600);
+      }
     }
   </script>
 
