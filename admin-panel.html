@@ -994,6 +994,22 @@
             • Resetea al menú original si algo sale mal
           </p>
         </div>
+
+        <!-- Copias automáticas. A diferencia de las de arriba, estas no hay
+             que acordarse de hacerlas: el servidor guarda el menú anterior
+             cada vez que se sincroniza. Se conservan las 10 últimas. -->
+        <div class="card">
+          <h3 style="color: var(--primary); margin-bottom: 6px;">🕐 Copias automáticas</h3>
+          <p style="color: var(--texto); font-size: 13px; margin-bottom: 15px;">
+            Se guardan solas cada vez que sincronizas el menú. Se conservan las 10 últimas.
+          </p>
+          <div class="btn-group" style="margin-bottom: 15px;">
+            <button class="btn-primary" onclick="verCopiasAutomaticas()">🔄 Ver copias disponibles</button>
+          </div>
+          <div id="listaCopias">
+            <p style="color:#aaa; font-size:13px;">Pulsa el botón para ver las copias guardadas.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1827,20 +1843,129 @@
       input.accept = ".json";
       input.onchange = (e) => {
         const file = e.target.files[0];
+        if (!file) return;
         const reader = new FileReader();
         reader.onload = (event) => {
+          let data;
           try {
-            const data = JSON.parse(event.target.result);
-            localStorage.setItem("lacimaMenuV2", JSON.stringify(data));
-            showNotification("Backup restaurado correctamente", "success");
-            location.reload();
+            data = JSON.parse(event.target.result);
           } catch {
-            showNotification("Error al restaurar el backup", "error");
+            showNotification("Ese archivo no es un backup válido", "error");
+            return;
+          }
+
+          // Comprobación mínima: debe parecer un menú, con categorías que
+          // contengan listas de productos. Restaurar cualquier JSON dejaría
+          // la carta vacía sin avisar.
+          const categorias = Object.keys(data || {});
+          const pareceMenu = categorias.length > 0 &&
+            categorias.some((c) => Array.isArray(data[c]));
+          if (!pareceMenu) {
+            showNotification("Ese archivo no parece un menú", "error");
+            return;
+          }
+
+          const total = categorias.reduce(
+            (n, c) => n + (Array.isArray(data[c]) ? data[c].length : 0), 0);
+
+          if (!confirm(`Se restaurarán ${total} productos en ${categorias.length} categorías.\n\nEl menú actual se guardará como copia antes de reemplazarlo.\n\n¿Seguir?`)) {
+            return;
+          }
+
+          localStorage.setItem("lacimaMenuV2", JSON.stringify(data));
+
+          // Antes esto se quedaba solo en este equipo: los demás seguían
+          // viendo el menú viejo. Ahora se sube también a Firebase.
+          if (typeof sincronizarTodoAFirebaseDirecto === 'function') {
+            showNotification("Restaurando y sincronizando...", "info");
+            sincronizarTodoAFirebaseDirecto(data).then(function (ok) {
+              showNotification(
+                ok ? "✅ Backup restaurado en todos los equipos"
+                   : "⚠️ Restaurado aquí, pero no se pudo sincronizar",
+                ok ? "success" : "error"
+              );
+              setTimeout(function () { location.reload(); }, 1500);
+            });
+          } else {
+            showNotification("Backup restaurado solo en este equipo", "success");
+            setTimeout(function () { location.reload(); }, 1200);
           }
         };
         reader.readAsText(file);
       };
       input.click();
+    }
+
+    // ---- Copias automáticas guardadas en Firebase ----
+    // Cada vez que se sincroniza el menú completo, el servidor guarda antes
+    // el menú anterior. Esto las lista para poder volver a cualquiera.
+    async function verCopiasAutomaticas() {
+      const caja = document.getElementById("listaCopias");
+      caja.innerHTML = "<p style='color:#aaa'>Buscando copias...</p>";
+
+      try {
+        const r = await fetch("https://la-cima-restaurante-default-rtdb.firebaseio.com/backups.json");
+        const copias = (await r.json()) || {};
+        const claves = Object.keys(copias).sort().reverse();
+
+        if (claves.length === 0) {
+          caja.innerHTML = "<p style='color:#aaa'>Todavía no hay copias automáticas. Se crean solas cada vez que sincronizas el menú.</p>";
+          return;
+        }
+
+        caja.innerHTML = claves.map(function (k) {
+          const c = copias[k] || {};
+          const cuando = c.fecha ? new Date(c.fecha).toLocaleString("es-CO") : k;
+          const cats = c.menu ? Object.keys(c.menu).length : 0;
+          let productos = 0;
+          if (c.menu) {
+            Object.values(c.menu).forEach(function (lista) {
+              if (Array.isArray(lista)) productos += lista.length;
+            });
+          }
+          return `
+            <div style="background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.15);
+                        border-radius:8px;padding:14px;margin-bottom:10px;
+                        display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+              <div>
+                <div style="color:#fff;font-weight:bold">${cuando}</div>
+                <div style="color:#aaa;font-size:12px">
+                  ${productos} productos · ${cats} categorías · por ${c.autor || "?"}
+                </div>
+              </div>
+              <button class="btn-secondary" onclick="restaurarCopia('${k}')">Volver a esta</button>
+            </div>`;
+        }).join("");
+      } catch (e) {
+        caja.innerHTML = "<p style='color:#ff9b90'>No se pudieron leer las copias.</p>";
+      }
+    }
+
+    async function restaurarCopia(clave) {
+      if (!confirm("Se volverá al menú de esa fecha en todos los equipos.\n\nEl menú actual se guardará como copia antes.\n\n¿Seguir?")) {
+        return;
+      }
+
+      try {
+        const r = await fetch(`https://la-cima-restaurante-default-rtdb.firebaseio.com/backups/${clave}/menu.json`);
+        const menu = await r.json();
+        if (!menu) {
+          showNotification("Esa copia está vacía", "error");
+          return;
+        }
+
+        showNotification("Restaurando...", "info");
+        const ok = await sincronizarTodoAFirebaseDirecto(menu);
+        if (ok) {
+          localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
+          showNotification("✅ Menú restaurado en todos los equipos", "success");
+          setTimeout(function () { location.reload(); }, 1500);
+        } else {
+          showNotification("❌ No se pudo restaurar. ¿Sigues con la sesión iniciada?", "error");
+        }
+      } catch (e) {
+        showNotification("Error al restaurar: " + e.message, "error");
+      }
     }
 
     function resetearDatos() {

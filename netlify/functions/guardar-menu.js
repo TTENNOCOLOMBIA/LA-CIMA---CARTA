@@ -36,12 +36,56 @@ const RUTAS_PERMITIDAS = [
 // Tope de tamaño, por si algo se descontrola en el cliente.
 const MAX_BYTES = 2 * 1024 * 1024; // 2 MB
 
+// Cuántas copias se conservan. Las más viejas se van borrando: sin límite,
+// la base crecería sin parar (cada copia son los 133 productos completos).
+const COPIAS_A_CONSERVAR = 10;
+
 function respuesta(codigo, cuerpo) {
   return {
     statusCode: codigo,
     headers: { "Content-Type": "application/json; charset=utf-8" },
     body: JSON.stringify(cuerpo)
   };
+}
+
+// Guarda el menú que hay ahora mismo antes de reemplazarlo, para poder
+// volver atrás si el cambio sale mal o alguien borra algo por error.
+async function hacerCopiaDeSeguridad(secreto, autor) {
+  const clave = `auth=${encodeURIComponent(secreto)}`;
+
+  const actual = await fetch(`${DB_URL}/menu.json?${clave}`);
+  if (!actual.ok) return;
+
+  const menuActual = await actual.json();
+  // Nada que respaldar la primera vez.
+  if (!menuActual) return;
+
+  // La marca de tiempo va en el identificador para que se ordenen solas.
+  // Los ":" y "." no valen como clave en Firebase.
+  const marca = new Date().toISOString().replace(/[:.]/g, "-");
+
+  await fetch(`${DB_URL}/backups/${marca}.json?${clave}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fecha: new Date().toISOString(),
+      autor: autor || "desconocido",
+      menu: menuActual
+    })
+  });
+
+  // Borrar las copias sobrantes, de la más antigua hacia adelante.
+  const listado = await fetch(`${DB_URL}/backups.json?shallow=true&${clave}`);
+  if (!listado.ok) return;
+
+  const claves = Object.keys((await listado.json()) || {}).sort();
+  const sobrantes = claves.slice(0, Math.max(0, claves.length - COPIAS_A_CONSERVAR));
+
+  await Promise.all(
+    sobrantes.map((k) =>
+      fetch(`${DB_URL}/backups/${k}.json?${clave}`, { method: "DELETE" })
+    )
+  );
 }
 
 exports.handler = async (event, context) => {
@@ -86,7 +130,20 @@ exports.handler = async (event, context) => {
     return respuesta(400, { error: "No se recibieron datos que guardar" });
   }
 
-  // ---- 4. Escribir en Firebase ----
+  // ---- 4. Copia de seguridad antes de sobrescribir el menú entero ----
+  // Solo al reemplazar "menu" completo, que es la operación que puede
+  // llevarse por delante los 133 productos de una vez. Guardar el menú
+  // anterior permite deshacer. Si la copia falla no se aborta el guardado:
+  // impedir un cambio legítimo por no poder respaldarlo sería peor.
+  if (ruta === "menu") {
+    try {
+      await hacerCopiaDeSeguridad(secreto, usuario.email);
+    } catch (e) {
+      console.error("No se pudo guardar la copia previa:", e.message);
+    }
+  }
+
+  // ---- 5. Escribir en Firebase ----
   try {
     const url = `${DB_URL}/${ruta}.json?auth=${encodeURIComponent(secreto)}`;
     const r = await fetch(url, {
