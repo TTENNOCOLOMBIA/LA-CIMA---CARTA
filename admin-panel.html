@@ -1753,17 +1753,23 @@
         return;
       }
 
-      if (typeof db === 'undefined') {
-        showNotification("Firebase no está inicializado", "error");
+      // La escritura ya no sale del navegador: va a la función del servidor,
+      // que comprueba la sesión y escribe con el secreto de Firebase.
+      // Las reglas de la base tienen ".write": false a propósito.
+      if (typeof sincronizarTodoAFirebaseDirecto !== 'function') {
+        showNotification("Falta cargar firebase-init.js", "error");
         return;
       }
 
       showNotification("Sincronizando menú a Firebase...", "info");
 
-      db.ref('menu').set(menu)
-        .then(() => {
-          showNotification("✅ ¡Menú sincronizado exitosamente a Firebase!", "success");
-          console.log("✅ Menú sincronizado:", menu);
+      sincronizarTodoAFirebaseDirecto(menu)
+        .then((ok) => {
+          if (ok) {
+            showNotification("✅ ¡Menú sincronizado! Ya se ve en tus otros equipos", "success");
+          } else {
+            showNotification("❌ No se pudo sincronizar. ¿Sigues con la sesión iniciada?", "error");
+          }
         })
         .catch((error) => {
           showNotification("❌ Error al sincronizar: " + error.message, "error");
