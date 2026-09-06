@@ -25,10 +25,22 @@
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "WHATSAPP_NUMBER,NODE_ENV"
 
-# Environment variables (configurar en dashboard de Netlify)
-# - ADMIN_PASSWORD
-# - WHATSAPP_NUMBER
-# - ENCRYPTION_KEY
+# ========================================
+# VARIABLES DE ENTORNO (se definen en el panel de Netlify)
+# ========================================
+# Nunca van en el repositorio. Ojo: cambiarlas NO surte efecto en las
+# funciones hasta el siguiente despliegue.
+#
+# EN USO:
+#   FIREBASE_DATABASE_SECRET  la llave con la que guardar-menu.js escribe
+#                             en Firebase. Es lo único que permite escribir:
+#                             las reglas de la base están en ".write": false.
+#
+# HEREDADAS (no las lee nadie hoy):
+#   ADMIN_PASSWORD    el acceso al panel lo gestiona Netlify Identity.
+#   ENCRYPTION_KEY    js/encryption.js no llega a leerla: usa process.env,
+#                     que no existe en el navegador.
+#   WHATSAPP_NUMBER   el número está a la vista en index.html a propósito.
 
 # ========================================
 # HEADERS DE SEGURIDAD
