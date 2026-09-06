@@ -36,6 +36,13 @@
 #                             en Firebase. Es lo único que permite escribir:
 #                             las reglas de la base están en ".write": false.
 #
+# AVISOS POR CORREO (opcionales: sin ellas no se envía nada y todo lo demás
+# sigue funcionando igual):
+#   RESEND_API_KEY   clave de Resend (resend.com). En su plan gratuito, sin
+#                    dominio propio, solo se puede enviar al correo con el
+#                    que se creó la cuenta.
+#   CORREO_AVISOS    dirección a la que llegan los avisos.
+#
 # HEREDADAS (no las lee nadie hoy):
 #   ADMIN_PASSWORD    el acceso al panel lo gestiona Netlify Identity.
 #   ENCRYPTION_KEY    js/encryption.js no llega a leerla: usa process.env,

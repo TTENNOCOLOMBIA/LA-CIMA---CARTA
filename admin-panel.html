@@ -1135,7 +1135,11 @@
       }
 
       netlifyIdentity.on("init", function (user) {
-        if (!user) window.location.href = "admin-login.html";
+        if (!user) {
+          window.location.href = "admin-login.html";
+          return;
+        }
+        avisarAcceso(user);
       });
 
       netlifyIdentity.on("logout", function () {
@@ -1143,6 +1147,28 @@
       });
 
       netlifyIdentity.init();
+    }
+
+    // Manda un aviso al correo cuando alguien entra al panel, para enterarse
+    // de un acceso que no hayas hecho tú.
+    // Una vez por sesión del navegador: "init" se dispara en cada carga de
+    // página, y sin esto llegaría un aviso por cada pantalla que se abra.
+    // No se espera la respuesta: el panel no debe quedarse esperando a un
+    // correo, y si el aviso falla da igual.
+    function avisarAcceso(user) {
+      try {
+        if (sessionStorage.getItem("lacimaAccesoAvisado")) return;
+        sessionStorage.setItem("lacimaAccesoAvisado", "1");
+      } catch (e) {
+        // Navegación privada puede bloquear sessionStorage; se avisa igual.
+      }
+
+      user.jwt().then(function (token) {
+        fetch("/.netlify/functions/avisar-acceso", {
+          method: "POST",
+          headers: { "Authorization": "Bearer " + token }
+        }).catch(function () { /* sin conexión: no pasa nada */ });
+      }).catch(function () { /* token no disponible: no pasa nada */ });
     }
 
     // Se verifica de inmediato, sin esperar al evento "load", para redirigir

@@ -21,6 +21,8 @@
 // que migrar a una cuenta de servicio con el SDK de Firebase Admin (eso
 // exigiría añadir package.json y dependencias npm al proyecto).
 
+const { enviarAviso, plantilla } = require("./_correo");
+
 const DB_URL = "https://la-cima-restaurante-default-rtdb.firebaseio.com";
 
 // Solo se permite escribir dentro de estas ramas. Acepta por ejemplo "menu",
@@ -96,6 +98,21 @@ exports.handler = async (event, context) => {
   // ---- 1. ¿Hay sesión válida? ----
   const usuario = context.clientContext && context.clientContext.user;
   if (!usuario) {
+    // Alguien ha intentado modificar el menú sin estar identificado. No es
+    // algo que pase por accidente: la carta pública nunca llama aquí.
+    // El aviso está limitado a uno cada 15 minutos, así que un bot dando
+    // golpes en bucle no llena el buzón.
+    await enviarAviso(
+      "⚠️ Intento de modificar el menú sin permiso",
+      plantilla("Intento de escritura rechazado", "#c0392b", [
+        ["Fecha y hora", new Date().toLocaleString("es-CO", { timeZone: "America/Bogota" })],
+        ["Dirección IP", event.headers["x-nf-client-connection-ip"] || "desconocida"],
+        ["Navegador", (event.headers["user-agent"] || "desconocido").slice(0, 120)]
+      ], "El intento fue rechazado y el menú no se ha tocado. Este aviso es informativo: si se repite mucho, avísame."),
+      "intento",
+      process.env.FIREBASE_DATABASE_SECRET
+    );
+
     return respuesta(401, {
       error: "Necesitas iniciar sesión para guardar cambios"
     });
