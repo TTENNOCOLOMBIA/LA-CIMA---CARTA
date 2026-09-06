@@ -1177,6 +1177,15 @@
 
     function logout() {
       if (confirm("¿Estás seguro de que quieres cerrar sesión?")) {
+        // Olvidar que ya se avisó de este acceso. Sin esto, cerrar sesión y
+        // volver a entrar en la misma pestaña no generaría aviso, que es
+        // justo cuando más interesa: alguien que entra tras de ti.
+        try {
+          sessionStorage.removeItem("lacimaAccesoAvisado");
+        } catch (e) {
+          // Navegación privada puede bloquear sessionStorage; da igual.
+        }
+
         if (typeof netlifyIdentity !== "undefined") {
           netlifyIdentity.logout(); // el evento "logout" hace la redirección
         } else {
