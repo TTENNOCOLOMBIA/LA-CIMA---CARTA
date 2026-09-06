@@ -46,9 +46,17 @@
     # dominios no cubre de forma confiable. Sigue bloqueado: http:,
     # data:/blob: como origen de script, y todo lo demás (object-src,
     # frame-ancestors, form-action) permanece restrictivo.
-    # frame-src incluye identity.netlify.com porque el widget de Netlify
-    # Identity (login del panel de admin) se renderiza dentro de un iframe.
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; frame-src https://player.vimeo.com https://maps.google.com https://identity.netlify.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
+    # frame-src necesita:
+    #  · 'self'                  el widget de Netlify Identity (login del
+    #                            panel) se dibuja dentro de un iframe SIN
+    #                            src, es decir about:blank. Sin 'self' el
+    #                            iframe se crea pero queda vacío: se ve el
+    #                            botón y al pulsarlo no aparece nada.
+    #  · identity.netlify.com    recursos del propio widget
+    #  · *.firebaseio.com        Firebase Realtime Database usa un iframe
+    #                            como transporte de respaldo
+    #  · vimeo / maps            vídeo de cabecera y mapa de ubicación
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; frame-src 'self' https://player.vimeo.com https://maps.google.com https://identity.netlify.com https://*.firebaseio.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
 
     # X-Frame-Options - Protege contra clickjacking
     X-Frame-Options = "SAMEORIGIN"
