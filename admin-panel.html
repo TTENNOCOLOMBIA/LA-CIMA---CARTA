@@ -143,6 +143,140 @@
       box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
     }
 
+    /* Cambiar contraseña: mismo tamaño que cerrar sesión, pero en tono
+       neutro para que la acción destructiva siga destacando en rojo. */
+    .btn-clave {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--texto-claro, #fff);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-clave:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    /* ---- Ventana de cambio de contraseña ---- */
+    .clave-fondo {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .clave-fondo.abierto { display: flex; }
+
+    .clave-caja {
+      background: var(--fondo-card, #2b1d13);
+      border: 2px solid var(--dorado, #f0b429);
+      border-radius: 12px;
+      padding: 26px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .clave-caja h3 {
+      color: var(--dorado, #f0b429);
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+
+    .clave-caja .clave-ayuda {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 13px;
+      margin: 0 0 18px;
+    }
+
+    .clave-caja label {
+      display: block;
+      color: #fff;
+      font-size: 13px;
+      font-weight: bold;
+      margin: 12px 0 6px;
+    }
+
+    .clave-caja input {
+      width: 100%;
+      padding: 11px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    .clave-caja input:focus {
+      outline: none;
+      border-color: var(--dorado, #f0b429);
+    }
+
+    .clave-aviso {
+      margin-top: 14px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .clave-aviso.error {
+      display: block;
+      background: rgba(231, 76, 60, 0.2);
+      border: 1px solid rgba(231, 76, 60, 0.5);
+      color: #ff9b90;
+    }
+
+    .clave-aviso.ok {
+      display: block;
+      background: rgba(46, 204, 113, 0.2);
+      border: 1px solid rgba(46, 204, 113, 0.5);
+      color: #7ee2a8;
+    }
+
+    .clave-botones {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .clave-botones button {
+      flex: 1;
+      padding: 11px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .clave-guardar {
+      background: linear-gradient(135deg, var(--dorado, #f0b429), #d99400);
+      color: #2b1d13;
+    }
+
+    .clave-cancelar {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .clave-botones button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
     /* ============ MAIN CONTENT ============ */
     .main-content {
       margin-left: 280px;
@@ -668,6 +802,7 @@
       </div>
 
       <div class="sidebar-footer">
+        <button class="btn-clave" onclick="abrirCambioClave()">🔑 Cambiar Contraseña</button>
         <button class="btn-logout" onclick="logout()">🚪 Cerrar Sesión</button>
       </div>
     </div>
@@ -1807,6 +1942,113 @@
       setInterval(actualizarHora, 1000);
       setInterval(actualizarContadoresAnalytics, 5000);
       actualizarHora();
+    });
+  </script>
+
+  <!-- ========================================
+       CAMBIAR CONTRASEÑA
+       ========================================
+       Netlify Identity permite cambiar la contraseña de una sesión ya
+       abierta, sin pasar por el correo de recuperación. Se evita así el
+       circuito de enlaces que caducan y el límite de peticiones seguidas
+       de Netlify. La contraseña viaja del navegador a Netlify: ni este
+       código ni el servidor del sitio llegan a verla. -->
+  <div class="clave-fondo" id="claveFondo">
+    <div class="clave-caja">
+      <h3>🔑 Cambiar contraseña</h3>
+      <p class="clave-ayuda">Se cambia al instante. No hace falta ningún correo.</p>
+
+      <label for="claveNueva">Nueva contraseña</label>
+      <input type="password" id="claveNueva" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+
+      <label for="claveRepetir">Repítela</label>
+      <input type="password" id="claveRepetir" autocomplete="new-password" placeholder="La misma otra vez">
+
+      <div class="clave-aviso" id="claveAviso"></div>
+
+      <div class="clave-botones">
+        <button type="button" class="clave-cancelar" onclick="cerrarCambioClave()">Cancelar</button>
+        <button type="button" class="clave-guardar" id="claveGuardar" onclick="guardarClaveNueva()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function avisoClave(texto, tipo) {
+      const el = document.getElementById("claveAviso");
+      el.textContent = texto;
+      el.className = "clave-aviso " + tipo;
+    }
+
+    function abrirCambioClave() {
+      document.getElementById("claveNueva").value = "";
+      document.getElementById("claveRepetir").value = "";
+      document.getElementById("claveAviso").className = "clave-aviso";
+      document.getElementById("claveGuardar").disabled = false;
+      document.getElementById("claveFondo").classList.add("abierto");
+      document.getElementById("claveNueva").focus();
+    }
+
+    function cerrarCambioClave() {
+      document.getElementById("claveFondo").classList.remove("abierto");
+    }
+
+    async function guardarClaveNueva() {
+      const nueva = document.getElementById("claveNueva").value;
+      const repetida = document.getElementById("claveRepetir").value;
+      const boton = document.getElementById("claveGuardar");
+
+      if (nueva.length < 8) {
+        avisoClave("La contraseña debe tener al menos 8 caracteres.", "error");
+        return;
+      }
+      if (nueva !== repetida) {
+        avisoClave("Las dos contraseñas no coinciden.", "error");
+        return;
+      }
+
+      if (typeof netlifyIdentity === "undefined") {
+        avisoClave("No se pudo cargar el sistema de acceso. Recarga la página.", "error");
+        return;
+      }
+
+      const usuario = netlifyIdentity.currentUser();
+      if (!usuario) {
+        avisoClave("Tu sesión ha caducado. Vuelve a entrar e inténtalo de nuevo.", "error");
+        return;
+      }
+
+      boton.disabled = true;
+      avisoClave("Guardando…", "ok");
+
+      try {
+        // La contraseña va directa de aquí a Netlify. No pasa por Firebase
+        // ni por las funciones del sitio, y no queda escrita en ningún lado.
+        await usuario.update({ password: nueva });
+
+        avisoClave("✅ Contraseña cambiada. Úsala la próxima vez que entres.", "ok");
+        document.getElementById("claveNueva").value = "";
+        document.getElementById("claveRepetir").value = "";
+        setTimeout(cerrarCambioClave, 2500);
+      } catch (e) {
+        console.error("Cambio de contraseña:", e);
+        const detalle = (e && e.message) ? e.message : "";
+        avisoClave(
+          /rate|limit|429/i.test(detalle)
+            ? "Has hecho varios intentos seguidos. Espera unos minutos."
+            : "No se pudo cambiar la contraseña. Inténtalo de nuevo.",
+          "error"
+        );
+        boton.disabled = false;
+      }
+    }
+
+    // Cerrar con Escape o pulsando fuera de la caja
+    document.getElementById("claveFondo").addEventListener("click", function (e) {
+      if (e.target === this) cerrarCambioClave();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") cerrarCambioClave();
     });
   </script>
 
