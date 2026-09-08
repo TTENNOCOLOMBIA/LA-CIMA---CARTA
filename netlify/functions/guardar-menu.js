@@ -16,10 +16,32 @@
 // Authorization, Netlify rellena context.clientContext.user. Si no hay
 // sesión, ese campo llega vacío y se rechaza la petición.
 //
-// Deuda técnica conocida: usa el "secreto de base de datos", que Firebase
-// marca como heredado. Funciona, pero si algún día Google lo retira habrá
-// que migrar a una cuenta de servicio con el SDK de Firebase Admin (eso
-// exigiría añadir package.json y dependencias npm al proyecto).
+// ----------------------------------------------------------------------
+// DEUDA TÉCNICA: el "secreto de base de datos"
+// ----------------------------------------------------------------------
+// Para escribir se usa FIREBASE_DATABASE_SECRET como parámetro ?auth= en la
+// URL. Firebase marca ese mecanismo como heredado y recomienda una cuenta de
+// servicio con el SDK de Firebase Admin.
+//
+// Se decidió a propósito NO migrar (8 sep 2026): funciona, Google no ha
+// anunciado fecha de retirada, y cambiarlo metería tres piezas nuevas
+// (descargar credenciales, guardar una clave privada multilínea en Netlify y
+// firmar tokens OAuth) a cambio de ningún beneficio actual.
+//
+// CÓMO SE NOTARÍA si Google lo retira: esta función empezaría a devolver 502
+// y el panel mostraría "Guardado solo en este equipo". No falla en silencio.
+//
+// QUÉ HACER ENTONCES:
+//   1. Firebase Console → Configuración → Cuentas de servicio → generar
+//      nueva clave privada (descarga un JSON).
+//   2. Guardar client_email y private_key como variables en Netlify.
+//   3. Sustituir el ?auth=<secreto> por un token OAuth: se firma un JWT
+//      RS256 con esa clave (crypto de Node basta, sin dependencias) y se
+//      canjea en https://oauth2.googleapis.com/token por un access_token
+//      con alcance firebase.database y userinfo.email.
+//   4. Enviarlo como cabecera Authorization: Bearer <access_token>.
+// Afecta también a registrar-evento.js y a _correo.js, que usan el mismo
+// secreto.
 
 const { enviarAviso, plantilla } = require("./_correo");
 
