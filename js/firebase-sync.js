@@ -45,49 +45,39 @@ async function syncMenuFromFirebase() {
         const menuRef = ref(firebaseDb, 'menu');
         const snapshot = await get(menuRef);
 
-        // 📊 Contar productos en ambas fuentes
-        let firebaseProductCount = 0;
-        let defaultMenuProductCount = 0;
-
+        // Firebase manda. Es donde el panel guarda los cambios y lo que
+        // comparten todos los equipos; el menú del código solo sirve de
+        // respaldo si la base no responde o está vacía.
+        //
+        // Antes había aquí una comparación que se quedaba con "el que tuviera
+        // más productos". Tenía sentido el 5 sep, cuando Firebase iba con 36
+        // productos y el código con 133. Ya no: con los dos en 133 se quedaba
+        // siempre con el del código y descartaba los cambios reales. Además
+        // dependía de que window.defaultMenu estuviera listo en ese instante,
+        // así que unas veces sincronizaba y otras no.
         if (snapshot.exists()) {
             const firebaseMenu = snapshot.val();
-            // Contar productos de Firebase
+
             if (firebaseMenu && typeof firebaseMenu === 'object') {
-                Object.values(firebaseMenu).forEach(category => {
-                    if (Array.isArray(category)) {
-                        firebaseProductCount += category.length;
-                    }
+                let productos = 0;
+                Object.values(firebaseMenu).forEach(categoria => {
+                    if (Array.isArray(categoria)) productos += categoria.length;
                 });
-            }
-        }
+                console.log(`📥 Menú recibido de Firebase: ${productos} productos`);
 
-        // Contar productos en defaultMenu
-        if (typeof window.defaultMenu !== 'undefined' && window.defaultMenu) {
-            Object.values(window.defaultMenu).forEach(category => {
-                if (Array.isArray(category)) {
-                    defaultMenuProductCount += category.length;
-                }
-            });
-        }
-
-        console.log(`📊 Firebase: ${firebaseProductCount} productos | defaultMenu: ${defaultMenuProductCount} productos`);
-
-        // ✅ Usar el menú que tenga MÁS productos
-        if (defaultMenuProductCount >= firebaseProductCount) {
-            console.log('✅ Priorizando defaultMenu (más productos)');
-            return true;
-        }
-
-        if (snapshot.exists()) {
-            const firebaseMenu = snapshot.val();
-            console.log('📥 Menú sincronizado desde Firebase:', firebaseMenu);
-
-            // Verificar que el menú sea válido
-            if (firebaseMenu && typeof firebaseMenu === 'object') {
-                // Actualizar defaultMenu con datos de Firebase
+                // Mantener window.defaultMenu al día para quien lo consulte.
                 if (typeof window.defaultMenu !== 'undefined') {
                     Object.assign(window.defaultMenu, firebaseMenu);
                 }
+
+                // Y refrescar lo que ya está pintado. Sin esto, menu.js sigue
+                // mostrando la copia que hizo al cargar, antes de que Firebase
+                // contestara: era la causa de que un cambio hecho en el móvil
+                // no apareciera nunca en el PC.
+                if (typeof window.aplicarMenuDeFirebase === 'function') {
+                    window.aplicarMenuDeFirebase(firebaseMenu);
+                }
+
                 console.log('✅ Menú actualizado correctamente');
                 return true;
             }

@@ -6,10 +6,58 @@
 // VARIABLES GLOBALES
 // ========================================
 
+// Arranque: se pinta con lo que haya a mano (la copia local o el menú del
+// código) para que la carta salga al instante. Firebase responde después y
+// entonces se refresca con aplicarMenuDeFirebase().
 let menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || JSON.parse(JSON.stringify(defaultMenu));
 let editingId = null;
 let isPasswordVerified = false;
 let currentCategory = 'all';
+
+// Firebase manda: es donde el panel guarda los cambios y lo que comparten
+// todos los equipos. Esta función la llama js/firebase-sync.js en cuanto
+// llegan los datos.
+//
+// Hace falta porque la línea de arriba COPIA el menú al cargar el script, de
+// forma síncrona. Firebase contesta más tarde y actualizaba defaultMenu, pero
+// esta copia ya estaba hecha y no volvía a mirar. Resultado: se editaba una
+// imagen en el móvil, subía bien a Firebase, y en el PC no aparecía nunca.
+window.aplicarMenuDeFirebase = function (menuDeFirebase) {
+  if (!menuDeFirebase || typeof menuDeFirebase !== 'object') return false;
+
+  // No pisar el menú con una respuesta vacía o a medias: preferible quedarse
+  // con lo que ya se está mostrando.
+  const categorias = Object.keys(menuDeFirebase).filter(
+    c => Array.isArray(menuDeFirebase[c]) && menuDeFirebase[c].length > 0
+  );
+  if (categorias.length === 0) {
+    console.warn('⚠️ Firebase devolvió un menú vacío; se conserva el actual');
+    return false;
+  }
+
+  menu = JSON.parse(JSON.stringify(menuDeFirebase));
+
+  // La copia local pasa a ser solo caché de lo que hay en Firebase.
+  try {
+    localStorage.setItem('lacimaMenuV2', JSON.stringify(menu));
+  } catch (e) {
+    // Sin espacio o en navegación privada: da igual, ya está en memoria.
+  }
+
+  // Repintar lo que hubiera en pantalla, respetando la categoría abierta.
+  try {
+    if (typeof buildFilters === 'function') buildFilters();
+    if (typeof buildSelect === 'function') buildSelect();
+    if (typeof renderMenu === 'function' && document.getElementById('menuContainer')) {
+      renderMenu(currentCategory);
+    }
+  } catch (e) {
+    console.warn('⚠️ No se pudo repintar la carta:', e.message);
+  }
+
+  console.log('🔄 Carta actualizada con los datos de Firebase');
+  return true;
+};
 
 // ========================================
 // FUNCIONES DE UTILIDAD
