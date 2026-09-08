@@ -6,30 +6,24 @@
 // FUNCIONES DE ADMINISTRACIÓN
 // ========================================
 
+// El menú se administra en admin-panel.html, con login de Netlify Identity.
+//
+// Antes había aquí un "modo edición" dentro de la propia carta: pedía una
+// contraseña por prompt() y la comparaba con ADMIN_PASSWORD de config.js.
+// Esa constante nunca llegaba a valer nada (leía process.env, que no existe
+// en el navegador) y acababa siendo la cadena 'default', así que bastaba
+// escribir eso para activarlo.
+//
+// Además ya estaba roto: usaba un elemento #editBar que no existe en
+// index.html, y sus cambios no salían del equipo porque no pasaban por
+// Firebase. Con la sincronización arreglada, cualquier edición local se
+// sobrescribe en cuanto responde la base.
+//
+// Se deja la función porque puede quedar alguna llamada suelta, pero ahora
+// solo remite al panel, que es donde se administra de verdad.
 function toggleEditMode() {
-  if (isPasswordVerified) {
-    isPasswordVerified = false;
-    document.querySelectorAll('.dish-actions, .gallery-actions').forEach(a => {
-      a.style.display = 'none';
-    });
-    document.getElementById('editBar').classList.remove('active');
-    document.getElementById('qrSection').classList.remove('active');
-  } else {
-    const p = prompt('Ingresa la contraseña de administrador:');
-
-    if (p === ADMIN_PASSWORD) {
-      isPasswordVerified = true;
-      document.querySelectorAll('.dish-actions, .gallery-actions').forEach(a => {
-        a.style.display = 'flex';
-      });
-      document.getElementById('editBar').classList.add('active');
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    } else if (p !== null) {
-      alert('Contraseña incorrecta');
-    }
+  if (confirm('El menú se administra desde el panel.\n\n¿Quieres ir allí ahora?')) {
+    window.location.href = 'admin-panel.html';
   }
 }
 

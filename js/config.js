@@ -7,21 +7,27 @@
 // ========================================
 
 // ========================================
-// CONFIGURACIÓN SEGURA - VARIABLES DE ENTORNO
+// CONSTANTES DE LA CARTA
 // ========================================
-// Nota: En desarrollo, estos valores vienen de .env
-// En Netlify, se configuran en Environment Variables
+//
+// Aquí vivía ADMIN_PASSWORD, y era un espejismo peligroso. Estaba escrita así:
+//
+//   const ADMIN_PASSWORD = typeof process !== 'undefined' && process.env.ADMIN_PASSWORD
+//     ? process.env.ADMIN_PASSWORD
+//     : localStorage.getItem('ADMIN_PASSWORD_TEMP') || 'default';
+//
+// `process` no existe en el navegador, así que la primera rama nunca se
+// cumplía y la contraseña acababa siendo la cadena 'default'. Definirla en
+// Netlify no cambiaba nada: esas variables solo llegan al servidor.
+//
+// El acceso lo gestiona ahora Netlify Identity en admin-panel.html, donde la
+// contraseña se valida en el servidor y nunca baja al navegador. Cualquier
+// contraseña escrita en un archivo .js es visible con F12; no hay forma de
+// esconderla ahí.
 
-// ⚠️ ESTOS VALORES NO DEBEN ESTAR HARDCODEADOS EN PRODUCCIÓN
-// Se cargan desde variables de entorno del servidor
-
-const ADMIN_PASSWORD = typeof process !== 'undefined' && process.env.ADMIN_PASSWORD
-  ? process.env.ADMIN_PASSWORD
-  : localStorage.getItem('ADMIN_PASSWORD_TEMP') || 'default';
-
-const WA_NUMERO = typeof process !== 'undefined' && process.env.WHATSAPP_NUMBER
-  ? process.env.WHATSAPP_NUMBER
-  : '573227364868';  // ⚠️ Se debe leer de servidor en producción
+// El número está a la vista en index.html a propósito, para que los clientes
+// escriban. No es un secreto.
+const WA_NUMERO = '573227364868';
 
 const OSO_URL = "https://i.ibb.co/wZfBFDX9/1000864515-removebg-preview.png";
 const DOMICILIO = 7000;

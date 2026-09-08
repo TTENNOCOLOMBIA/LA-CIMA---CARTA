@@ -354,11 +354,15 @@ function closeModal() {
 document.getElementById('dishForm').addEventListener('submit', function(e) {
   e.preventDefault();
 
-  const pwd = document.getElementById('password').value;
-  if (pwd !== ADMIN_PASSWORD) {
-    alert('Contraseña incorrecta');
-    return;
-  }
+  // Este formulario comparaba la contraseña con ADMIN_PASSWORD de config.js,
+  // que en el navegador siempre acababa valiendo 'default'. Además guardaba
+  // solo en este equipo: no pasaba por Firebase, así que el cambio se perdía
+  // en cuanto la carta se sincronizaba con la base.
+  //
+  // El menú se administra en admin-panel.html, con login de verdad.
+  alert('El menú se administra desde el panel de administración.\n\nAllí los cambios sí se guardan y se ven en todos los equipos.');
+  if (typeof closeModal === 'function') closeModal();
+  return;
 
   const name = document.getElementById('dishName').value;
   const desc = document.getElementById('dishDescription').value;
