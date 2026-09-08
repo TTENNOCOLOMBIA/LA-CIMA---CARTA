@@ -1413,7 +1413,7 @@
     }
 
     // Actualizar precio
-    function actualizarPrecio(catKey, idx) {
+    async function actualizarPrecio(catKey, idx) {
       const newPrice = parseInt(document.getElementById(`precio_${catKey}_${idx}`).value);
       const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
 
@@ -1433,16 +1433,16 @@
           nuevoPrecio: newPrice
         });
 
-        // Guardar en Firebase (con reintentos si es necesario)
-        if (typeof db !== 'undefined' && db !== null) {
-          sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
-        } else {
-          console.warn("⚠️ Firebase no está disponible, guardando solo en localStorage");
-        }
+        // Esperar la confirmación de Firebase antes de dar nada por hecho.
+        showNotification("Guardando precio...", "info");
+        const guardado = await sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
 
-        showNotification("✅ Precio actualizado correctamente", "success");
-        // Sincronizar cambios
-        sincronizarMenu();
+        showNotification(
+          guardado
+            ? "✅ Precio actualizado en todos los equipos"
+            : "⚠️ Guardado solo en este equipo. Revisa que sigas con la sesión iniciada.",
+          guardado ? "success" : "error"
+        );
 
         // Recargar después de un pequeño delay
         setTimeout(() => {
@@ -1505,7 +1505,7 @@
     }
 
     // Actualizar imagen
-    function actualizarImagen(catKey, idx) {
+    async function actualizarImagen(catKey, idx) {
       const newImg = document.getElementById(`img_${catKey}_${idx}`).value;
       const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
 
@@ -1525,15 +1525,20 @@
           nuevaImg: newImg
         });
 
-        // Guardar en Firebase (con reintentos si es necesario)
-        if (typeof db !== 'undefined' && db !== null) {
-          sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
-        } else {
-          console.warn("⚠️ Firebase no está disponible, guardando solo en localStorage");
-        }
+        // Esperar a saber si Firebase lo aceptó antes de decir nada.
+        // Antes se lanzaba la subida sin esperarla y se mostraba
+        // "✅ actualizada" pasara lo que pasara: si fallaba, el único rastro
+        // era un aviso en la consola que nadie mira. Así se perdieron las
+        // imágenes editadas la noche del 7 de septiembre.
+        showNotification("Guardando imagen...", "info");
+        const guardado = await sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
 
-        showNotification("✅ Imagen actualizada correctamente", "success");
-        sincronizarMenu();
+        showNotification(
+          guardado
+            ? "✅ Imagen actualizada en todos los equipos"
+            : "⚠️ Guardada solo en este equipo. Revisa que sigas con la sesión iniciada.",
+          guardado ? "success" : "error"
+        );
 
         // Recargar después de un pequeño delay para asegurar que se guardó
         setTimeout(() => {
@@ -1598,7 +1603,7 @@
     }
 
     // Actualizar descripción
-    function actualizarDescripcion(catKey, idx) {
+    async function actualizarDescripcion(catKey, idx) {
       const newDesc = document.getElementById(`desc_${catKey}_${idx}`).value;
       const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
 
@@ -1613,15 +1618,16 @@
           nuevaDesc: newDesc
         });
 
-        // Guardar en Firebase (con reintentos si es necesario)
-        if (typeof db !== 'undefined' && db !== null) {
-          sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
-        } else {
-          console.warn("⚠️ Firebase no está disponible, guardando solo en localStorage");
-        }
+        // Esperar la confirmación de Firebase antes de dar nada por hecho.
+        showNotification("Guardando descripción...", "info");
+        const guardado = await sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
 
-        showNotification("✅ Descripción actualizada correctamente", "success");
-        sincronizarMenu();
+        showNotification(
+          guardado
+            ? "✅ Descripción actualizada en todos los equipos"
+            : "⚠️ Guardada solo en este equipo. Revisa que sigas con la sesión iniciada.",
+          guardado ? "success" : "error"
+        );
 
         // Recargar después de un pequeño delay
         setTimeout(() => {
@@ -1705,7 +1711,7 @@
       }, 300);
     }
 
-    function guardarProducto(event) {
+    async function guardarProducto(event) {
       event.preventDefault();
       const nombre = document.getElementById("productoNombre").value;
       const categoria = document.getElementById("productoCategoria").value;
@@ -1727,13 +1733,16 @@
 
           localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
 
-          // Guardar en Firebase
-          if (typeof db !== 'undefined' && db !== null) {
-            sincronizarProductoEnFirebase(editCat, editIdx, menu[editCat][editIdx]);
-          }
+          // Esperar la confirmación de Firebase antes de dar nada por hecho.
+          showNotification("Guardando producto...", "info");
+          const guardado = await sincronizarProductoEnFirebase(editCat, editIdx, menu[editCat][editIdx]);
 
-          showNotification("✅ Producto actualizado correctamente", "success");
-          sincronizarMenu();
+          showNotification(
+            guardado
+              ? "✅ Producto actualizado en todos los equipos"
+              : "⚠️ Guardado solo en este equipo. Revisa que sigas con la sesión iniciada.",
+            guardado ? "success" : "error"
+          );
 
           setTimeout(() => {
             // Cerrar modal de forma directa
@@ -1764,13 +1773,16 @@
 
         localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
 
-        // Guardar en Firebase
-        if (typeof db !== 'undefined' && db !== null) {
-          sincronizarProductoEnFirebase(categoria, menu[categoria].length - 1, nuevoProducto);
-        }
+        // Esperar la confirmación de Firebase antes de dar nada por hecho.
+        showNotification("Creando producto...", "info");
+        const guardado = await sincronizarProductoEnFirebase(categoria, menu[categoria].length - 1, nuevoProducto);
 
-        showNotification("✅ Producto creado correctamente", "success");
-        sincronizarMenu();
+        showNotification(
+          guardado
+            ? "✅ Producto creado en todos los equipos"
+            : "⚠️ Creado solo en este equipo. Revisa que sigas con la sesión iniciada.",
+          guardado ? "success" : "error"
+        );
 
         setTimeout(() => {
           // Cerrar modal de forma directa
@@ -2063,10 +2075,12 @@
         });
     }
 
-    function sincronizarMenu() {
-      // La sincronización se hace automáticamente cada 10 segundos en index.html
-      console.log("✓ Cambios guardados en localStorage");
-    }
+    // Aquí vivía sincronizarMenu(), que solo escribía en la consola. Su
+    // comentario decía que "la sincronización se hace automáticamente cada 10
+    // segundos en index.html", algo que nunca existió. Las funciones de
+    // edición la llamaban creyendo que sincronizaba, y no hacía nada.
+    // Ahora cada una espera de verdad la respuesta de Firebase y avisa según
+    // el resultado, así que sobra.
 
     // ========================================
     // SINCRONIZAR TODO A FIREBASE
@@ -2126,10 +2140,57 @@
       document.getElementById("currentTime").textContent = now.toLocaleTimeString("es-CO");
     }
 
+    // Trae el menú de Firebase y refresca la copia local.
+    //
+    // Este panel lee el menú de localStorage en once sitios distintos, y
+    // hasta ahora nunca consultaba Firebase. Cada equipo trabajaba con su
+    // propia copia: se editaba una imagen en el móvil, subía bien a la base,
+    // y en el PC no aparecía jamás. Peor aún, al pulsar "Sincronizar" desde
+    // el PC se subía esa copia vieja encima de los cambios buenos.
+    //
+    // Actualizando localStorage aquí, esas once lecturas pasan a ver datos
+    // frescos sin tener que tocarlas una por una.
+    //
+    // La lectura es directa porque el menú es público; escribir sí exige
+    // sesión y pasa por netlify/functions/guardar-menu.js.
+    async function traerMenuDeFirebase() {
+      try {
+        const r = await fetch("https://la-cima-restaurante-default-rtdb.firebaseio.com/menu.json");
+        if (!r.ok) return false;
+
+        const menuRemoto = await r.json();
+
+        // No pisar la copia local con una respuesta vacía o a medias:
+        // dejaría el panel sin menú que mostrar.
+        const categorias = Object.keys(menuRemoto || {}).filter(
+          c => Array.isArray(menuRemoto[c]) && menuRemoto[c].length > 0
+        );
+        if (categorias.length === 0) {
+          console.warn("⚠️ Firebase devolvió un menú vacío; se conserva la copia local");
+          return false;
+        }
+
+        localStorage.setItem("lacimaMenuV2", JSON.stringify(menuRemoto));
+
+        let productos = 0;
+        categorias.forEach(c => { productos += menuRemoto[c].length; });
+        console.log(`📥 Menú traído de Firebase: ${productos} productos en ${categorias.length} categorías`);
+        return true;
+      } catch (e) {
+        console.warn("⚠️ No se pudo leer el menú de Firebase:", e.message);
+        return false;
+      }
+    }
+
     // Inicializar
     // Nota: checkSession() ya se llamó arriba, apenas cargó el script. No
     // repetirla aquí: netlifyIdentity.init() debe ejecutarse una sola vez.
-    window.addEventListener("load", function() {
+    window.addEventListener("load", async function() {
+      // Primero Firebase, después pintar: al revés se vería un instante el
+      // menú viejo antes de cambiar. Si la base no responde, se sigue con la
+      // copia local y el panel funciona igual.
+      await traerMenuDeFirebase();
+
       actualizarDashboard();
       setInterval(actualizarHora, 1000);
       setInterval(actualizarContadoresAnalytics, 5000);
