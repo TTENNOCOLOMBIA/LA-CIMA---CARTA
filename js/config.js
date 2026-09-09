@@ -46,6 +46,21 @@ const destacados = [
   "Mollejas Asadas"
 ];
 
+// YA NO SE USA para decidir la etiqueta de lanzamiento. Se deja como
+// referencia histórica de los nombres originales.
+//
+// Esta lista era el criterio hasta el 9 sep 2026: se comparaba el nombre del
+// plato contra ella. Cuatro de estos platos se renombraron desde el panel
+// ("Trilogía de Mar" pasó a "Castillo Cima del Mar", etc.) y dejaron de
+// coincidir, así que perdieron la etiqueta y el precio tachado sin que nada
+// avisara. Ahora la etiqueta la decide el propio plato: lleva lanzamiento si
+// tiene un launchPrice mayor que su price (ver cardHTML en js/menu.js).
+//
+// OJO: el panel todavía NO tiene campo para el precio anterior. Editar un
+// plato desde el panel lo conserva (se modifica el producto existente, no se
+// reemplaza), pero no hay forma de añadir ni quitar un lanzamiento desde ahí.
+// Hoy eso se hace escribiendo launchPrice directamente en Firebase.
+// Pendiente: añadir ese campo al formulario del panel.
 const launchProducts = [
   "Trilogía de Mar",
   "Filete Apanado",

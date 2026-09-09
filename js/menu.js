@@ -147,7 +147,19 @@ function getRatingStars(productName, baseRating = 4.5) {
 
 function cardHTML(cat, d, i) {
   const esDestacado = destacados.includes(d.name);
-  const esLanzamiento = launchProducts.includes(d.name);
+
+  // La etiqueta de lanzamiento sale de los DATOS del plato, no de una lista
+  // de nombres. Antes se comparaba contra launchProducts (js/config.js) y
+  // bastaba con renombrar un plato desde el panel para que perdiera la
+  // etiqueta en silencio: el 9 sep, 4 de los 6 platos de lanzamiento se
+  // habían renombrado y salían a precio normal.
+  // Criterio: hay lanzamiento si el plato guarda un precio anterior mayor
+  // que el actual. Así la etiqueta viaja con el producto, se llame como se
+  // llame, y desaparece sola en cuanto se le quite el precio anterior.
+  const esLanzamiento = typeof d.launchPrice === 'number' && d.launchPrice > d.price;
+  const descuento = esLanzamiento
+    ? Math.round((1 - d.price / d.launchPrice) * 100)
+    : 0;
   const imgStyle = d.img ? 'style="background-image:url(\'' + d.img + '\')"' : '';
   const noimgClass = d.img ? '' : ' noimg';
   const placeholder = d.img ? '' : '<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';
@@ -159,13 +171,15 @@ function cardHTML(cat, d, i) {
   let priceHtml = '';
   if (d.price === 0) {
     priceHtml = '<div class="dish-price no-price">Consultá el precio</div>';
-  } else if (esLanzamiento && d.launchPrice) {
+  } else if (esLanzamiento) {
     priceHtml = '<div class="price-container"><span class="price-normal">$' + d.launchPrice.toLocaleString('es-CO') + '</span><span class="price-launch">$' + d.price.toLocaleString('es-CO') + ' COP</span></div>';
   } else {
     priceHtml = '<div class="dish-price">$' + d.price.toLocaleString('es-CO') + ' <small>COP</small></div>';
   }
 
-  const badge = esLanzamiento ? '<div class="badge-launch">🎊 LANZAMIENTO -10%</div>' : (esDestacado ? '<div class="badge-star">⭐ El más pedido</div>' : '');
+  // El porcentaje se calcula con los dos precios en vez de escribir "-10%"
+  // fijo: si algún día se pone otro descuento, la etiqueta ya no miente.
+  const badge = esLanzamiento ? '<div class="badge-launch">🎊 LANZAMIENTO -' + descuento + '%</div>' : (esDestacado ? '<div class="badge-star">⭐ El más pedido</div>' : '');
   const cardClass = 'dish-card' + (esLanzamiento ? ' lanzamiento' : '') + (esDestacado ? ' destacado' : '');
 
   // Escapar comillas en el nombre del producto
@@ -194,7 +208,10 @@ function galleryHTML(cat, d, i) {
 // RENDERIZACIÓN DEL MENÚ
 // ========================================
 
-function renderMenu(category) {
+// hacerScroll: solo lo pide filterMenu(), cuando la persona toca un filtro de
+// categoría y espera saltar a los resultados. En cualquier otro repintado el
+// scroll automático es un estorbo — ver la nota al final de esta función.
+function renderMenu(category, hacerScroll) {
   currentCategory = category;
   document.getElementById('searchBox').value = '';
   const c = document.getElementById('menuContainer');
@@ -232,10 +249,20 @@ function renderMenu(category) {
     });
   }
 
-  // ✨ SCROLL AUTOMÁTICO suave hacia los productos
-  setTimeout(() => {
-    c.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
+  // Scroll suave hacia los productos, SOLO al tocar un filtro de categoría.
+  //
+  // Antes se hacía en cada repintado y causaba dos molestias:
+  //  · Al abrir la carta, los datos de Firebase llegan 1-2 segundos después
+  //    y repintan. Ese repintado desplazaba la página por detrás de la
+  //    pantalla de bienvenida, así que al elegir "Domicilio" aparecías en
+  //    mitad de los platos en vez de arriba, sin haber visto la cabecera.
+  //  · Si ya estabas leyendo la carta cuando llegaba la sincronización, te
+  //    arrastraba hacia abajo solo.
+  if (hacerScroll) {
+    setTimeout(() => {
+      c.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
 }
 
 // ========================================
@@ -299,7 +326,9 @@ function searchDishes(term) {
 function filterMenu(cat, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderMenu(cat);
+  // Único sitio que pide el scroll automático: aquí sí se espera saltar a
+  // los platos de la categoría recién elegida.
+  renderMenu(cat, true);
 }
 
 // ========================================
