@@ -1,0 +1,27 @@
+{
+  "name": "La Cima Restaurante",
+  "short_name": "La Cima",
+  "description": "Carta digital de La Cima Restaurante. Pide a domicilio desde tu celular.",
+  "start_url": "/?origen=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2A1C12",
+  "theme_color": "#3E2A1C",
+  "lang": "es-CO",
+  "categories": ["food", "shopping"],
+  "icons": [
+    {
+      "src": "/assets/icono-app.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icono-app.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

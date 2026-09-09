@@ -75,7 +75,9 @@
     #  · *.firebaseio.com        Firebase Realtime Database usa un iframe
     #                            como transporte de respaldo
     #  · vimeo / maps            vídeo de cabecera y mapa de ubicación
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; frame-src 'self' https://player.vimeo.com https://maps.google.com https://identity.netlify.com https://*.firebaseio.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
+    # worker-src y manifest-src son para poder instalar la carta como app:
+    # el service worker (sw.js) y el manifest.json son del propio sitio.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; style-src 'self' https: 'unsafe-inline'; img-src 'self' https: data:; font-src 'self' https: data:; connect-src 'self' https: wss:; worker-src 'self'; manifest-src 'self'; frame-src 'self' https://player.vimeo.com https://maps.google.com https://identity.netlify.com https://*.firebaseio.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests;"
 
     # X-Frame-Options - Protege contra clickjacking
     X-Frame-Options = "SAMEORIGIN"

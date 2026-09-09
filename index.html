@@ -36,6 +36,22 @@
   <link rel="icon" href="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png">
 
   <!-- ========================================
+       INSTALAR COMO APP
+       ========================================
+       Con esto el navegador ofrece "Añadir a pantalla de inicio" y la carta
+       se abre a pantalla completa, sin barra de direcciones, como una app.
+       No hay que publicar nada en ninguna tienda. -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#3E2A1C">
+
+  <!-- iPhone y iPad ignoran el manifest para el icono y el modo pantalla
+       completa: necesitan estas etiquetas aparte. -->
+  <link rel="apple-touch-icon" href="/assets/icono-app.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="La Cima">
+
+  <!-- ========================================
        SEGURIDAD - CONTENT SECURITY POLICY
        ======================================== -->
   <!-- Debe coincidir exactamente con el header en netlify.toml -->
@@ -46,6 +62,8 @@
     img-src 'self' https: data:;
     font-src 'self' https: data:;
     connect-src 'self' https: wss:;
+    worker-src 'self';
+    manifest-src 'self';
     frame-src 'self' https://player.vimeo.com https://maps.google.com https://identity.netlify.com https://*.firebaseio.com;
     object-src 'none';
     base-uri 'self';
@@ -314,6 +332,20 @@
         document.body.style.overflow = 'hidden';
       }
     })();
+
+    // Registrar el service worker. Solo sirve para que el navegador ofrezca
+    // instalar la carta como app; no guarda nada en caché (ver sw.js).
+    // Va después de cargar la página para no competir por el ancho de banda
+    // con el menú y las imágenes.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function (e) {
+          // Que falle no rompe nada: la carta funciona igual, solo que el
+          // navegador no ofrecerá instalarla.
+          console.warn('No se pudo registrar el service worker:', e.message);
+        });
+      });
+    }
   </script>
 
   <!-- ========================================
