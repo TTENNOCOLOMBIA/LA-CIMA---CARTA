@@ -175,7 +175,10 @@
     .opcion-icono { font-size: 30px; line-height: 1; flex-shrink: 0; }
     .opcion-texto { flex: 1; min-width: 0; }
 
+    /* En bloque: los <span> son en línea por defecto y el título y la
+       descripción salían pegados en la misma fila. */
     .opcion-titulo {
+      display: block;
       color: #fff;
       font-size: 17px;
       font-weight: 700;
@@ -183,6 +186,7 @@
     }
 
     .opcion-sub {
+      display: block;
       color: #E8D7C3;
       font-size: 12.5px;
       opacity: .7;
@@ -249,7 +253,9 @@
            alt="La Cima Restaurante" class="bienvenida-logo">
 
       <h1>La Cima</h1>
-      <p class="bienvenida-lema">Esto es Colombia 🇨🇴</p>
+      <!-- Sin la bandera 🇨🇴: son dos letras combinadas y los navegadores
+           que no las unen muestran un "co" suelto. -->
+      <p class="bienvenida-lema">Esto es Colombia</p>
       <div class="bienvenida-raya"></div>
 
       <p class="bienvenida-pregunta">¿Cómo quieres tu pedido?</p>
