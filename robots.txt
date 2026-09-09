@@ -1,0 +1,15 @@
+# La Cima Restaurante
+# Permite que los buscadores indexen la carta, pero deja fuera el panel de
+# administración y la documentación interna.
+
+User-agent: *
+Allow: /
+Disallow: /admin-panel.html
+Disallow: /admin-login.html
+Disallow: /docs/
+Disallow: /firebase-admin.html
+Disallow: /firebase-sync.html
+Disallow: /sincronizar.html
+Disallow: /sync-firebase-auto.html
+
+Sitemap: https://cimarestaurante.netlify.app/sitemap.xml

@@ -4,7 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Cima Restaurante - Carta Digital</title>
+  <!-- El título es lo que sale como titular en Google. Lleva la ciudad
+       porque casi todas las búsquedas de restaurante son locales:
+       "restaurante en Ipiales", "comida típica Ipiales". -->
+  <title>La Cima Restaurante | Comida típica colombiana en Ipiales, Nariño</title>
 
   <!-- Netlify Identity manda los enlaces de invitación y de recuperación de
        contraseña a la RAÍZ del sitio, con el token en el hash:
@@ -30,7 +33,58 @@
   <meta property="og:url" content="https://cimarestaurante.netlify.app">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="description" content="Carta digital La Cima Restaurante - Esto es Colombia">
+  <!-- Esta descripción es el texto que Google muestra debajo del titular. -->
+  <meta name="description" content="Carta digital de La Cima Restaurante en Ipiales, Nariño. Parrilla, típicos colombianos, mariscos y postres. Pide a domicilio desde tu celular. Cra 7 #27-90, Barrio Puenes.">
+  <link rel="canonical" href="https://cimarestaurante.netlify.app/">
+
+  <!-- ========================================
+       FICHA DE NEGOCIO PARA BUSCADORES
+       ========================================
+       Le dice a Google qué es esto: un restaurante, dónde está, qué horario
+       tiene y cómo contactar. Es lo que permite salir en búsquedas locales
+       del tipo "restaurante en Ipiales" y en Google Maps. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "La Cima Restaurante",
+    "description": "Restaurante de comida típica colombiana, parrilla y mariscos en Ipiales, Nariño.",
+    "image": "https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png",
+    "url": "https://cimarestaurante.netlify.app",
+    "telephone": "+573227364868",
+    "servesCuisine": ["Colombiana", "Parrilla", "Mariscos"],
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Cra 7 #27-90, Barrio Puenes",
+      "addressLocality": "Ipiales",
+      "addressRegion": "Nariño",
+      "addressCountry": "CO"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "12:00",
+        "closes": "21:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "12:00",
+        "closes": "22:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Sunday",
+        "opens": "11:00",
+        "closes": "17:00"
+      }
+    ],
+    "acceptsReservations": "True",
+    "hasMenu": "https://cimarestaurante.netlify.app"
+  }
+  </script>
 
   <!-- Favicon -->
   <link rel="icon" href="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png">
