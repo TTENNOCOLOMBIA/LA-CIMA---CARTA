@@ -12,7 +12,11 @@
 let menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || JSON.parse(JSON.stringify(defaultMenu));
 let editingId = null;
 let isPasswordVerified = false;
-let currentCategory = 'all';
+// 'ninguna' = todavía no se ha elegido categoría. Es el estado con el que
+// abre la carta: se ven el buscador y los botones de categoría, pero ningún
+// plato. Antes arrancaba en 'all' y soltaba los 121 platos de golpe, lo que
+// además contradecía el cartel "Selecciona una categoría 👇" de la página.
+let currentCategory = 'ninguna';
 
 // Firebase manda: es donde el panel guarda los cambios y lo que comparten
 // todos los equipos. Esta función la llama js/firebase-sync.js en cuanto
@@ -89,11 +93,15 @@ function buildFilters() {
   const f = document.getElementById('filters');
   f.innerHTML = '';
   const keys = Object.keys(categoryInfo);
-  keys.forEach((k, idx) => {
+  keys.forEach((k) => {
     const count = (menu[k] && menu[k].length) ? menu[k].length : 0;
     const icon = categoryInfo[k].icon || '🍽️';
     const badgeClass = count === 0 ? ' disabled' : '';
-    f.innerHTML += '<button class="filter-btn' + (idx === 0 ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><span class="icon">' + icon + '</span> <span class="label">' + categoryInfo[k].label + '</span> <span class="badge">' + count + '</span></button>';
+    // Se resalta la categoría que está puesta de verdad, no la primera de la
+    // lista. Así al abrir no aparece "Entradas" marcada sin haberla tocado, y
+    // cuando llegan los datos de Firebase y se reconstruyen los botones, no se
+    // pierde el resaltado de la que la persona tenía elegida.
+    f.innerHTML += '<button class="filter-btn' + (k === currentCategory ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><span class="icon">' + icon + '</span> <span class="label">' + categoryInfo[k].label + '</span> <span class="badge">' + count + '</span></button>';
   });
 }
 
@@ -216,6 +224,10 @@ function renderMenu(category, hacerScroll) {
   document.getElementById('searchBox').value = '';
   const c = document.getElementById('menuContainer');
   c.innerHTML = '';
+
+  // Sin categoría elegida no se pinta ningún plato. Se sale aquí, después de
+  // haber vaciado el contenedor.
+  if (category === 'ninguna') return;
 
   const cats = (category === 'all') ? Object.keys(categoryInfo) : [category];
 
