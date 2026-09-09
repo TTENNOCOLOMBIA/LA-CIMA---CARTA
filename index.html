@@ -76,8 +76,239 @@
 
   <!-- MÓDULO DE ENCRIPTACIÓN (Debe cargar primero) -->
   <script src="js/encryption.js"></script>
+
+  <!-- ========================================
+       PANTALLA DE BIENVENIDA
+       ========================================
+       Va en línea y no en css/main.css a propósito: si esperara a que cargue
+       la hoja de estilos, se vería un instante la carta antes de taparla. -->
+  <style>
+    #bienvenida {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: linear-gradient(160deg, #3E2A1C 0%, #2A1C12 60%, #1a1109 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      overflow-y: auto;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #bienvenida.oculto { display: none; }
+
+    .bienvenida-caja {
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      animation: bienvenidaEntra .5s ease-out;
+    }
+
+    @keyframes bienvenidaEntra {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .bienvenida-logo {
+      width: 132px;
+      height: 132px;
+      border-radius: 50%;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .55);
+    }
+
+    .bienvenida-caja h1 {
+      color: #FFD700;
+      font-size: 30px;
+      margin: 0 0 6px;
+      letter-spacing: .5px;
+    }
+
+    .bienvenida-lema {
+      color: #E8D7C3;
+      font-size: 14px;
+      margin: 0 0 22px;
+      opacity: .85;
+    }
+
+    .bienvenida-raya {
+      width: 54px;
+      height: 3px;
+      background: #FF6B35;
+      border-radius: 2px;
+      margin: 0 auto 24px;
+    }
+
+    .bienvenida-pregunta {
+      color: #E8D7C3;
+      font-size: 12px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: .75;
+    }
+
+    .opcion {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 14px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      font-family: inherit;
+    }
+
+    .opcion:hover, .opcion:focus-visible {
+      background: rgba(255, 255, 255, .1);
+      border-color: rgba(255, 215, 0, .45);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .opcion-icono { font-size: 30px; line-height: 1; flex-shrink: 0; }
+    .opcion-texto { flex: 1; min-width: 0; }
+
+    .opcion-titulo {
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .opcion-sub {
+      color: #E8D7C3;
+      font-size: 12.5px;
+      opacity: .7;
+      line-height: 1.35;
+    }
+
+    /* "Comer en el local" aún no funciona: se muestra atenuada y con aviso
+       para que en el lanzamiento se entienda que llega pronto. */
+    .opcion.proximamente { cursor: default; opacity: .62; }
+    .opcion.proximamente:hover { transform: none; background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); }
+
+    .etiqueta-pronto {
+      display: inline-block;
+      background: #FF6B35;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .8px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .opcion-wa {
+      justify-content: center;
+      gap: 10px;
+      background: transparent;
+      border-color: rgba(37, 211, 102, .4);
+      color: #25D366;
+      font-size: 14.5px;
+      font-weight: 600;
+      margin-top: 6px;
+      padding: 14px;
+    }
+
+    .opcion-wa:hover { background: rgba(37, 211, 102, .1); border-color: #25D366; }
+
+    .bienvenida-pie {
+      color: #E8D7C3;
+      font-size: 11px;
+      opacity: .45;
+      margin-top: 22px;
+    }
+
+    @media (max-height: 620px) {
+      .bienvenida-logo { width: 92px; height: 92px; margin-bottom: 12px; }
+      .bienvenida-caja h1 { font-size: 25px; }
+      .bienvenida-raya { margin-bottom: 16px; }
+    }
+  </style>
 </head>
 <body>
+
+  <!-- ========================================
+       PANTALLA DE BIENVENIDA
+       ========================================
+       Primero se elige cómo se quiere pedir. Hoy solo funciona Domicilio;
+       "Comer en el local" queda a la vista, marcada como próxima, para
+       anunciar el pedido desde la mesa. -->
+  <div id="bienvenida">
+    <div class="bienvenida-caja">
+      <img src="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png"
+           alt="La Cima Restaurante" class="bienvenida-logo">
+
+      <h1>La Cima</h1>
+      <p class="bienvenida-lema">Esto es Colombia 🇨🇴</p>
+      <div class="bienvenida-raya"></div>
+
+      <p class="bienvenida-pregunta">¿Cómo quieres tu pedido?</p>
+
+      <button type="button" class="opcion proximamente" onclick="avisoProximamente()">
+        <span class="opcion-icono">🍽️</span>
+        <span class="opcion-texto">
+          <span class="opcion-titulo">Comer en el local</span>
+          <span class="opcion-sub">Pide desde tu mesa y te avisamos cuando esté listo</span>
+          <span class="etiqueta-pronto">Muy pronto</span>
+        </span>
+      </button>
+
+      <button type="button" class="opcion" onclick="entrarALaCarta()">
+        <span class="opcion-icono">🛵</span>
+        <span class="opcion-texto">
+          <span class="opcion-titulo">Domicilio</span>
+          <span class="opcion-sub">Te lo llevamos a la puerta</span>
+        </span>
+      </button>
+
+      <a class="opcion opcion-wa"
+         href="https://wa.me/573227364868?text=Hola%20La%20Cima%2C%20tengo%20una%20pregunta"
+         target="_blank" rel="noopener">
+        💬 ¿Tienes alguna pregunta? WhatsApp
+      </a>
+
+      <p class="bienvenida-pie">Cra 7 #27-90 · Ipiales, Nariño</p>
+    </div>
+  </div>
+
+  <script>
+    // Entrar a la carta. La elección se recuerda durante la visita para que
+    // no vuelva a preguntar al navegar o recargar; al cerrar el navegador se
+    // olvida y se pregunta otra vez.
+    function entrarALaCarta() {
+      try { sessionStorage.setItem('lacimaModoPedido', 'domicilio'); } catch (e) {}
+      const pantalla = document.getElementById('bienvenida');
+      if (pantalla) pantalla.classList.add('oculto');
+      document.body.style.overflow = '';
+    }
+
+    function avisoProximamente() {
+      alert('🍽️ Pedir desde la mesa\n\nEstamos terminando esta función. Muy pronto podrás pedir desde tu mesa y el pedido llegará directo a caja.\n\nMientras tanto, pide por Domicilio o llama al mesero.');
+    }
+
+    // Si ya eligió en esta visita, no se le vuelve a preguntar.
+    (function () {
+      let yaEligio = false;
+      try { yaEligio = !!sessionStorage.getItem('lacimaModoPedido'); } catch (e) {}
+
+      if (yaEligio) {
+        document.getElementById('bienvenida').classList.add('oculto');
+      } else {
+        // Evitar que se pueda desplazar la carta por detrás de la pantalla.
+        document.body.style.overflow = 'hidden';
+      }
+    })();
+  </script>
 
   <!-- ========================================
        HEADER
