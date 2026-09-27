@@ -631,18 +631,6 @@ button {
   font-size: .75rem;
 }
 
-/* Lazy loading: imágenes con loading="lazy" */
-.dish-image-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.dish-card:hover .dish-image-img {
-  transform: scale(1.08);
-}
-
 .dish-content {
   padding: 22px;
   background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, .12) 0px, rgba(0, 0, 0, .12) 2px, transparent 2px, transparent 7px), linear-gradient(180deg, var(--madera) 0%, var(--madera2) 100%);
@@ -828,17 +816,6 @@ button {
 }
 
 .gallery-card:hover .gallery-image {
-  transform: scale(1.1);
-}
-
-.gallery-image-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.gallery-card:hover .gallery-image-img {
   transform: scale(1.1);
 }
 
