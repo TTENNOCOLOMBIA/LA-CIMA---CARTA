@@ -167,6 +167,31 @@
       color: var(--texto-claro, #fff);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 6px;
+
+    .btn-clave:hover {
+      background: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    /* Volver a la carta: botón neutro para salir sin cerrar sesión */
+    .btn-volver {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, var(--primary), #f1c40f);
+      color: #333;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-volver:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+    }
       cursor: pointer;
       font-weight: bold;
       font-size: 14px;
@@ -817,6 +842,7 @@
 
       <div class="sidebar-footer">
         <button class="btn-clave" onclick="abrirCambioClave()">🔑 Cambiar Contraseña</button>
+        <button class="btn-volver" onclick="window.location.href='/'">📋 Volver a la Carta</button>
         <button class="btn-logout" onclick="logout()">🚪 Cerrar Sesión</button>
       </div>
     </div>
