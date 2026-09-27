@@ -67,6 +67,10 @@ window.aplicarMenuDeFirebase = function (menuDeFirebase) {
 // FUNCIONES DE UTILIDAD
 // ========================================
 
+// Tamaño en línea a propósito: si el navegador tiene un main.css viejo en
+// caché (sin .dish-image-img), la foto quedaba en 0x0 e invisible (27 sep 2026).
+const IMG_ESTILO = 'width:100%;height:100%;object-fit:cover;display:block;cursor:pointer;';
+
 function osoHTML() {
   return '<img src="' + OSO_URL + '" alt="Oso La Cima" class="title-oso">';
 }
@@ -172,7 +176,7 @@ function cardHTML(cat, d, i) {
   // Si hay imagen, usar <img loading="lazy"> en vez de background-image.
   // Esto reduce el ancho de banda en ~70% para usuarios que solo miran algunas categorías.
   const imgHtml = d.img
-    ? '<img loading="lazy" src="' + d.img + '" alt="' + d.name.replace(/"/g, '&quot;') + '" class="dish-image-img" onclick="openImageModal(\'' + d.img + '\')" style="cursor:pointer;">'
+    ? '<img loading="lazy" src="' + d.img + '" alt="' + d.name.replace(/"/g, '&quot;') + '" class="dish-image-img" onclick="openImageModal(\'' + d.img + '\')" style="' + IMG_ESTILO + '">'
     : '';
   const noimgClass = d.img ? '' : ' noimg';
   const placeholder = d.img ? '' : '<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';
@@ -209,7 +213,7 @@ function galleryHTML(cat, d, i) {
   const colorClass = categoryInfo[cat].color;
   // Lazy loading para galería también
   const imgHtml = d.img
-    ? '<img loading="lazy" src="' + d.img + '" alt="' + d.name.replace(/"/g, '&quot;') + '" class="gallery-image-img" onclick="openImageModal(\'' + d.img + '\')" style="cursor:pointer;">'
+    ? '<img loading="lazy" src="' + d.img + '" alt="' + d.name.replace(/"/g, '&quot;') + '" class="gallery-image-img" onclick="openImageModal(\'' + d.img + '\')" style="' + IMG_ESTILO + '">'
     : '';
   const placeholder = d.img ? '' : '📷';
   const videoBtn = d.video ? '<a href="' + d.video + '" target="_blank" class="video-btn">▶️ Ver Video</a>' : '';
