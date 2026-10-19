@@ -222,6 +222,9 @@ function galleryHTML(cat, d, i) {
 function renderMenu(category, hacerScroll) {
   currentCategory = category;
   document.getElementById('searchBox').value = '';
+
+  // Si un producto del carrito se agotó, se quita antes de pintar
+  if (typeof quitarAgotadosDelCarrito === 'function') quitarAgotadosDelCarrito();
   const c = document.getElementById('menuContainer');
   c.innerHTML = '';
 
@@ -234,8 +237,13 @@ function renderMenu(category, hacerScroll) {
   cats.forEach(cat => {
     if (!menu[cat] || menu[cat].length === 0) return;
 
+    // Los agotados no se muestran. Se conserva el índice original (i) para
+    // que los botones sigan apuntando al plato correcto.
+    const visibles = menu[cat].map((d, i) => ({ d, i })).filter(x => !x.d.agotado);
+    if (visibles.length === 0) return;
+
     const info = categoryInfo[cat];
-    const n = menu[cat].length;
+    const n = visibles.length;
     const isGaleria = info.type === 'galeria';
     const titleClass = isGaleria ? (' ' + info.color + '-title') : ' regular';
 
@@ -246,7 +254,7 @@ function renderMenu(category, hacerScroll) {
     const grid = document.createElement('div');
     grid.className = isGaleria ? 'gallery-grid' : 'menu-grid';
 
-    menu[cat].forEach((d, i) => {
+    visibles.forEach(({ d, i }) => {
       grid.innerHTML += isGaleria ? galleryHTML(cat, d, i) : cardHTML(cat, d, i);
     });
 
@@ -297,6 +305,7 @@ function searchDishes(term) {
     if (categoryInfo[cat].type === 'galeria') return;
 
     menu[cat].forEach((d, i) => {
+      if (d.agotado) return;
       if (d.name.toLowerCase().includes(term) || d.desc.toLowerCase().includes(term)) {
         encontrados.push({
           cat: cat,

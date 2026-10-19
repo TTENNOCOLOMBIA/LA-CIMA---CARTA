@@ -830,6 +830,10 @@
           <span class="nav-icon">📝</span>
           <span>Editar Descripciones</span>
         </div>
+        <div class="nav-item" onclick="showSection('disponibilidad', this)">
+          <span class="nav-icon">🚫</span>
+          <span>Disponibilidad</span>
+        </div>
         <div class="nav-item" onclick="showSection('analytics', this)">
           <span class="nav-icon">📈</span>
           <span>Estadísticas</span>
@@ -969,6 +973,21 @@
         <div id="imagenesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
       </div>
 
+      <!-- ========== DISPONIBILIDAD ========== -->
+      <div id="disponibilidad" class="section">
+        <h2 class="section-title">🚫 Disponibilidad</h2>
+        <p style="color: var(--texto); margin-bottom: 15px;">Marca como agotado un producto para que desaparezca de la carta. Vuélvelo a mostrar cuando esté disponible otra vez.</p>
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; align-items: center;">
+          <div style="flex: 1;">
+            <input type="text" id="disponibilidadBuscador" placeholder="🔍 Busca un producto por nombre..." style="width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 2px solid #FFD700; border-radius: 6px; color: var(--texto); font-size: 14px;" oninput="filtrarDisponibilidad()">
+          </div>
+          <div style="background: #e74c3c; color: #fff; padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 16px; min-width: 150px; text-align: center;">
+            Agotados: <span id="contadorAgotados">0</span>
+          </div>
+        </div>
+        <div id="disponibilidadLista"></div>
+      </div>
+
       <!-- ========== DESCRIPCIONES ========== -->
       <div id="descripciones" class="section">
         <h2 class="section-title">📝 Editar Descripciones</h2>
@@ -978,6 +997,9 @@
           </div>
           <div style="background: #FFD700; color: #000; padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 16px; min-width: 100px; text-align: center;">
             Total: <span id="contadorDescripciones">0</span>
+          </div>
+          <div style="background: #27ae60; color: #fff; padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 16px; min-width: 140px; text-align: center;">
+            Editados: <span id="progresoDescripciones">0</span>
           </div>
         </div>
         <div id="descripcionesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;"></div>
@@ -1251,6 +1273,8 @@
         cargarImagenes();
       } else if (sectionName === "descripciones") {
         cargarDescripciones();
+      } else if (sectionName === "disponibilidad") {
+        cargarDisponibilidad();
       } else if (sectionName === "analytics") {
         actualizarContadoresAnalytics();
       }
@@ -1580,22 +1604,32 @@
       grid.innerHTML = "";
 
       let totalProductos = 0;
+      const listos = obtenerListosDescripciones();
 
       Object.keys(menu).forEach(catKey => {
         if (Array.isArray(menu[catKey])) {
           menu[catKey].forEach((prod, idx) => {
+            totalProductos++;
+            const clave = catKey + "_" + idx;
+            const marcado = !!listos[clave];
             const card = document.createElement("div");
             card.className = "card descripcion-card";
             card.setAttribute("data-nombre", prod.name.toLowerCase());
+            card.setAttribute("data-clave", clave);
+            card.style.position = "relative";
+            card.style.border = marcado ? "3px solid #27ae60" : "";
             card.innerHTML = `
-              <h4 style="color: var(--primary); margin-bottom: 10px;">${prod.name}</h4>
+              <span style="position:absolute; top:10px; left:10px; background:#FFD700; color:#000; font-weight:900; font-size:13px; padding:4px 10px; border-radius:14px;">#${totalProductos}</span>
+              <label style="position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.4); color:#fff; font-size:12px; padding:4px 8px; border-radius:14px; cursor:pointer; display:flex; align-items:center; gap:5px;">
+                <input type="checkbox" ${marcado ? "checked" : ""} onchange="toggleListoDescripcion('${clave}', this.checked)"> Lista
+              </label>
+              <h4 style="color: var(--primary); margin: 36px 0 10px;">${prod.name}</h4>
               <p style="color: var(--texto); font-size: 12px; margin-bottom: 10px;">Categoría: ${categoryInfo[catKey].label}</p>
               <label style="color: var(--primary); font-weight: bold; margin-bottom: 8px; display: block;">Descripción:</label>
               <textarea id="desc_${catKey}_${idx}" placeholder="Ingresa la descripción del producto" style="width:100%; padding:10px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 6px; color: var(--texto); min-height: 80px; font-family: inherit; resize: vertical;">${prod.desc || ""}</textarea>
               <button class="btn-small btn-success" onclick="actualizarDescripcion('${catKey}', ${idx})" style="width:100%; margin-top: 10px;">✅ Guardar</button>
             `;
             grid.appendChild(card);
-            totalProductos++;
           });
         }
       });
@@ -1603,6 +1637,120 @@
       document.getElementById("contadorDescripciones").textContent = totalProductos;
       document.getElementById("descripcionesFooter").style.display = "block";
       document.getElementById("descripcionesBuscador").value = "";
+      actualizarProgresoDescripciones();
+    }
+
+    // Casillas "Lista" de descripciones (se guardan solo en este navegador)
+    function obtenerListosDescripciones() {
+      try {
+        return JSON.parse(localStorage.getItem("lacimaDescripcionesListas")) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function toggleListoDescripcion(clave, marcado) {
+      const listos = obtenerListosDescripciones();
+      if (marcado) {
+        listos[clave] = true;
+      } else {
+        delete listos[clave];
+      }
+      try {
+        localStorage.setItem("lacimaDescripcionesListas", JSON.stringify(listos));
+      } catch (e) {
+        console.error("No se pudo guardar el progreso:", e);
+      }
+      const card = document.querySelector(`.descripcion-card[data-clave="${clave}"]`);
+      if (card) card.style.border = marcado ? "3px solid #27ae60" : "";
+      actualizarProgresoDescripciones();
+    }
+
+    function actualizarProgresoDescripciones() {
+      const total = document.querySelectorAll(".descripcion-card").length;
+      const marcados = document.querySelectorAll(".descripcion-card input[type='checkbox']:checked").length;
+      document.getElementById("progresoDescripciones").textContent = marcados + " de " + total;
+    }
+
+    // ========== DISPONIBILIDAD (productos agotados) ==========
+    function cargarDisponibilidad() {
+      const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
+      const cont = document.getElementById("disponibilidadLista");
+      cont.innerHTML = "";
+      let total = 0;
+      let agotados = 0;
+
+      Object.keys(menu).forEach(catKey => {
+        if (!Array.isArray(menu[catKey]) || menu[catKey].length === 0) return;
+
+        const titulo = document.createElement("h3");
+        titulo.style.cssText = "color: var(--primary); margin: 25px 0 10px;";
+        titulo.textContent = (categoryInfo[catKey] ? categoryInfo[catKey].label : catKey) + " (" + menu[catKey].length + ")";
+        cont.appendChild(titulo);
+
+        menu[catKey].forEach((prod, idx) => {
+          total++;
+          if (prod.agotado) agotados++;
+
+          const fila = document.createElement("div");
+          fila.className = "disp-row";
+          fila.setAttribute("data-nombre", prod.name.toLowerCase());
+          fila.style.cssText = "display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 16px; margin-bottom:8px; border-radius:8px; background: rgba(255,255,255,0.05); border-left: 5px solid " + (prod.agotado ? "#e74c3c" : "#27ae60") + ";";
+
+          const nombre = document.createElement("span");
+          nombre.style.cssText = "flex:1; color: var(--texto); font-weight:600;";
+          nombre.textContent = prod.name;
+
+          const estado = document.createElement("span");
+          estado.style.cssText = "color:#fff; padding:4px 10px; border-radius:12px; font-weight:bold; font-size:12px; background:" + (prod.agotado ? "#e74c3c" : "#27ae60") + ";";
+          estado.textContent = prod.agotado ? "AGOTADO" : "Disponible";
+
+          const boton = document.createElement("button");
+          boton.className = "btn-small";
+          boton.style.cssText = "color:#fff; background:" + (prod.agotado ? "#27ae60" : "#e74c3c") + ";";
+          boton.textContent = prod.agotado ? "✅ Volver a mostrar" : "🚫 Marcar agotado";
+          boton.onclick = () => toggleAgotado(catKey, idx, !prod.agotado, boton);
+
+          fila.append(nombre, estado, boton);
+          cont.appendChild(fila);
+        });
+      });
+
+      document.getElementById("contadorAgotados").textContent = agotados + " de " + total;
+      filtrarDisponibilidad();
+    }
+
+    function filtrarDisponibilidad() {
+      const texto = document.getElementById("disponibilidadBuscador").value.toLowerCase();
+      document.querySelectorAll(".disp-row").forEach(fila => {
+        fila.style.display = fila.getAttribute("data-nombre").includes(texto) ? "" : "none";
+      });
+    }
+
+    async function toggleAgotado(catKey, idx, agotado, boton) {
+      const menu = JSON.parse(localStorage.getItem('lacimaMenuV2')) || defaultMenu;
+      if (!menu[catKey] || !menu[catKey][idx]) return;
+
+      if (agotado) {
+        menu[catKey][idx].agotado = true;
+      } else {
+        delete menu[catKey][idx].agotado;
+      }
+      localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
+
+      if (boton) boton.disabled = true;
+      showNotification(agotado ? "Marcando como agotado..." : "Volviendo a mostrar el producto...", "info");
+
+      // Igual que las descripciones: solo se da por hecho si Firebase confirma
+      const guardado = await sincronizarProductoEnFirebase(catKey, idx, menu[catKey][idx]);
+
+      showNotification(
+        guardado
+          ? "✅ Disponibilidad actualizada en todos los equipos"
+          : "⚠️ Guardado solo en este equipo. Revisa que sigas con la sesión iniciada.",
+        guardado ? "success" : "error"
+      );
+      cargarDisponibilidad();
     }
 
     // Filtrar productos en descripciones

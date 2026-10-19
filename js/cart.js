@@ -203,6 +203,27 @@ function removeFromCart(idx) {
   updateCartUI();
 }
 
+// Quita del carrito los productos que ya están marcados como agotados
+function quitarAgotadosDelCarrito() {
+  if (!Array.isArray(cart) || cart.length === 0) return;
+
+  const agotados = new Set();
+  Object.keys(menu).forEach(cat => {
+    if (Array.isArray(menu[cat])) {
+      menu[cat].forEach(p => { if (p.agotado) agotados.add(p.name); });
+    }
+  });
+
+  const antes = cart.length;
+  cart = cart.filter(item => !agotados.has(item.name));
+
+  if (cart.length !== antes) {
+    saveCartToStorage();
+    updateCartUI();
+    alert('Algunos productos de tu carrito ya no están disponibles y se quitaron.');
+  }
+}
+
 function updateTotals() {
   const subtotal = getSubtotal();
   const descuento = getTotalDiscount();
