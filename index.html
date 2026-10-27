@@ -309,6 +309,58 @@
       .bienvenida-caja h1 { font-size: 25px; }
       .bienvenida-raya { margin-bottom: 16px; }
     }
+
+    /* Modo "Comer en el local": sin carrito ni botones de agregar */
+    body.modo-local #cartIcon,
+    body.modo-local .cart-modal,
+    body.modo-local .btn-cart { display: none !important; }
+
+    .aviso-local-caja {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 18px;
+      background: #3E2A1C;
+      border: 2px solid #FFD700;
+      border-radius: 12px;
+      color: #F0E0C8;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .aviso-local-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      width: auto;
+      box-shadow: none;
+      color: #FF6B35;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    /* Compartir la carta: pequeño y discreto, para no restar protagonismo a Domicilio */
+    .btn-compartir {
+      display: block;
+      margin: 14px auto 0;
+      padding: 7px 16px;
+      background: transparent;
+      border: 1px solid rgba(255, 215, 0, .45);
+      border-radius: 20px;
+      color: #FFD700;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: none;
+      width: auto;
+      opacity: .85;
+    }
+    .btn-compartir:hover { opacity: 1; background: rgba(255, 215, 0, .1); }
   </style>
 </head>
 <body>
@@ -332,12 +384,11 @@
 
       <p class="bienvenida-pregunta">¿Cómo quieres tu pedido?</p>
 
-      <button type="button" class="opcion proximamente" onclick="avisoProximamente()">
+      <button type="button" class="opcion" onclick="entrarALaCarta('local')">
         <span class="opcion-icono">🍽️</span>
         <span class="opcion-texto">
           <span class="opcion-titulo">Comer en el local</span>
-          <span class="opcion-sub">Pide desde tu mesa y te avisamos cuando esté listo</span>
-          <span class="etiqueta-pronto">Muy pronto</span>
+          <span class="opcion-sub">Mira la carta y pídele tu pedido al mesero</span>
         </span>
       </button>
 
@@ -355,6 +406,8 @@
         💬 ¿Tienes alguna pregunta? WhatsApp
       </a>
 
+      <button type="button" class="btn-compartir" onclick="compartirCarta()">🔗 Compartir carta</button>
+
       <p class="bienvenida-pie">Cra 7 #27-90 · Ipiales, Nariño</p>
     </div>
   </div>
@@ -363,24 +416,85 @@
     // Entrar a la carta. La elección se recuerda durante la visita para que
     // no vuelva a preguntar al navegar o recargar; al cerrar el navegador se
     // olvida y se pregunta otra vez.
-    function entrarALaCarta() {
-      try { sessionStorage.setItem('lacimaModoPedido', 'domicilio'); } catch (e) {}
+    function entrarALaCarta(modo) {
+      modo = modo === 'local' ? 'local' : 'domicilio';
+      try { sessionStorage.setItem('lacimaModoPedido', modo); } catch (e) {}
       const pantalla = document.getElementById('bienvenida');
       if (pantalla) pantalla.classList.add('oculto');
       document.body.style.overflow = '';
+      aplicarModoPedido(modo);
     }
 
-    function avisoProximamente() {
-      alert('🍽️ Pedir desde la mesa\n\nEstamos terminando esta función. Muy pronto podrás pedir desde tu mesa y el pedido llegará directo a caja.\n\nMientras tanto, pide por Domicilio o llama al mesero.');
+    // Modo "local": la carta se ve igual, pero sin carrito ni botones de agregar.
+    function aplicarModoPedido(modo) {
+      const esLocal = modo === 'local';
+      document.body.classList.toggle('modo-local', esLocal);
+
+      const aviso = document.getElementById('avisoLocal');
+      if (aviso) aviso.style.display = esLocal ? 'block' : 'none';
+
+      const hint = document.getElementById('hintTexto');
+      if (hint) {
+        hint.textContent = esLocal
+          ? 'Selecciona una categoría para ver los productos'
+          : 'Selecciona una categoría para ver los productos y haz tu pedido';
+      }
+    }
+
+    // Compartir la carta: abre el menú de compartir del teléfono si existe;
+    // si no (algunos computadores), copia el link.
+    const LINK_CARTA = 'https://cimarestaurante.netlify.app';
+
+    async function compartirCarta() {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'La Cima Restaurante',
+            text: 'Mira la carta de La Cima Restaurante',
+            url: LINK_CARTA
+          });
+          return;
+        } catch (e) {
+          // Si el cliente cerró el menú, no hace nada más
+          if (e && e.name === 'AbortError') return;
+          // Otro fallo: se intenta copiar el link
+        }
+      }
+      copiarLinkCarta();
+    }
+
+    async function copiarLinkCarta() {
+      try {
+        await navigator.clipboard.writeText(LINK_CARTA);
+      } catch (e) {
+        // Respaldo para navegadores sin acceso al portapapeles
+        const campo = document.createElement('textarea');
+        campo.value = LINK_CARTA;
+        document.body.appendChild(campo);
+        campo.select();
+        document.execCommand('copy');
+        document.body.removeChild(campo);
+      }
+      alert('✅ Link copiado, pégalo donde quieras');
+    }
+
+    // Desde el modo local, el cliente cambia a domicilio sin volver a la bienvenida.
+    function cambiarADomicilio() {
+      try { sessionStorage.setItem('lacimaModoPedido', 'domicilio'); } catch (e) {}
+      aplicarModoPedido('domicilio');
     }
 
     // Si ya eligió en esta visita, no se le vuelve a preguntar.
     (function () {
-      let yaEligio = false;
-      try { yaEligio = !!sessionStorage.getItem('lacimaModoPedido'); } catch (e) {}
+      let modoGuardado = null;
+      try { modoGuardado = sessionStorage.getItem('lacimaModoPedido'); } catch (e) {}
 
-      if (yaEligio) {
+      if (modoGuardado) {
         document.getElementById('bienvenida').classList.add('oculto');
+        // Los textos de la carta aún no existen en este punto: se aplica al cargar.
+        document.addEventListener('DOMContentLoaded', function () {
+          aplicarModoPedido(modoGuardado);
+        });
       } else {
         // Evitar que se pueda desplazar la carta por detrás de la pantalla.
         document.body.style.overflow = 'hidden';
@@ -438,6 +552,14 @@
   <!-- ========================================
        SEARCH BAR
        ======================================== -->
+  <!-- Aviso solo en modo "Comer en el local" -->
+  <div id="avisoLocal" class="search-wrap" style="display:none;">
+    <div class="aviso-local-caja">
+      <span>🍽️ Estás en el local: mira la carta y pídele tu pedido al mesero.</span>
+      <button type="button" class="aviso-local-btn" onclick="cambiarADomicilio()">¿Prefieres domicilio?</button>
+    </div>
+  </div>
+
   <div class="search-wrap">
     <input type="text" class="search-box" id="searchBox" placeholder="🔍 Busca tu plato favorito..." oninput="searchDishes(this.value)">
   </div>
@@ -447,7 +569,7 @@
        ======================================== -->
   <div class="category-hint">
     <span class="arrow-left">👇</span>
-    <span class="hint-text">Selecciona una categoría para ver los productos y haz tu pedido</span>
+    <span class="hint-text" id="hintTexto">Selecciona una categoría para ver los productos y haz tu pedido</span>
     <span class="arrow-right">👇</span>
   </div>
 
