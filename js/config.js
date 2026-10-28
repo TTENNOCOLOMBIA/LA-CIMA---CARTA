@@ -29,7 +29,7 @@
 // escriban. No es un secreto.
 const WA_NUMERO = '573227364868';
 
-const OSO_URL = "https://i.ibb.co/wZfBFDX9/1000864515-removebg-preview.png";
+const OSO_URL = "assets/fotos/marca-oso-la-cima.webp";
 const DOMICILIO = 7000;
 
 // ========================================

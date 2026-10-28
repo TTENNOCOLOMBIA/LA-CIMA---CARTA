@@ -67,6 +67,14 @@ window.aplicarMenuDeFirebase = function (menuDeFirebase) {
 // FUNCIONES DE UTILIDAD
 // ========================================
 
+// Si la foto ya está guardada en la carta, usa la copia local (no depende de ImgBB).
+// Si no, deja el enlace original.
+function fotoLocal(url) {
+  if (!url) return url;
+  const mapa = window.FOTOS_LOCALES || {};
+  return mapa[String(url).split('?')[0]] || url;
+}
+
 function osoHTML() {
   return '<img src="' + OSO_URL + '" alt="Oso La Cima" class="title-oso">';
 }
@@ -168,11 +176,12 @@ function cardHTML(cat, d, i) {
   const descuento = esLanzamiento
     ? Math.round((1 - d.price / d.launchPrice) * 100)
     : 0;
-  const imgStyle = d.img ? 'style="background-image:url(\'' + d.img + '\')"' : '';
+  const foto = fotoLocal(d.img);
+  const imgStyle = d.img ? 'style="background-image:url(\'' + foto + '\')"' : '';
   const noimgClass = d.img ? '' : ' noimg';
   const placeholder = d.img ? '' : '<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';
   const icono = d.img ? '' : (d.icon || '🍽️');
-  const clickFoto = d.img ? 'onclick="openImageModal(\'' + d.img + '\')"' : '';
+  const clickFoto = d.img ? 'onclick="openImageModal(\'' + foto + '\')"' : '';
   const btnDisabled = d.price === 0 ? 'disabled' : '';
   const btnText = d.price === 0 ? '⏳ Precio por definir' : '🛒 Agregar al Carrito';
 
@@ -203,9 +212,10 @@ function cardHTML(cat, d, i) {
 
 function galleryHTML(cat, d, i) {
   const colorClass = categoryInfo[cat].color;
-  const imgStyle = d.img ? 'style="background-image:url(\'' + d.img + '\')"' : '';
+  const foto = fotoLocal(d.img);
+  const imgStyle = d.img ? 'style="background-image:url(\'' + foto + '\')"' : '';
   const placeholder = d.img ? '' : '📷';
-  const clickFoto = d.img ? 'onclick="openImageModal(\'' + d.img + '\')"' : '';
+  const clickFoto = d.img ? 'onclick="openImageModal(\'' + foto + '\')"' : '';
   const videoBtn = d.video ? '<a href="' + d.video + '" target="_blank" class="video-btn">▶️ Ver Video</a>' : '';
   const orderBtn = (d.price) ? '<a class="order-btn" href="https://wa.me/' + WA_NUMERO + '?text=Quiero%20contratar%20' + encodeURIComponent(d.name) + ' - $' + d.price.toLocaleString('es-CO') + '" target="_blank">💬 Solicitar</a>' : '';
 

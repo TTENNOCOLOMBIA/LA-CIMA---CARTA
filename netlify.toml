@@ -4,8 +4,8 @@
 
 # Build command
 [build]
-  command = "echo 'Production build'"
-  publish = "."
+  command = "npm run publicar"
+  publish = "dist"
   functions = "netlify/functions"
 
 # ========================================
@@ -220,11 +220,14 @@
 # ========================================
 
 [context.production]
-  command = "echo 'Production build'"
+  command = "npm run publicar"
+  publish = "dist"
   environment = { NODE_ENV = "production" }
 
 [context.deploy-preview]
-  command = "echo 'Preview build'"
+  command = "npm run publicar"
+  publish = "dist"
 
 [context.branch-deploy]
-  command = "echo 'Branch build'"
+  command = "npm run publicar"
+  publish = "dist"
