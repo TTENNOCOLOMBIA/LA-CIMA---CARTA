@@ -6,8 +6,8 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#2A1C12",
-  "theme_color": "#3E2A1C",
+  "background_color": "#D2A03F",
+  "theme_color": "#D2A03F",
   "lang": "es-CO",
   "categories": ["food", "shopping"],
   "icons": [
