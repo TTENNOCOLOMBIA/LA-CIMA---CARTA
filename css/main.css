@@ -2963,10 +2963,12 @@ footer h4 {
   border-color: var(--cafe);
 }
 
-.cart-modal-close:hover,
-.notes-modal-close:hover {
-  background: var(--cafe);
-  color: var(--madera);
+@media (hover: hover) {
+  .cart-modal-close:hover,
+  .notes-modal-close:hover {
+    background: var(--cafe);
+    color: var(--madera);
+  }
 }
 
 .dish-price,
@@ -3019,8 +3021,10 @@ footer h4 {
   box-shadow: 0 8px 24px rgba(62, 42, 28, .15);
 }
 
-.total-row:hover {
-  color: #8A3B12;
+@media (hover: hover) {
+  .total-row:hover {
+    color: #8A3B12;
+  }
 }
 
 .total-row span:last-child {
@@ -3061,9 +3065,11 @@ footer h4 {
   color: var(--cafe);
 }
 
-.filter-btn:hover {
-  background: var(--cafe);
-  color: var(--oro);
+@media (hover: hover) {
+  .filter-btn:hover {
+    background: var(--cafe);
+    color: var(--oro);
+  }
 }
 
 .filter-btn.active {
@@ -3145,4 +3151,53 @@ footer h4 {
 .btn-cart,
 .badge-star {
   background: var(--accent-metal);
+}
+
+/* ========================================
+   METAL: degradados de brillo en los bloques de la marca
+   ======================================== */
+
+:root {
+  --oro-metal: linear-gradient(110deg, #8A6420 0%, #D2A03F 28%, #F6DE93 46%, #D2A03F 64%, #8A6420 100%);
+  --cafe-metal: linear-gradient(110deg, #1E140C 0%, #3E2A1C 30%, #7A5638 47%, #3E2A1C 65%, #1E140C 100%);
+  --verde-metal: linear-gradient(110deg, #22352A 0%, #3d5a47 30%, #7FA08C 47%, #3d5a47 65%, #22352A 100%);
+}
+
+.dish-card,
+.gallery-card,
+.dish-content,
+.gallery-content,
+.filters,
+.location-section,
+.qr-section,
+.modal-content,
+.cart-modal-content,
+.notes-modal-content,
+.search-box,
+.cart-icon {
+  background: var(--oro-metal);
+}
+
+.cart-icon {
+  background: var(--oro-metal);
+}
+
+.category-title,
+.category-count,
+.category-description,
+.top-btn,
+.cart-count,
+.filter-btn.active {
+  background: var(--cafe-metal);
+}
+
+.opcion,
+.aviso-local-caja {
+  background: var(--cafe-metal);
+}
+
+.opcion-wa,
+.footer-wa,
+footer {
+  background: var(--verde-metal);
 }
