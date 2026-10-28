@@ -360,7 +360,7 @@ button {
   padding: 22px;
   justify-content: center;
   flex-wrap: wrap;
-  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, .12) 0px, rgba(0, 0, 0, .12) 2px, transparent 2px, transparent 7px), linear-gradient(180deg, var(--madera) 0%, var(--madera2) 100%);
+  background: var(--madera);
   margin: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, .25);
@@ -451,6 +451,11 @@ button {
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 6px;
+  border-radius: 50%;
+  background: var(--oro);
+  box-shadow: 0 0 0 2px var(--oro2);
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .4));
   animation: osoBaila 2.5s ease-in-out infinite;
 }
@@ -512,7 +517,7 @@ button {
 
 .dish-card {
   position: relative;
-  background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
+  background: var(--madera);
   border-radius: 16px;
   overflow: hidden;
   border: 3px solid #FF6B35;
@@ -634,7 +639,7 @@ button {
 
 .dish-content {
   padding: 22px;
-  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, .12) 0px, rgba(0, 0, 0, .12) 2px, transparent 2px, transparent 7px), linear-gradient(180deg, var(--madera) 0%, var(--madera2) 100%);
+  background: var(--madera);
 }
 
 .dish-name {
@@ -823,7 +828,7 @@ button {
 .gallery-content {
   padding: 18px;
   text-align: center;
-  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, .12) 0px, rgba(0, 0, 0, .12) 2px, transparent 2px, transparent 7px), linear-gradient(180deg, var(--madera) 0%, var(--madera2) 100%);
+  background: var(--madera);
 }
 
 .gallery-name {
@@ -887,7 +892,7 @@ button {
    ======================================== */
 
 .location-section {
-  background-image: repeating-linear-gradient(90deg, rgba(0, 0, 0, .12) 0px, rgba(0, 0, 0, .12) 2px, transparent 2px, transparent 7px), linear-gradient(180deg, var(--madera) 0%, var(--madera2) 100%);
+  background: var(--madera);
   margin: 40px 20px;
   padding: 40px 28px;
   border-radius: 16px;
@@ -1461,7 +1466,7 @@ footer h4 {
 }
 
 .cart-modal-content {
-  background: linear-gradient(135deg, var(--madera), var(--madera2));
+  background: var(--madera);
   border: 3px solid #FFD700;
   border-radius: 16px;
   padding: 30px;
@@ -2505,7 +2510,7 @@ footer h4 {
 }
 
 .notes-modal-content {
-  background: linear-gradient(135deg, var(--madera), var(--madera2));
+  background: var(--madera);
   border: 3px solid #FFD700;
   border-radius: 16px;
   padding: 28px;
@@ -3093,7 +3098,7 @@ footer h4 {
 
 /* Carrito y botón de subir: café y dorado en lugar de azul y naranja */
 .cart-icon {
-  background: linear-gradient(135deg, var(--oro), var(--oro2));
+  background: var(--oro);
   color: var(--cafe);
   border-color: var(--cafe);
   box-shadow: 0 8px 30px rgba(62, 42, 28, .6);
@@ -3117,4 +3122,20 @@ footer h4 {
 
 .top-btn:hover {
   background: #2A1C12;
+}
+
+/* Verde de la marca como marco de los bloques dorados */
+.dish-card,
+.gallery-card,
+.filters,
+.location-section,
+.qr-section,
+.modal-content,
+.cart-modal-content,
+.notes-modal-content {
+  border-color: var(--dark);
+}
+
+.cart-totals {
+  border-color: var(--dark);
 }
