@@ -11,9 +11,10 @@
   --espacios: #E8651E;
   --deco: #FF8C42;
   --beige: #E8D7C3;
-  --madera: #3E2A1C;
-  --madera2: #2A1C12;
-  --texto: #F0E0C8;
+  --madera: #D2A03F;
+  --madera2: #B8862B;
+  --texto: #3E2A1C;
+  --cafe: #3E2A1C;
 }
 
 /* ========================================
@@ -345,7 +346,7 @@ button {
 }
 
 .search-box::placeholder {
-  color: #b09a80;
+  color: #6E5226;
 }
 
 .search-box:focus {
@@ -511,7 +512,7 @@ button {
 
 .dish-card {
   position: relative;
-  background: linear-gradient(135deg, var(--madera) 0%, #2A1C12 100%);
+  background: linear-gradient(135deg, var(--madera) 0%, var(--madera2) 100%);
   border-radius: 16px;
   overflow: hidden;
   border: 3px solid #FF6B35;
@@ -1460,7 +1461,7 @@ footer h4 {
 }
 
 .cart-modal-content {
-  background: linear-gradient(135deg, #3E2A1C, #2A1C12);
+  background: linear-gradient(135deg, var(--madera), var(--madera2));
   border: 3px solid #FFD700;
   border-radius: 16px;
   padding: 30px;
@@ -1470,7 +1471,7 @@ footer h4 {
   height: auto;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-  color: #F0E0C8;
+  color: var(--cafe);
   display: flex;
   flex-direction: column;
 }
@@ -1696,7 +1697,7 @@ footer h4 {
 }
 
 .qty-value {
-  color: #F0E0C8;
+  color: var(--cafe);
   font-weight: bold;
   font-size: 16px;
   min-width: 24px;
@@ -1862,7 +1863,7 @@ footer h4 {
   padding: 14px 0;
   border-bottom: 1px solid rgba(255, 215, 0, 0.15);
   font-size: 16px;
-  color: #F0E0C8;
+  color: var(--cafe);
   font-weight: 500;
   transition: all 0.3s ease;
 }
@@ -2026,7 +2027,7 @@ footer h4 {
   border-radius: 50%;
   background: rgba(255, 215, 0, 0.15);
   border: 3px solid rgba(255, 215, 0, 0.4);
-  color: #F0E0C8;
+  color: var(--cafe);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2123,7 +2124,7 @@ footer h4 {
   background: rgba(255, 255, 255, 0.05);
   border: 2px solid #FFD700;
   border-radius: 6px;
-  color: #F0E0C8;
+  color: var(--cafe);
   font-size: 14px;
 }
 
@@ -2504,7 +2505,7 @@ footer h4 {
 }
 
 .notes-modal-content {
-  background: linear-gradient(135deg, #3E2A1C, #2A1C12);
+  background: linear-gradient(135deg, var(--madera), var(--madera2));
   border: 3px solid #FFD700;
   border-radius: 16px;
   padding: 28px;
@@ -2513,7 +2514,7 @@ footer h4 {
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
-  color: #F0E0C8;
+  color: var(--cafe);
   animation: slideUpModal 0.4s ease;
 }
 
@@ -2604,7 +2605,7 @@ footer h4 {
   background: rgba(255, 255, 255, 0.05);
   border: 2px solid #FFD700;
   border-radius: 8px;
-  color: #F0E0C8;
+  color: var(--cafe);
   font-size: 14px;
   font-family: inherit;
   resize: vertical;
@@ -2739,7 +2740,7 @@ footer h4 {
 }
 
 .notes-text {
-  color: #F0E0C8;
+  color: var(--cafe);
   font-size: 13px;
   flex-grow: 1;
   font-style: italic;
@@ -2920,4 +2921,200 @@ footer h4 {
     font-size: 12px;
     margin-top: 6px;
   }
+}
+
+/* ========================================
+   PALETA DORADA DEL LOGO
+   Los fondos café pasaron al dorado del logo (--madera). Sobre ese
+   dorado el texto va en café (--cafe) para que se lea bien.
+   ======================================== */
+
+.dish-name,
+.gallery-name,
+.location-section h2,
+.modal-content h3,
+.qr-section h3,
+.price-launch,
+.cart-modal-header,
+.cart-modal-close,
+.notes-modal-header h3,
+.notes-modal-close {
+  color: var(--cafe);
+}
+
+.cart-modal-content,
+.notes-modal-content {
+  border-color: var(--cafe);
+}
+
+.cart-modal-header,
+.notes-modal-header {
+  border-bottom-color: var(--cafe);
+}
+
+.cart-modal-close,
+.notes-modal-close {
+  border-color: var(--cafe);
+}
+
+.cart-modal-close:hover,
+.notes-modal-close:hover {
+  background: var(--cafe);
+  color: var(--madera);
+}
+
+.dish-price,
+.gallery-price {
+  color: #8A3B12;
+  text-shadow: none;
+}
+
+.price-normal {
+  color: #6E5226;
+}
+
+.dish-rating {
+  border-top-color: rgba(62, 42, 28, .25);
+}
+
+.dish-card.destacado,
+.dish-card.lanzamiento,
+.dish-card:hover,
+.gallery-card:hover {
+  border-color: var(--cafe);
+}
+
+.search-box {
+  border-color: var(--cafe);
+}
+
+.search-box::placeholder {
+  color: #6E5226;
+}
+
+.filter-btn {
+  background: rgba(255, 255, 255, .3);
+}
+
+.cart-modal-content::-webkit-scrollbar-thumb,
+.cart-items-list::-webkit-scrollbar-thumb,
+.notes-modal-content::-webkit-scrollbar-thumb {
+  background: var(--cafe);
+}
+
+/* Carrito: totales y estado vacío sobre el dorado */
+.cart-empty {
+  color: #6E5226;
+}
+
+.cart-totals {
+  background: rgba(62, 42, 28, .08);
+  border-color: var(--cafe);
+  box-shadow: 0 8px 24px rgba(62, 42, 28, .15);
+}
+
+.total-row:hover {
+  color: #8A3B12;
+}
+
+.total-row span:last-child {
+  color: var(--cafe);
+}
+
+.total-row.final {
+  color: var(--cafe);
+  border-top-color: var(--cafe);
+  background: rgba(62, 42, 28, .1);
+}
+
+/* Renglones del carrito sobre el dorado */
+.cart-item-name,
+.cart-item-unit-price,
+.cart-item-total-price {
+  color: var(--cafe);
+}
+
+.cart-item-total-label {
+  color: #6E5226;
+}
+
+/* ========================================
+   COMBINACIÓN DE MARCA
+   Dorado para las superficies, café para títulos y botones principales,
+   verde del fondo y naranja solo como acento.
+   ======================================== */
+
+:root {
+  --oro: #D2A03F;
+  --oro2: #B8862B;
+}
+
+/* Botones de categoría: contorno café, activo en café con texto dorado */
+.filter-btn {
+  border-color: var(--cafe);
+  color: var(--cafe);
+}
+
+.filter-btn:hover {
+  background: var(--cafe);
+  color: var(--oro);
+}
+
+.filter-btn.active {
+  background: var(--cafe);
+  border-color: var(--cafe);
+  color: var(--oro);
+  box-shadow: 0 8px 20px rgba(62, 42, 28, .45), inset 0 1px 0 rgba(210, 160, 63, .3);
+}
+
+/* Títulos y descripciones de categoría en café con dorado */
+.category-title {
+  background: var(--cafe);
+  color: var(--oro);
+  border-bottom-color: var(--oro);
+  text-shadow: none;
+}
+
+.category-count {
+  background: var(--cafe);
+  color: var(--oro);
+}
+
+.category-description {
+  background: var(--cafe);
+  color: #F5E3B5;
+}
+
+/* Tarjetas: borde café-rojizo en lugar de naranja */
+.dish-card,
+.gallery-card {
+  border-color: #8A3B12;
+}
+
+/* Carrito y botón de subir: café y dorado en lugar de azul y naranja */
+.cart-icon {
+  background: linear-gradient(135deg, var(--oro), var(--oro2));
+  color: var(--cafe);
+  border-color: var(--cafe);
+  box-shadow: 0 8px 30px rgba(62, 42, 28, .6);
+}
+
+.cart-icon:hover {
+  box-shadow: 0 12px 40px rgba(62, 42, 28, .8);
+}
+
+.cart-count {
+  background: var(--cafe);
+  color: var(--oro);
+  box-shadow: 0 4px 12px rgba(62, 42, 28, .5);
+}
+
+.top-btn {
+  background: var(--cafe);
+  color: var(--oro);
+  box-shadow: 0 6px 18px rgba(62, 42, 28, .45);
+}
+
+.top-btn:hover {
+  background: #2A1C12;
 }
