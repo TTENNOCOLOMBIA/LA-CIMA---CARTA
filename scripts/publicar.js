@@ -30,7 +30,7 @@ const DIST = path.join(RAIZ, "dist");
 // Páginas que se ven en el navegador
 const PAGINAS = ["index.html", "admin-login.html", "admin-panel.html"];
 // Archivos sueltos que se copian tal cual o como código (sw.js se revuelve)
-const ARCHIVOS = ["manifest.json", "robots.txt", "sitemap.xml"];
+const ARCHIVOS = ["manifest.json", "robots.txt", "sitemap.xml", "google29187c98bcc5aba6.html"];
 const SW = "sw.js";
 // Carpetas: imágenes se copian tal cual; css y js se revuelven
 const CARPETA_IMAGENES = "assets";
