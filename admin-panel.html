@@ -2182,30 +2182,39 @@
     // ---- Copias automáticas guardadas en Firebase ----
     // Cada vez que se sincroniza el menú completo, el servidor guarda antes
     // el menú anterior. Esto las lista para poder volver a cualquiera.
+    // Las copias ya no se pueden leer sin sesión (reglas de Firebase del
+    // 4 nov 2026): se piden a netlify/functions/leer-copias.js con el token.
+    async function pedirCopias(cuerpo) {
+      const usuario = window.netlifyIdentity && netlifyIdentity.currentUser();
+      if (!usuario) throw new Error("Sin sesión");
+      const token = await usuario.jwt();
+      const r = await fetch("/.netlify/functions/leer-copias", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + token, "Content-Type": "application/json" },
+        body: JSON.stringify(cuerpo)
+      });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    }
+
     async function verCopiasAutomaticas() {
       const caja = document.getElementById("listaCopias");
       caja.innerHTML = "<p style='color:#aaa'>Buscando copias...</p>";
 
       try {
-        const r = await fetch("https://la-cima-restaurante-default-rtdb.firebaseio.com/backups.json");
-        const copias = (await r.json()) || {};
-        const claves = Object.keys(copias).sort().reverse();
+        const datos = await pedirCopias({});
+        const lista = datos.copias || [];
 
-        if (claves.length === 0) {
+        if (lista.length === 0) {
           caja.innerHTML = "<p style='color:#aaa'>Todavía no hay copias automáticas. Se crean solas cada vez que sincronizas el menú.</p>";
           return;
         }
 
-        caja.innerHTML = claves.map(function (k) {
-          const c = copias[k] || {};
+        caja.innerHTML = lista.map(function (c) {
+          const k = c.clave;
           const cuando = c.fecha ? new Date(c.fecha).toLocaleString("es-CO") : k;
-          const cats = c.menu ? Object.keys(c.menu).length : 0;
-          let productos = 0;
-          if (c.menu) {
-            Object.values(c.menu).forEach(function (lista) {
-              if (Array.isArray(lista)) productos += lista.length;
-            });
-          }
+          const cats = c.cats;
+          const productos = c.productos;
           return `
             <div style="background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.15);
                         border-radius:8px;padding:14px;margin-bottom:10px;
@@ -2230,8 +2239,7 @@
       }
 
       try {
-        const r = await fetch(`https://la-cima-restaurante-default-rtdb.firebaseio.com/backups/${clave}/menu.json`);
-        const menu = await r.json();
+        const menu = (await pedirCopias({ clave: clave })).menu;
         if (!menu) {
           showNotification("Esa copia está vacía", "error");
           return;

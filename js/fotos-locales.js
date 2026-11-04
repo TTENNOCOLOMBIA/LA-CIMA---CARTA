@@ -127,7 +127,7 @@ window.FOTOS_LOCALES = {
   "https://i.ibb.co/Pzg7S597/file-00000000a584820e8a623ff3775029e6.png": "assets/fotos/salteados-02-salteado-de-cerdo-clasico.webp",
   "https://i.ibb.co/Wvfg818J/file-0000000034c8820e8606c7b0f99c0e2e.png": "assets/fotos/salteados-03-salteado-de-res-clasico.webp",
   "https://i.ibb.co/spFH3vvd/file-00000000aeb4820eacde7f2c50041708.png": "assets/fotos/salteados-04-salteado-de-camaron-clasico.webp",
-  "https://i.ibb.co/XTmXVVp/file-000000005b8c820e88078389229c6893.png": "assets/fotos/salteados-05-salteado-cima-fusion-2-personas.webp",
+  "https://i.ibb.co/XTmXVVp/file-000000005b8c820e88078389229c6893.png": "assets/fotos/salteados-05-salteado-cima-fusion-2-personas-v2.webp",
   "https://i.ibb.co/jZsH04tG/file-00000000698c820e8846a5d5cccab868.png": "assets/fotos/sodas-01-soda-frutos-rojos.webp",
   "https://i.ibb.co/J9BhtMS/file-00000000b888820ebcf87436427a3700.png": "assets/fotos/sodas-02-soda-kiwi-lulo.webp",
   "https://i.ibb.co/Ng9VSjB3/file-00000000c4a8820eb45b5a4f0a5bec7a.png": "assets/fotos/sodas-03-soda-maracu-mango.webp",
