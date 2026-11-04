@@ -1354,6 +1354,39 @@
       });
     }
 
+    // Firebase devuelve las categorías en orden alfabético; el panel sigue el
+    // orden de la carta (categoryInfo). Las que no estén ahí van al final.
+    function categoriasEnOrden(menu) {
+      const conPlatos = k => Array.isArray(menu[k]) && menu[k].length > 0;
+      const deLaCarta = Object.keys(categoryInfo).filter(conPlatos);
+      const otras = Object.keys(menu).filter(k => conPlatos(k) && !categoryInfo[k]);
+      return deLaCarta.concat(otras);
+    }
+
+    function tituloCategoria(grid, catKey, cantidad) {
+      const t = document.createElement("h3");
+      t.className = "titulo-categoria-admin";
+      t.style.cssText = "grid-column: 1 / -1; color: var(--primary); margin: 20px 0 0; padding-bottom: 6px; border-bottom: 2px solid var(--primary);";
+      t.textContent = (categoryInfo[catKey] ? categoryInfo[catKey].label : catKey) + " (" + cantidad + ")";
+      grid.appendChild(t);
+    }
+
+    function insigniaNumero(n) {
+      return '<span style="display:inline-block; background:#FFD700; color:#000; font-weight:900; font-size:13px; padding:4px 10px; border-radius:14px; margin-bottom:8px;">#' + n + '</span>';
+    }
+
+    // Con el buscador activo, ocultar los títulos de categorías sin resultados.
+    function ocultarTitulosVacios(tarjetas) {
+      if (!tarjetas.length) return;
+      let titulo = null, hayVisible = false;
+      const cerrar = () => { if (titulo) titulo.style.display = hayVisible ? "" : "none"; };
+      [...tarjetas[0].parentElement.children].forEach(el => {
+        if (el.classList.contains("titulo-categoria-admin")) { cerrar(); titulo = el; hayVisible = false; }
+        else if (el.style.display !== "none") hayVisible = true;
+      });
+      cerrar();
+    }
+
     // Cargar productos
     function cargarProductos() {
       const menu = JSON.parse(localStorage.getItem("lacimaMenuV2")) || defaultMenu;
@@ -1362,13 +1395,15 @@
 
       let totalProductos = 0;
 
-      Object.keys(menu).forEach(catKey => {
+      categoriasEnOrden(menu).forEach(catKey => {
         if (Array.isArray(menu[catKey])) {
+          tituloCategoria(grid, catKey, menu[catKey].length);
           menu[catKey].forEach((prod, idx) => {
             const card = document.createElement("div");
             card.className = "card nombre-card";
             card.setAttribute("data-nombre", prod.name.toLowerCase());
             card.innerHTML = `
+              ${insigniaNumero(totalProductos + 1)}
               <h4 style="color: var(--primary); margin-bottom: 10px;">${prod.name}</h4>
               <p style="color: var(--texto); font-size: 12px; margin-bottom: 15px;">Categoría: ${categoryInfo[catKey].label}</p>
               <p style="color: var(--texto); font-size: 12px; margin-bottom: 15px;">Precio: $${prod.price ? prod.price.toLocaleString("es-CO") : "Sin precio"}</p>
@@ -1399,6 +1434,7 @@
           prod.style.display = "none";
         }
       });
+      ocultarTitulosVacios(productos);
 
       if (buscador === "") {
         document.getElementById("contadorNombre").textContent = productos.length;
@@ -1415,13 +1451,15 @@
 
       let totalProductos = 0;
 
-      Object.keys(menu).forEach(catKey => {
+      categoriasEnOrden(menu).forEach(catKey => {
         if (Array.isArray(menu[catKey])) {
+          tituloCategoria(grid, catKey, menu[catKey].length);
           menu[catKey].forEach((prod, idx) => {
             const card = document.createElement("div");
             card.className = "card precio-card";
             card.setAttribute("data-nombre", prod.name.toLowerCase());
             card.innerHTML = `
+              ${insigniaNumero(totalProductos + 1)}
               <h4 style="color: var(--primary); margin-bottom: 10px;">${prod.name}</h4>
               <p style="color: var(--texto); font-size: 12px; margin-bottom: 10px;">Categoría: ${categoryInfo[catKey].label}</p>
               <label style="color: var(--primary); font-weight: bold; margin-bottom: 8px; display: block;">Precio actual: $${prod.price ? prod.price.toLocaleString("es-CO") : "0"}</label>
@@ -1454,6 +1492,7 @@
           prod.style.display = "none";
         }
       });
+      ocultarTitulosVacios(productos);
 
       if (buscador === "") {
         document.getElementById("contadorPrecios").textContent = productos.length;
@@ -1509,13 +1548,15 @@
 
       let totalProductos = 0;
 
-      Object.keys(menu).forEach(catKey => {
+      categoriasEnOrden(menu).forEach(catKey => {
         if (Array.isArray(menu[catKey])) {
+          tituloCategoria(grid, catKey, menu[catKey].length);
           menu[catKey].forEach((prod, idx) => {
             const card = document.createElement("div");
             card.className = "card producto-card";
             card.setAttribute("data-nombre", prod.name.toLowerCase());
             card.innerHTML = `
+              ${insigniaNumero(totalProductos + 1)}
               <img src="${fotoLocal(prod.img) || "https://via.placeholder.com/200"}" alt="${prod.name}" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin-bottom:10px;">
               <p style="color: var(--primary); font-weight: bold; margin-bottom: 10px;">${prod.name}</p>
               <input type="text" value="${prod.img || ""}" id="img_${catKey}_${idx}" placeholder="URL de imagen" style="width:100%; padding:8px; background: rgba(255,255,255,0.05); border: 1px solid var(--primary); border-radius: 4px; margin-bottom: 10px; color: var(--texto); font-family: inherit;">
@@ -1546,6 +1587,7 @@
           prod.style.display = "none";
         }
       });
+      ocultarTitulosVacios(productos);
 
       if (buscador === "") {
         document.getElementById("contadorImagenes").textContent = productos.length;
@@ -1606,8 +1648,9 @@
       let totalProductos = 0;
       const listos = obtenerListosDescripciones();
 
-      Object.keys(menu).forEach(catKey => {
+      categoriasEnOrden(menu).forEach(catKey => {
         if (Array.isArray(menu[catKey])) {
+          tituloCategoria(grid, catKey, menu[catKey].length);
           menu[catKey].forEach((prod, idx) => {
             totalProductos++;
             const clave = catKey + "_" + idx;
@@ -1680,7 +1723,7 @@
       let total = 0;
       let agotados = 0;
 
-      Object.keys(menu).forEach(catKey => {
+      categoriasEnOrden(menu).forEach(catKey => {
         if (!Array.isArray(menu[catKey]) || menu[catKey].length === 0) return;
 
         const titulo = document.createElement("h3");
@@ -1697,6 +1740,10 @@
           fila.setAttribute("data-nombre", prod.name.toLowerCase());
           fila.style.cssText = "display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 16px; margin-bottom:8px; border-radius:8px; background: rgba(255,255,255,0.05); border-left: 5px solid " + (prod.agotado ? "#e74c3c" : "#27ae60") + ";";
 
+          const numero = document.createElement("span");
+          numero.style.cssText = "background:#FFD700; color:#000; font-weight:900; font-size:13px; padding:4px 10px; border-radius:14px;";
+          numero.textContent = "#" + total;
+
           const nombre = document.createElement("span");
           nombre.style.cssText = "flex:1; color: var(--texto); font-weight:600;";
           nombre.textContent = prod.name;
@@ -1711,7 +1758,7 @@
           boton.textContent = prod.agotado ? "✅ Volver a mostrar" : "🚫 Marcar agotado";
           boton.onclick = () => toggleAgotado(catKey, idx, !prod.agotado, boton);
 
-          fila.append(nombre, estado, boton);
+          fila.append(numero, nombre, estado, boton);
           cont.appendChild(fila);
         });
       });
@@ -1768,6 +1815,7 @@
           prod.style.display = "none";
         }
       });
+      ocultarTitulosVacios(productos);
 
       if (buscador === "") {
         document.getElementById("contadorDescripciones").textContent = productos.length;
