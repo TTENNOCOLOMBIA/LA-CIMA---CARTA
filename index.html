@@ -27,9 +27,16 @@
   </script>
 
   <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="La Cima Restaurante - Carta Digital 🍽️">
-  <meta property="og:description" content="ESTO ES COLOMBIA 🇨🇴">
-  <meta property="og:image" content="https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png">
+  <meta property="og:title" content="La Cima Restaurante · Carta Digital">
+  <meta property="og:description" content="Parrilla, típicos y mariscos en Ipiales. Mira la carta y pide a domicilio desde tu celular.">
+  <meta property="og:site_name" content="La Cima Restaurante">
+  <meta property="og:locale" content="es_CO">
+  <!-- Portada que muestran WhatsApp y Facebook al compartir (1200×630, en nuestro servidor). -->
+  <meta property="og:image" content="https://cimarestaurante.netlify.app/assets/portada-compartir.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Logo dorado de La Cima Restaurante sobre una picada">
+  <meta name="twitter:image" content="https://cimarestaurante.netlify.app/assets/portada-compartir.jpg">
   <meta property="og:url" content="https://cimarestaurante.netlify.app">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -49,7 +56,7 @@
     "@type": "Restaurant",
     "name": "La Cima Restaurante",
     "description": "Restaurante de comida típica colombiana, parrilla y mariscos en Ipiales, Nariño.",
-    "image": "https://i.ibb.co/RpwLKSjg/1000869623-removebg-preview.png",
+    "image": "https://cimarestaurante.netlify.app/assets/portada-compartir.jpg",
     "url": "https://cimarestaurante.netlify.app",
     "telephone": "+573227364868",
     "servesCuisine": ["Colombiana", "Parrilla", "Mariscos"],
@@ -450,7 +457,7 @@
         try {
           await navigator.share({
             title: 'La Cima Restaurante',
-            text: 'Mira la carta de La Cima Restaurante',
+            text: '¡Mira la carta de La Cima Restaurante y pide desde tu celular! 🔥',
             url: LINK_CARTA
           });
           return;
