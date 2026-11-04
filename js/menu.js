@@ -97,19 +97,25 @@ document.getElementById('imageModal').addEventListener('click', function(e) {
 // CONSTRUCCIÓN DE FILTROS
 // ========================================
 
+// Los títulos de config.js traen un emoji delante ("🔥 PARRILLA"). Desde el
+// 4 nov 2026 la carta no los muestra: se veían infantiles. Se quitan aquí y
+// no en config.js para no tocar lo que usa el panel.
+function sinDibujos(texto) {
+  return String(texto || '').replace(/^[\p{Extended_Pictographic}\p{Regional_Indicator}️‍\s]+/u, '');
+}
+
 function buildFilters() {
   const f = document.getElementById('filters');
   f.innerHTML = '';
   const keys = Object.keys(categoryInfo);
   keys.forEach((k) => {
     const count = (menu[k] && menu[k].length) ? menu[k].length : 0;
-    const icon = categoryInfo[k].icon || '🍽️';
     const badgeClass = count === 0 ? ' disabled' : '';
     // Se resalta la categoría que está puesta de verdad, no la primera de la
     // lista. Así al abrir no aparece "Entradas" marcada sin haberla tocado, y
     // cuando llegan los datos de Firebase y se reconstruyen los botones, no se
     // pierde el resaltado de la que la persona tenía elegida.
-    f.innerHTML += '<button class="filter-btn' + (k === currentCategory ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><span class="icon">' + icon + '</span> <span class="label">' + categoryInfo[k].label + '</span> <span class="badge">' + count + '</span></button>';
+    f.innerHTML += '<button class="filter-btn' + (k === currentCategory ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><span class="label">' + categoryInfo[k].label + '</span> <span class="badge">' + count + '</span></button>';
   });
 }
 
@@ -257,7 +263,7 @@ function renderMenu(category, hacerScroll) {
     const isGaleria = info.type === 'galeria';
     const titleClass = isGaleria ? (' ' + info.color + '-title') : ' regular';
 
-    c.innerHTML += '<h2 class="category-title' + titleClass + '"><span>' + info.title + '</span>' + osoHTML() + '</h2><div class="category-count">' + n + ' ' + (n === 1 ? 'opción' : 'opciones') + '</div>';
+    c.innerHTML += '<h2 class="category-title' + titleClass + '"><span>' + sinDibujos(info.title) + '</span>' + osoHTML() + '</h2><div class="category-count">' + n + ' ' + (n === 1 ? 'opción' : 'opciones') + '</div>';
 
     if (!isGaleria) c.innerHTML += '<p class="category-description">' + info.desc + '</p>';
 
@@ -331,7 +337,7 @@ function searchDishes(term) {
     return;
   }
 
-  c.innerHTML = '<h2 class="category-title regular"><span>🔍 Resultados</span>' + osoHTML() + '</h2><div class="category-count">' + encontrados.length + ' ' + (encontrados.length === 1 ? 'plato encontrado' : 'platos encontrados') + '</div>';
+  c.innerHTML = '<h2 class="category-title regular"><span>Resultados</span>' + osoHTML() + '</h2><div class="category-count">' + encontrados.length + ' ' + (encontrados.length === 1 ? 'plato encontrado' : 'platos encontrados') + '</div>';
 
   const grid = document.createElement('div');
   grid.className = 'menu-grid';

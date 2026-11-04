@@ -346,3 +346,122 @@
     margin-bottom: 10px;
   }
 }
+
+/* ==========================================================
+   LECTURA MÁS CLARA (4 nov 2026)
+   El personal pidió letra más grande y visible, y quitar los
+   dibujitos de las categorías (se veían infantiles). Va al final
+   para mandar sobre las reglas anteriores.
+   ========================================================== */
+
+/* Botones de categoría: sin emoji, letra más grande y firme */
+.filters .filter-btn {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+  padding: 11px 16px;
+  gap: 8px;
+}
+.filters .filter-btn .icon { display: none; }
+.filters .filter-btn .badge { font-size: .8rem; }
+
+/* Título de cada categoría */
+h2.category-title {
+  font-size: 1.8rem;
+  letter-spacing: .03em;
+  line-height: 1.25;
+}
+
+/* Nombre y características de cada plato */
+.dish-card .dish-name {
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+.dish-card .dish-description,
+.gallery-card .gallery-desc {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-weight: 600;
+  color: #1f140b;
+}
+
+@media (max-width: 600px) {
+  /* En el teléfono, dos columnas parejas: más orden y más fácil de tocar */
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 12px;
+    margin: 12px;
+  }
+  .filters .filter-btn {
+    font-size: .9rem;
+    letter-spacing: 0;
+    padding: 11px 10px;
+    gap: 6px;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+  .filters .filter-btn .label {
+    white-space: normal;
+    text-align: left;
+    line-height: 1.2;
+  }
+  h2.category-title { font-size: 1.55rem; }
+  .dish-card .dish-name { font-size: 1.25rem; }
+  .dish-card .dish-description { font-size: 1.05rem; }
+}
+
+/* ==========================================================
+   CINTA DE BÚSQUEDA (4 nov 2026)
+   Buscador y aviso "Estás en el local" en una sola franja
+   pegada debajo del video, en vez de dos cuadros grandes.
+   ========================================================== */
+.cinta-busqueda {
+  background: var(--cafe-metal);
+  border-top: 2px solid #D2A03F;
+  border-bottom: 2px solid #D2A03F;
+  padding: 10px 16px 8px;
+  margin: 0 0 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
+}
+.cinta-campo {
+  position: relative;
+  display: block;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.cinta-lupa {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  color: #3E2A1C;
+  pointer-events: none;
+}
+.cinta-busqueda .search-box {
+  padding: 9px 16px 9px 40px;
+  border-width: 2px;
+  font-size: 1rem;
+  box-shadow: none;
+}
+.cinta-aviso {
+  max-width: 600px;
+  margin: 7px auto 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 10px;
+  color: #F5E3B5;
+  font-size: .85rem;
+  line-height: 1.3;
+  text-align: center;
+}
+.cinta-aviso .aviso-local-btn {
+  color: #FFD27A;
+  font-size: .85rem;
+}
