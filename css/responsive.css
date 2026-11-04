@@ -465,3 +465,47 @@ h2.category-title {
   color: #FFD27A;
   font-size: .85rem;
 }
+
+/* ==========================================================
+   BOTÓN COMPARTIR SIEMPRE VISIBLE (4 nov 2026)
+   Abajo a la izquierda: el carrito y "subir" están a la derecha.
+   ========================================================== */
+.btn-compartir-fijo {
+  position: fixed;
+  left: 18px;
+  bottom: 24px;
+  z-index: 95;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  margin: 0;
+  padding: 12px 18px;
+  border: 2px solid #D2A03F;
+  border-radius: 30px;
+  background: var(--cafe-metal);
+  color: #FFD27A;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .45);
+  cursor: pointer;
+}
+.btn-compartir-fijo svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+.btn-compartir-fijo:active { transform: scale(.96); }
+
+@media (max-width: 600px) {
+  .btn-compartir-fijo {
+    left: 12px;
+    bottom: 16px;
+    padding: 10px 14px;
+    font-size: .9rem;
+  }
+}

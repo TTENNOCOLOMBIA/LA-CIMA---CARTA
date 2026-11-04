@@ -603,6 +603,13 @@
        ======================================== -->
   <button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
+  <!-- Compartir siempre a mano (4 nov 2026): abajo a la izquierda, donde no
+       tapa el carrito ni el botón de subir. Usa compartirCarta(). -->
+  <button type="button" class="btn-compartir-fijo" onclick="compartirCarta()" aria-label="Compartir la carta">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></svg>
+    <span>Compartir</span>
+  </button>
+
   <button class="cart-icon" id="cartIcon" onclick="openCart()">
     🛒
     <span class="cart-count" id="cartCount">0</span>
