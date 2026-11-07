@@ -7,7 +7,7 @@
   --dark: #3d5a47;
   --black: #0f1419;
   --accent: #E8703A;
-  --accent-metal: linear-gradient(135deg, #FFB48A 0%, #E8703A 45%, #A8421A 100%);
+  --accent-metal: linear-gradient(135deg, #FFD2B3 0%, #F4955F 45%, #E8703A 100%);
   --wa: #25D366;
   --espacios: #E8651E;
   --deco: #F08A55;
@@ -3045,7 +3045,7 @@ footer h4 {
 }
 
 .cart-item-total-label {
-  color: #6E5226;
+  color: var(--cafe);
 }
 
 /* ========================================
@@ -3158,9 +3158,9 @@ footer h4 {
    ======================================== */
 
 :root {
-  --oro-metal: linear-gradient(110deg, #8A6420 0%, #D2A03F 28%, #F6DE93 46%, #D2A03F 64%, #8A6420 100%);
-  --cafe-metal: linear-gradient(110deg, #1E140C 0%, #3E2A1C 30%, #7A5638 47%, #3E2A1C 65%, #1E140C 100%);
-  --verde-metal: linear-gradient(110deg, #22352A 0%, #3d5a47 30%, #7FA08C 47%, #3d5a47 65%, #22352A 100%);
+  --oro-metal: linear-gradient(110deg, #C99A3C 0%, #E6BE62 28%, #FBEBB5 46%, #E6BE62 64%, #C99A3C 100%);
+  --cafe-metal: linear-gradient(110deg, #1E140C 0%, #3E2A1C 30%, #4D3524 47%, #3E2A1C 65%, #1E140C 100%);
+  --verde-metal: linear-gradient(110deg, #22352A 0%, #3d5a47 30%, #4E6F5C 47%, #3d5a47 65%, #22352A 100%);
 }
 
 .dish-card,
@@ -3200,4 +3200,152 @@ footer h4 {
 .footer-wa,
 footer {
   background: var(--verde-metal);
+}
+
+/* ========================================
+   LEGIBILIDAD EN CELULAR: textos y botones sobre el metal
+   ======================================== */
+
+.form-group label,
+.notes-label {
+  color: var(--cafe);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select,
+.notes-textarea {
+  background: #F5E9D0;
+  border: 2px solid var(--cafe);
+  color: var(--cafe);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder,
+.notes-textarea::placeholder {
+  color: #6E5226;
+}
+
+.notes-textarea:focus {
+  background: #FBF3DF;
+  border-color: var(--cafe);
+  box-shadow: 0 0 0 3px rgba(210, 160, 63, .5);
+}
+
+.btn-option-factura {
+  background: var(--cafe-metal);
+  color: var(--oro);
+  border: 2px solid var(--cafe);
+}
+
+.btn-pedido-tiempo-real {
+  background: var(--accent-metal);
+  color: var(--cafe);
+  border-color: var(--cafe);
+}
+
+.btn-in-cart {
+  background: var(--oro-metal) !important;
+  color: var(--cafe) !important;
+  box-shadow: 0 4px 12px rgba(62, 42, 28, .4) !important;
+}
+
+.btn-in-cart:hover {
+  box-shadow: 0 6px 16px rgba(62, 42, 28, .6) !important;
+}
+
+.qty-btn,
+.qty-btn:hover {
+  background: var(--oro-metal);
+  color: var(--cafe);
+  border: 1px solid var(--cafe);
+}
+
+.add-notes-btn {
+  background: #F5E9D0;
+  border-color: #3d5a47;
+  color: #22352A;
+}
+
+.add-notes-btn:hover {
+  background: #FBF3DF;
+}
+
+/* ========================================
+   CONTRASTE: textos sobre los metales (WCAG)
+   ======================================== */
+
+.category-hint,
+.btn-cart,
+.btn-pedido-tiempo-real,
+.badge-star,
+.loc-parqueo {
+  color: #1E140C;
+}
+
+.loc-aero {
+  background: var(--verde-metal);
+  color: #fff;
+}
+
+.category-title,
+.category-count,
+.cart-count,
+.top-btn {
+  color: #E6BE62;
+}
+
+footer,
+footer h4,
+footer p,
+.social-title,
+.admin-links a {
+  color: #FBEBB5;
+}
+
+footer p {
+  color: #FBEBB5 !important;
+}
+
+.sc-fb {
+  background: #1565C0;
+}
+
+.sc-ig {
+  background: linear-gradient(45deg, #C13584, #833AB4);
+}
+
+/* Pasos del pedido, notas y títulos del carrito: contraste sobre el metal */
+.progress-label,
+.progress-step.active .progress-label,
+.progress-step.completed .progress-label {
+  color: var(--cafe) !important;
+  font-weight: bold;
+}
+
+.cart-modal h4,
+.notes-modal h4 {
+  color: var(--cafe) !important;
+}
+
+.product-name,
+.notes-counter,
+#notesCounter {
+  color: var(--cafe) !important;
+}
+
+.btn-cancel {
+  background: #F5E9D0;
+  color: var(--cafe);
+  border: 2px solid var(--cafe);
+}
+
+.btn-save-notes {
+  background: linear-gradient(135deg, #2F6B47, #22533A);
+  color: #fff;
+}
+
+.btn-send-order {
+  background: linear-gradient(135deg, #2F6B47, #22533A);
+  color: #fff;
 }
