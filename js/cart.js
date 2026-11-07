@@ -243,7 +243,7 @@ function updateTotals() {
   const desRow = document.getElementById('desechablesRow');
   if (desRow) {
     desRow.style.display = desechables > 0 ? '' : 'none';
-    document.getElementById('desechablesLabel').textContent = 'Desechables:';
+    document.getElementById('desechablesLabel').textContent = 'Empaques ecológicos:';
     document.getElementById('desechablesAmount').textContent = '$' + desechables.toLocaleString('es-CO');
   }
 
@@ -369,6 +369,7 @@ function sendOrder() {
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
   if (desechables > 0) {
     messageParts.push('Desechables: $' + desechables.toLocaleString('es-CO'));
+    messageParts.push('🌿 Empaques ecológicos: ¡gracias por cuidar el planeta con nosotros!');
   }
   messageParts.push('*🔴 TOTAL: $' + total.toLocaleString('es-CO') + '*');
 
@@ -600,6 +601,7 @@ function sendRealTimeOrder() {
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
   if (desechables > 0) {
     messageParts.push('Desechables: $' + desechables.toLocaleString('es-CO'));
+    messageParts.push('🌿 Empaques ecológicos: ¡gracias por cuidar el planeta con nosotros!');
   }
   messageParts.push('══════════════════════════════════════');
   messageParts.push('*🔴 *** TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + ' ***');

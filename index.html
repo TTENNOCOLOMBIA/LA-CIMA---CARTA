@@ -190,8 +190,8 @@
     }
 
     .bienvenida-logo {
-      width: 132px;
-      height: 132px;
+      width: 184px;
+      height: 184px;
       border-radius: 50%;
       margin-bottom: 18px;
       box-shadow: 0 8px 30px rgba(0, 0, 0, .55);
@@ -251,7 +251,8 @@
       outline: none;
     }
 
-    .opcion-icono { font-size: 30px; line-height: 1; flex-shrink: 0; }
+    .opcion-icono { flex-shrink: 0; width: 62px; height: 62px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(210, 160, 63, .15); color: #D2A03F; }
+    .opcion-svg { width: 44px; height: 44px; }
     .opcion-texto { flex: 1; min-width: 0; }
 
     /* En bloque: los <span> son en línea por defecto y el título y la
@@ -383,16 +384,16 @@
       <img src="assets/fotos/marca-logo-la-cima.webp"
            alt="La Cima Restaurante" class="bienvenida-logo">
 
-      <h1>La Cima</h1>
       <!-- Sin la bandera 🇨🇴: son dos letras combinadas y los navegadores
            que no las unen muestran un "co" suelto. -->
-      <p class="bienvenida-lema">Esto es Colombia</p>
+      <h1>Ipiales</h1>
+      <p class="bienvenida-lema">Una frontera sin límites de sabores</p>
       <div class="bienvenida-raya"></div>
 
       <p class="bienvenida-pregunta">¿Cómo quieres tu pedido?</p>
 
       <button type="button" class="opcion" onclick="entrarALaCarta('local')">
-        <span class="opcion-icono">🍽️</span>
+        <span class="opcion-icono"><svg class="opcion-svg" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="14" fill="none" stroke="currentColor" stroke-width="2.6"/><circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 8v8a3 3 0 0 0 6 0V8M7 8v32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M44 8c-3 2-4 6-4 11v5h4v16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span class="opcion-texto">
           <span class="opcion-titulo">Comer en el local</span>
           <span class="opcion-sub">Mira la carta y pídele tu pedido al mesero</span>
@@ -400,10 +401,10 @@
       </button>
 
       <button type="button" class="opcion" onclick="entrarALaCarta()">
-        <span class="opcion-icono">🛵</span>
+        <span class="opcion-icono"><svg class="opcion-svg" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 28l4-11a4 4 0 0 1 3.8-2.8h16.4A4 4 0 0 1 36 17l4 11v7a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-1H14v1a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/><path d="M12 24h24" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="30" r="2.6" fill="currentColor"/><circle cx="33" cy="30" r="2.6" fill="currentColor"/></svg></span>
         <span class="opcion-texto">
           <span class="opcion-titulo">Domicilio</span>
-          <span class="opcion-sub">Entrega en 30 a 40 min · domicilio $7.000</span>
+          <span class="opcion-sub">Llega en carro (InDrive) · 30 a 40 min · $7.000 · Empaques ecológicos</span>
         </span>
       </button>
 
@@ -666,11 +667,13 @@
           <span>Domicilio:</span>
           <span>$7.000</span>
         </div>
-        <div class="total-row" id="desechablesRow" style="display:none;">
-          <span id="desechablesLabel">Desechables:</span>
-          <span id="desechablesAmount">$0</span>
+        <p class="nota-domicilio">Entrega en 30 a 40 minutos. El domicilio cuesta $7.000 y llega en carro (InDrive); en moto solo si pagas en efectivo.</p>
+        <div class="card-ecologico">
+          <svg class="eco-hoja" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M5 19l8-8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <p class="eco-titulo">Compromiso con el medioambiente</p>
+          <h3 class="eco-subtitulo">Empaques ecológicos</h3>
+          <p class="eco-texto">Trabajamos con empaques responsables con el medioambiente, contribuyendo a reducir el impacto ambiental de nuestros domicilios.</p>
         </div>
-        <p class="nota-domicilio">🛵 Entrega en 30 a 40 minutos. El domicilio cuesta $7.000 y llega en carro (InDrive); en moto solo si pagas en efectivo. Desechables: $2.000 por cada plato de comida y $1.000 por jugo natural o soda. Las demás bebidas no tienen cargo.</p>
         <div class="total-row final">
           <span>TOTAL:</span>
           <span id="totalAmount">$7.000</span>
