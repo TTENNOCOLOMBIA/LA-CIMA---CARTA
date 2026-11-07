@@ -3349,3 +3349,12 @@ footer p {
   background: linear-gradient(135deg, #2F6B47, #22533A);
   color: #fff;
 }
+
+/* Nota de domicilio y desechables en el carrito */
+.nota-domicilio {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--cafe);
+  text-align: center;
+}

@@ -32,6 +32,10 @@ const WA_NUMERO = '573227364868';
 const OSO_URL = "assets/fotos/marca-oso-la-cima.webp";
 const DOMICILIO = 7000;
 
+// Desechables: se cobran por cada plato de comida (no bebidas)
+const DESECHABLE_PLATO = 2000;
+const CATEGORIAS_BEBIDAS = ['calientes', 'frias', 'naturales', 'sodas', 'licores'];
+
 // ========================================
 // ARRAYS DE PRODUCTOS ESPECIALES
 // ========================================

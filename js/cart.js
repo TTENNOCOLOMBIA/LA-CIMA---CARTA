@@ -224,11 +224,29 @@ function quitarAgotadosDelCarrito() {
   }
 }
 
+// Platos de comida en el carrito (las bebidas no cuentan para desechables)
+function getPlatosComida() {
+  return cart.reduce((sum, i) => sum + (CATEGORIAS_BEBIDAS.includes(i.category) ? 0 : i.qty), 0);
+}
+
+function getDesechables() {
+  return getPlatosComida() * DESECHABLE_PLATO;
+}
+
 function updateTotals() {
   const subtotal = getSubtotal();
   const descuento = getTotalDiscount();
   const subtotalConDescuento = subtotal - descuento;
-  const total = subtotalConDescuento + DOMICILIO;
+  const desechables = getDesechables();
+  const total = subtotalConDescuento + DOMICILIO + desechables;
+
+  const desRow = document.getElementById('desechablesRow');
+  if (desRow) {
+    const platos = getPlatosComida();
+    desRow.style.display = desechables > 0 ? '' : 'none';
+    document.getElementById('desechablesLabel').textContent = 'Desechables (' + platos + (platos === 1 ? ' plato' : ' platos') + '):';
+    document.getElementById('desechablesAmount').textContent = '$' + desechables.toLocaleString('es-CO');
+  }
 
   document.getElementById('subtotalAmount').textContent = '$' + subtotal.toLocaleString('es-CO');
 
@@ -305,7 +323,8 @@ function sendOrder() {
 
   const subtotal = getSubtotal();
   const descuento = getTotalDiscount();
-  const total = (subtotal - descuento) + DOMICILIO;
+  const desechables = getDesechables();
+  const total = (subtotal - descuento) + DOMICILIO + desechables;
 
   // Productos (con notas)
   let productsList = cart.map(i => {
@@ -349,6 +368,9 @@ function sendOrder() {
   }
 
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
+  if (desechables > 0) {
+    messageParts.push('Desechables (' + getPlatosComida() + (getPlatosComida() === 1 ? ' plato' : ' platos') + '): $' + desechables.toLocaleString('es-CO'));
+  }
   messageParts.push('*🔴 TOTAL: $' + total.toLocaleString('es-CO') + '*');
 
   const message = messageParts.filter(p => p !== '').join('\n');
@@ -361,6 +383,7 @@ function sendOrder() {
       original: subtotal,
       discount: descuento,
       delivery: DOMICILIO,
+      packaging: desechables,
       final: total
     },
     coupon: appliedCoupon ? appliedCoupon.code : null
@@ -545,7 +568,8 @@ function sendRealTimeOrder() {
   const subtotal = getSubtotal();
   const descuento = getTotalDiscount();
   const subtotalConDescuento = subtotal - descuento;
-  const total = subtotalConDescuento + DOMICILIO;
+  const desechables = getDesechables();
+  const total = subtotalConDescuento + DOMICILIO + desechables;
 
   // Productos (con notas)
   let productsList = cart.map(i => {
@@ -575,6 +599,9 @@ function sendRealTimeOrder() {
   }
 
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
+  if (desechables > 0) {
+    messageParts.push('Desechables (' + getPlatosComida() + (getPlatosComida() === 1 ? ' plato' : ' platos') + '): $' + desechables.toLocaleString('es-CO'));
+  }
   messageParts.push('══════════════════════════════════════');
   messageParts.push('*🔴 *** TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + ' ***');
   messageParts.push('');
@@ -626,6 +653,7 @@ function sendRealTimeOrder() {
       original: subtotal,
       discount: descuento,
       delivery: DOMICILIO,
+      packaging: desechables,
       final: total
     },
     coupon: appliedCoupon ? appliedCoupon.code : null,
