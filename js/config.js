@@ -34,6 +34,9 @@ const DOMICILIO = 7000;
 
 // Desechables: se cobran por cada plato de comida (no bebidas)
 const DESECHABLE_PLATO = 2000;
+// Jugos naturales y sodas llevan desechable de 1.000 por unidad
+const DESECHABLE_BEBIDA = 1000;
+const CATEGORIAS_CON_DESECHABLE_BEBIDA = ['naturales', 'sodas'];
 const CATEGORIAS_BEBIDAS = ['calientes', 'frias', 'naturales', 'sodas', 'licores'];
 
 // ========================================

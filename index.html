@@ -450,6 +450,17 @@
 
     // Compartir la carta: abre el menú de compartir del teléfono si existe;
     // si no (algunos computadores), copia el link.
+    // Horario de despacho (hora de Colombia): lun-vie 12 M-9 PM, sáb 12 M-10 PM, dom y festivos 11 AM-5 PM
+    function revisarHorarioDespacho() {
+      const ahora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+      const dia = ahora.getDay();
+      const minutos = ahora.getHours() * 60 + ahora.getMinutes();
+      const [apertura, cierre] = dia === 0 ? [660, 1020] : dia === 6 ? [720, 1320] : [720, 1260];
+      const aviso = document.getElementById('avisoCerrado');
+      if (aviso && (minutos < apertura || minutos >= cierre)) aviso.style.display = '';
+    }
+    document.addEventListener('DOMContentLoaded', revisarHorarioDespacho);
+
     const LINK_CARTA = 'https://cimarestaurante.netlify.app';
 
     async function compartirCarta() {
@@ -573,6 +584,12 @@
     </div>
   </div>
 
+  <!-- Aviso fuera de horario de despacho (lo muestra revisarHorarioDespacho) -->
+  <div id="avisoCerrado" class="aviso-cerrado" style="display:none;">
+    <strong>Ahora estamos cerrados para despachar.</strong>
+    <span>Tu pedido quedará para despachar cuando abramos.</span>
+  </div>
+
   <!-- ========================================
        CATEGORY HINT - ANIMATED
        ======================================== -->
@@ -653,7 +670,7 @@
           <span id="desechablesLabel">Desechables:</span>
           <span id="desechablesAmount">$0</span>
         </div>
-        <p class="nota-domicilio">🛵 Entrega en 30 a 40 minutos. El domicilio cuesta $7.000 y llega en carro (InDrive); en moto solo si pagas en efectivo. Desechables: $2.000 por cada plato de comida (las bebidas no tienen cargo).</p>
+        <p class="nota-domicilio">🛵 Entrega en 30 a 40 minutos. El domicilio cuesta $7.000 y llega en carro (InDrive); en moto solo si pagas en efectivo. Desechables: $2.000 por cada plato de comida y $1.000 por jugo natural o soda. Las demás bebidas no tienen cargo.</p>
         <div class="total-row final">
           <span>TOTAL:</span>
           <span id="totalAmount">$7.000</span>
@@ -894,6 +911,7 @@
     <p>Cra 7 #27-90, Barrio Puenes, Ipiales, Nariño, Colombia</p>
     <p style="font-size:.9rem;color:#d8c9a8">✈️ A 10 minutos del Aeropuerto San Luis de Ipiales</p>
     <a class="footer-wa" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">💬 Reservas</a>
+    <p class="politica-reservas">Reservas desde las 8 AM hasta el cierre. Para reservar se paga un abono del 50%. Si cancelas, el 50% queda para consumo en la fecha que elijas. No hay devoluciones.</p>
     <p style="margin-top:8px;font-size:.95rem;color:#FFD700;font-weight:bold;">322 736 48 68</p>
     <div class="social-title">🌐 Síguenos en redes</div>
     <div class="social-row">

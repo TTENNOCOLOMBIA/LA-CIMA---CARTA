@@ -224,13 +224,13 @@ function quitarAgotadosDelCarrito() {
   }
 }
 
-// Platos de comida en el carrito (las bebidas no cuentan para desechables)
-function getPlatosComida() {
-  return cart.reduce((sum, i) => sum + (CATEGORIAS_BEBIDAS.includes(i.category) ? 0 : i.qty), 0);
-}
-
+// Desechables: 2.000 por plato de comida, 1.000 por jugo natural o soda, y nada para el resto de bebidas
 function getDesechables() {
-  return getPlatosComida() * DESECHABLE_PLATO;
+  return cart.reduce((sum, i) => {
+    if (CATEGORIAS_CON_DESECHABLE_BEBIDA.includes(i.category)) return sum + i.qty * DESECHABLE_BEBIDA;
+    if (CATEGORIAS_BEBIDAS.includes(i.category)) return sum;
+    return sum + i.qty * DESECHABLE_PLATO;
+  }, 0);
 }
 
 function updateTotals() {
@@ -242,9 +242,8 @@ function updateTotals() {
 
   const desRow = document.getElementById('desechablesRow');
   if (desRow) {
-    const platos = getPlatosComida();
     desRow.style.display = desechables > 0 ? '' : 'none';
-    document.getElementById('desechablesLabel').textContent = 'Desechables (' + platos + (platos === 1 ? ' plato' : ' platos') + '):';
+    document.getElementById('desechablesLabel').textContent = 'Desechables:';
     document.getElementById('desechablesAmount').textContent = '$' + desechables.toLocaleString('es-CO');
   }
 
@@ -369,7 +368,7 @@ function sendOrder() {
 
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
   if (desechables > 0) {
-    messageParts.push('Desechables (' + getPlatosComida() + (getPlatosComida() === 1 ? ' plato' : ' platos') + '): $' + desechables.toLocaleString('es-CO'));
+    messageParts.push('Desechables: $' + desechables.toLocaleString('es-CO'));
   }
   messageParts.push('*🔴 TOTAL: $' + total.toLocaleString('es-CO') + '*');
 
@@ -600,7 +599,7 @@ function sendRealTimeOrder() {
 
   messageParts.push('Domicilio: $' + DOMICILIO.toLocaleString('es-CO'));
   if (desechables > 0) {
-    messageParts.push('Desechables (' + getPlatosComida() + (getPlatosComida() === 1 ? ' plato' : ' platos') + '): $' + desechables.toLocaleString('es-CO'));
+    messageParts.push('Desechables: $' + desechables.toLocaleString('es-CO'));
   }
   messageParts.push('══════════════════════════════════════');
   messageParts.push('*🔴 *** TOTAL A PAGAR: $' + total.toLocaleString('es-CO') + ' ***');

@@ -3358,3 +3358,27 @@ footer p {
   color: var(--cafe);
   text-align: center;
 }
+
+/* Aviso fuera de horario y política de reservas */
+.aviso-cerrado {
+  margin: 14px 20px 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--cafe-metal);
+  color: #F3D88A;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.aviso-cerrado strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.politica-reservas {
+  max-width: 520px;
+  margin: 14px auto 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
