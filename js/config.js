@@ -82,27 +82,6 @@ const launchProducts = [
 // ========================================
 
 const categoryInfo = {
-  entradas: {
-    title: "🍽️ ENTRADAS o PA' PICAR",
-    desc: "Abre tu paladar con nuestras delicias crujientes y sabrosas",
-    label: "Entradas",
-    icon: "🍽️",
-    type: "plato"
-  },
-  infantil: {
-    title: "👶 MENÚ INFANTIL",
-    desc: "Porciones perfectas para los más pequeños, llenas de sabor",
-    label: "Infantil",
-    icon: "👶",
-    type: "plato"
-  },
-  diaria: {
-    title: "📅 MENÚ DEL DÍA",
-    desc: "La mejor opción diaria - Proteína, acompañamientos y postre",
-    label: "Menú del Día",
-    icon: "📅",
-    type: "plato"
-  },
   parrilla: {
     title: "🔥 PARRILLA",
     desc: "Lo mejor de la carne a la brasa - Jugosa, tierna y al punto",
@@ -157,6 +136,27 @@ const categoryInfo = {
     desc: "Frescas, coloridas y nutritivas - Saludable sin sacrificar sabor",
     label: "Ensaladas",
     icon: "🥗",
+    type: "plato"
+  },
+  entradas: {
+    title: "🍽️ ENTRADAS o PA' PICAR",
+    desc: "Abre tu paladar con nuestras delicias crujientes y sabrosas",
+    label: "Entradas",
+    icon: "🍽️",
+    type: "plato"
+  },
+  infantil: {
+    title: "👶 MENÚ INFANTIL",
+    desc: "Porciones perfectas para los más pequeños, llenas de sabor",
+    label: "Infantil",
+    icon: "👶",
+    type: "plato"
+  },
+  diaria: {
+    title: "📅 MENÚ DEL DÍA",
+    desc: "La mejor opción diaria - Proteína, acompañamientos y postre",
+    label: "Menú del Día",
+    icon: "📅",
     type: "plato"
   },
   postres: {
