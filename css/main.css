@@ -3444,16 +3444,16 @@ footer p {
 .filter-btn {
   flex-direction: row;
   align-items: center;
-  padding: 8px 12px 8px 8px;
+  padding: 6px 10px 6px 6px;
   border-radius: 14px;
   overflow: hidden;
-  gap: 12px;
+  gap: 10px;
   text-align: left;
 }
 
 .filter-btn .filter-foto {
-  width: 90px;
-  height: 90px;
+  width: 76px;
+  height: 76px;
   flex-shrink: 0;
   object-fit: cover;
   border-radius: 10px;
