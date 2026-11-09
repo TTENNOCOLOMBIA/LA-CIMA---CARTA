@@ -3435,32 +3435,52 @@ footer p {
 /* Botones de categoría con foto */
 .filters {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: 560px;
+  margin: 20px auto;
 }
 
 .filter-btn {
-  flex-direction: column;
-  align-items: stretch;
-  padding: 0 0 10px;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px 12px 8px 8px;
   border-radius: 14px;
   overflow: hidden;
-  gap: 6px;
-  text-align: center;
+  gap: 12px;
+  text-align: left;
 }
 
 .filter-btn .filter-foto {
-  width: 100%;
-  height: 92px;
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
   object-fit: cover;
+  border-radius: 10px;
   display: block;
 }
 
 .filter-btn .label {
-  padding: 0 8px;
-  font-size: 14px;
+  flex: 1;
+  padding: 0;
+  font-size: 16px;
 }
 
 .filter-btn .badge {
-  align-self: center;
+  flex-shrink: 0;
+}
+
+/* Línea corta de cada categoría */
+.filter-texto {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.filter-btn .filter-desc {
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 1.3;
 }

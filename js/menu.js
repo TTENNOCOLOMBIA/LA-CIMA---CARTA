@@ -104,6 +104,31 @@ function sinDibujos(texto) {
   return String(texto || '').replace(/^[\p{Extended_Pictographic}\p{Regional_Indicator}️‍\s]+/u, '');
 }
 
+// Línea corta que se muestra debajo del nombre de cada categoría
+const CATEGORIA_DESC = {
+  entradas: "Para abrir el apetito, crujientes y para compartir",
+  infantil: "Porciones pequeñas para los más pequeños",
+  diaria: "Proteína, acompañamientos y postre",
+  parrilla: "Carne a la brasa, jugosa y al punto",
+  tipicos: "El sabor tradicional de Colombia",
+  chuletas: "Gratinadas, crujientes por fuera y jugosas por dentro",
+  cimar: "Mariscos y truchas de primera",
+  pastas: "Fettuccine con salsas de autor",
+  salteados: "Al wok, con verduras frescas",
+  hamburguesas: "Artesanales, con carne premium",
+  ensaladas: "Frescas y nutritivas, sin sacrificar sabor",
+  postres: "Dulces para cerrar con broche de oro",
+  calientes: "Bebidas para entrar en calor",
+  frias: "Refrescos clásicos que nunca fallan",
+  naturales: "Jugos de fruta fresca",
+  sodas: "Sodas artesanales con frutas tropicales",
+  licores: "Aguardientes, rones y whisky para celebrar",
+  promos: "Ofertas irresistibles, no te las pierdas",
+  eventos: "Paquetes para tus celebraciones",
+  espacios: "Conoce nuestros espacios para tu visita",
+  decoraciones: "La magia que decora cada rincón"
+};
+
 function buildFilters() {
   const f = document.getElementById('filters');
   f.innerHTML = '';
@@ -115,7 +140,7 @@ function buildFilters() {
     // lista. Así al abrir no aparece "Entradas" marcada sin haberla tocado, y
     // cuando llegan los datos de Firebase y se reconstruyen los botones, no se
     // pierde el resaltado de la que la persona tenía elegida.
-    f.innerHTML += '<button class="filter-btn' + (k === currentCategory ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><img class="filter-foto" src="assets/categorias/' + k + '.webp" alt="" loading="lazy"><span class="label">' + categoryInfo[k].label + '</span> <span class="badge">' + count + '</span></button>';
+    f.innerHTML += '<button class="filter-btn' + (k === currentCategory ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><img class="filter-foto" src="assets/categorias/' + k + '.webp" alt="" loading="lazy"><span class="filter-texto"><span class="label">' + categoryInfo[k].label + '</span><span class="filter-desc">' + (CATEGORIA_DESC[k] || '') + '</span></span> <span class="badge">' + count + '</span></button>';
   });
 }
 
