@@ -115,7 +115,7 @@ function buildFilters() {
     // lista. Así al abrir no aparece "Entradas" marcada sin haberla tocado, y
     // cuando llegan los datos de Firebase y se reconstruyen los botones, no se
     // pierde el resaltado de la que la persona tenía elegida.
-    f.innerHTML += '<button class="filter-btn' + (k === currentCategory ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><span class="label">' + categoryInfo[k].label + '</span> <span class="badge">' + count + '</span></button>';
+    f.innerHTML += '<button class="filter-btn' + (k === currentCategory ? ' active' : '') + badgeClass + '" onclick="filterMenu(\'' + k + '\',this)"><img class="filter-foto" src="assets/categorias/' + k + '.webp" alt="" loading="lazy"><span class="label">' + categoryInfo[k].label + '</span> <span class="badge">' + count + '</span></button>';
   });
 }
 

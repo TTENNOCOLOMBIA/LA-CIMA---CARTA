@@ -3431,3 +3431,36 @@ footer p {
   font-weight: bold;
   text-align: center;
 }
+
+/* Botones de categoría con foto */
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.filter-btn {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 0 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  gap: 6px;
+  text-align: center;
+}
+
+.filter-btn .filter-foto {
+  width: 100%;
+  height: 92px;
+  object-fit: cover;
+  display: block;
+}
+
+.filter-btn .label {
+  padding: 0 8px;
+  font-size: 14px;
+}
+
+.filter-btn .badge {
+  align-self: center;
+}
