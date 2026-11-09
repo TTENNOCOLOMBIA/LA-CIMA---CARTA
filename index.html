@@ -576,7 +576,7 @@
   <div class="cinta-busqueda">
     <label class="cinta-campo">
       <svg class="cinta-lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
-      <input type="text" class="search-box" id="searchBox" placeholder="Busca tu plato favorito..." aria-label="Buscar plato" oninput="searchDishes(this.value)">
+      <input type="text" class="search-box" id="searchBox" placeholder="Busca tu plato favorito..." aria-label="Buscar plato" oninput="searchDishes(this.value)" onchange="irAResultados()">
     </label>
     <!-- Aviso solo en modo "Comer en el local" -->
     <div id="avisoLocal" class="cinta-aviso" style="display:none;">
@@ -912,6 +912,10 @@
   <footer>
     <h4>📍 Ubícanos</h4>
     <p>Cra 7 #27-90, Barrio Puenes, Ipiales, Nariño, Colombia</p>
+    <div class="info-restaurante">
+      <p><strong>Horario de despacho:</strong> Lun a Vie 12 M - 9 PM · Sáb 12 M - 10 PM · Dom y festivos 11 AM - 5 PM</p>
+      <p><strong>Medios de pago:</strong> aceptamos todos los medios de pago</p>
+    </div>
     <p style="font-size:.9rem;color:#d8c9a8">✈️ A 10 minutos del Aeropuerto San Luis de Ipiales</p>
     <a class="footer-wa" href="https://wa.me/573227364868?text=Hola%20La%20Cima,%20quiero%20reservar%20o%20hacer%20un%20pedido" target="_blank">💬 Reservas</a>
     <p class="politica-reservas">Reservas desde las 8 AM hasta el cierre. Para reservar se paga un abono del 50%. Si cancelas, el 50% queda para consumo en la fecha que elijas.</p>

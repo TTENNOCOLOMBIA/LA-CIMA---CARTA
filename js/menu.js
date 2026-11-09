@@ -168,6 +168,8 @@ function getRatingStars(productName, baseRating = 4.5) {
 }
 
 function cardHTML(cat, d, i) {
+  // Menú del Día: aviso de horario en cada plato
+  const avisoHasta3 = cat === 'diaria' ? '<div class="aviso-hasta-3pm">Disponible hasta las 3 PM</div>' : '';
   const esDestacado = destacados.includes(d.name);
 
   // La etiqueta de lanzamiento sale de los DATOS del plato, no de una lista
@@ -213,7 +215,7 @@ function cardHTML(cat, d, i) {
   const ratingData = getRatingStars(d.name);
   const ratingHtml = '<div class="dish-rating"><div class="stars">' + ratingData.stars + '</div><div class="rating-value">' + ratingData.rating.toFixed(1) + '</div></div>';
 
-  return '<div class="' + cardClass + '">' + badge + '<div class="dish-image' + noimgClass + '" ' + imgStyle + ' ' + clickFoto + '>' + icono + placeholder + '</div><div class="dish-content"><div class="dish-name">' + d.name + '</div><div class="dish-description">' + d.desc + '</div>' + ratingHtml + priceHtml + '<div class="dish-buttons"><button class="btn-cart btn-cart-animate" ' + btnDisabled + ' onclick="addToCart(\'' + safeProductName + '\', ' + d.price + ', \'' + cat + '\', \'' + (d.icon || icono || '🍽️').replace(/'/g, "\\'") + '\')">' + btnText + '</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\'' + safeCat + '\',' + i + ')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\'' + safeCat + '\',' + i + ')">🗑️ Borrar</button></div></div></div>';
+  return '<div class="' + cardClass + '">' + badge + '<div class="dish-image' + noimgClass + '" ' + imgStyle + ' ' + clickFoto + '>' + icono + placeholder + '</div><div class="dish-content"><div class="dish-name">' + d.name + '</div><div class="dish-description">' + d.desc + '</div>' + ratingHtml + priceHtml + avisoHasta3 + '<div class="dish-buttons"><button class="btn-cart btn-cart-animate" ' + btnDisabled + ' onclick="addToCart(\'' + safeProductName + '\', ' + d.price + ', \'' + cat + '\', \'' + (d.icon || icono || '🍽️').replace(/'/g, "\\'") + '\')">' + btnText + '</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\'' + safeCat + '\',' + i + ')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\'' + safeCat + '\',' + i + ')">🗑️ Borrar</button></div></div></div>';
 }
 
 function galleryHTML(cat, d, i) {
@@ -476,4 +478,12 @@ function resetMenu() {
   menu = JSON.parse(JSON.stringify(defaultMenu));
   renderMenu('all');
   alert('Menú restaurado');
+}
+
+// Al terminar de escribir (Enter o salir del campo), lleva la vista a los resultados
+function irAResultados() {
+  const c = document.getElementById('menuContainer');
+  if (c && c.querySelector('.category-title')) {
+    c.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }

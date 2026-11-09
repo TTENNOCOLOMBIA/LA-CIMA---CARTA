@@ -3420,3 +3420,14 @@ footer p {
   line-height: 1.5;
 }
 
+/* Aviso de horario del Menú del Día, en cada plato */
+.aviso-hasta-3pm {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--oro-metal);
+  color: var(--cafe);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
