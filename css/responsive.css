@@ -509,3 +509,37 @@ h2.category-title {
     font-size: .9rem;
   }
 }
+
+/* ========================================
+   AVISO Y TOPPINGS DEL PLATO (17 nov 2026)
+   Campos opcionales aviso / opciones / soloLocal que se ponen desde el panel.
+   ======================================== */
+.dish-card .aviso-promo {
+  margin: 6px 0 8px;
+  padding: 8px 10px;
+  border-left: 4px solid #D2A03F;
+  border-radius: 6px;
+  background: #FFF4D6;
+  color: #7a2e0e;
+  font-size: .95rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+.dish-card .opciones-plato { margin: 8px 0 4px; }
+.dish-card .opciones-titulo {
+  font-size: .95rem;
+  font-weight: 800;
+  color: #3b2412;
+  margin-bottom: 6px;
+}
+.dish-card .opciones-lista { display: flex; flex-wrap: wrap; gap: 6px; }
+.dish-card .opcion-chip {
+  padding: 5px 10px;
+  border: 1.5px solid #D2A03F;
+  border-radius: 999px;
+  background: #fffaf0;
+  color: #3b2412;
+  font-size: .9rem;
+  font-weight: 700;
+}
+.dish-card .btn-cart:disabled { cursor: not-allowed; opacity: .75; }

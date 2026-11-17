@@ -1150,6 +1150,21 @@
           <label>Nombre del Producto *</label>
           <input type="text" id="productoNombre" required placeholder="Ingresa el nombre del producto">
         </div>
+        <!-- Opcionales (17 nov 2026): la carta los muestra solo si se llenan. -->
+        <div class="form-group">
+          <label>Aviso o restricción (opcional)</label>
+          <textarea id="productoAviso" rows="2" placeholder="Ej: Solo de lunes a viernes. No para reservas ni domicilios."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Opciones a elegir (opcional, una por línea)</label>
+          <textarea id="productoOpciones" rows="4" placeholder="Chicharrón&#10;Chorizo&#10;Fajitas de pollo"></textarea>
+        </div>
+        <div class="form-group">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+            <input type="checkbox" id="productoSoloLocal" style="width:auto;">
+            Solo para consumir en el local (no se puede pedir a domicilio)
+          </label>
+        </div>
         <div class="btn-group">
           <button type="submit" class="btn-success">💾 Guardar Nombre</button>
           <button type="button" class="btn-secondary" onclick="closeModal('modalProducto'); return false;">Cancelar</button>
@@ -1871,6 +1886,9 @@
       document.getElementById("productoPrecio").value = "0";
       document.getElementById("productoDesc").value = "";
       document.getElementById("productoImg").value = "";
+      document.getElementById("productoAviso").value = "";
+      document.getElementById("productoOpciones").value = "";
+      document.getElementById("productoSoloLocal").checked = false;
       document.getElementById("productoEditCat").value = "";
       document.getElementById("productoEditIdx").value = "";
 
@@ -1933,6 +1951,18 @@
       }, 300);
     }
 
+    // Aviso, opciones y "solo en el local": si quedan vacíos se borran del
+    // producto para que la carta no muestre recuadros en blanco.
+    function aplicarCamposOpcionales(prod) {
+      const aviso = document.getElementById("productoAviso").value.trim();
+      const opciones = document.getElementById("productoOpciones").value
+        .split("\n").map(o => o.trim()).filter(Boolean);
+      const soloLocal = document.getElementById("productoSoloLocal").checked;
+      if (aviso) prod.aviso = aviso; else delete prod.aviso;
+      if (opciones.length) prod.opciones = opciones; else delete prod.opciones;
+      if (soloLocal) prod.soloLocal = true; else delete prod.soloLocal;
+    }
+
     async function guardarProducto(event) {
       event.preventDefault();
       const nombre = document.getElementById("productoNombre").value;
@@ -1952,6 +1982,7 @@
           menu[editCat][editIdx].price = precio;
           menu[editCat][editIdx].desc = desc;
           menu[editCat][editIdx].img = img;
+          aplicarCamposOpcionales(menu[editCat][editIdx]);
 
           localStorage.setItem("lacimaMenuV2", JSON.stringify(menu));
 
@@ -1990,6 +2021,7 @@
           img: img,
           icon: "🍽️"
         };
+        aplicarCamposOpcionales(nuevoProducto);
 
         menu[categoria].push(nuevoProducto);
 
@@ -2088,6 +2120,9 @@
       document.getElementById("productoPrecio").value = prod.price || 0;
       document.getElementById("productoDesc").value = prod.desc || "";
       document.getElementById("productoImg").value = prod.img || "";
+      document.getElementById("productoAviso").value = prod.aviso || "";
+      document.getElementById("productoOpciones").value = Array.isArray(prod.opciones) ? prod.opciones.join("\n") : "";
+      document.getElementById("productoSoloLocal").checked = prod.soloLocal === true;
       document.getElementById("productoEditCat").value = catKey;
       document.getElementById("productoEditIdx").value = idx;
 

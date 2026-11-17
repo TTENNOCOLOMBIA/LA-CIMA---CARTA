@@ -192,6 +192,10 @@ function getRatingStars(productName, baseRating = 4.5) {
   return { stars: stars, rating: rating };
 }
 
+function escaparTexto(t) {
+  return String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
 function cardHTML(cat, d, i) {
   // Menú del Día: aviso de horario en cada plato
   const avisoHasta3 = cat === 'diaria' ? '<div class="aviso-hasta-3pm">Disponible hasta las 3 PM</div>' : '';
@@ -215,8 +219,21 @@ function cardHTML(cat, d, i) {
   const placeholder = d.img ? '' : '<div class="dish-image-placeholder">[ESPACIO PARA FOTO]</div>';
   const icono = d.img ? '' : (d.icon || '🍽️');
   const clickFoto = d.img ? 'onclick="openImageModal(\'' + foto + '\')"' : '';
-  const btnDisabled = d.price === 0 ? 'disabled' : '';
-  const btnText = d.price === 0 ? '⏳ Precio por definir' : '🛒 Agregar al Carrito';
+  // Campos opcionales que se ponen desde el panel (17 nov 2026, Cima de Papas):
+  //   aviso     → restricción en letra destacada ("Solo lunes a viernes...")
+  //   opciones  → lista de toppings/sabores a elegir, se muestran como chips
+  //   soloLocal → no se puede pedir a domicilio: el botón queda bloqueado.
+  //               En modo "local" los botones ni se ven, así que solo afecta
+  //               a quien pide a domicilio.
+  const avisoHtml = d.aviso ? '<div class="aviso-promo">⚠️ ' + escaparTexto(d.aviso) + '</div>' : '';
+  const opciones = Array.isArray(d.opciones) ? d.opciones.filter(Boolean) : [];
+  const opcionesHtml = opciones.length
+    ? '<div class="opciones-plato"><div class="opciones-titulo">Elige 1 topping:</div><div class="opciones-lista">' +
+      opciones.map(o => '<span class="opcion-chip">' + escaparTexto(o) + '</span>').join('') + '</div></div>'
+    : '';
+  const soloLocal = d.soloLocal === true;
+  const btnDisabled = (d.price === 0 || soloLocal) ? 'disabled' : '';
+  const btnText = d.price === 0 ? '⏳ Precio por definir' : (soloLocal ? '🏠 Solo en el local' : '🛒 Agregar al Carrito');
 
   let priceHtml = '';
   if (d.price === 0) {
@@ -240,7 +257,7 @@ function cardHTML(cat, d, i) {
   const ratingData = getRatingStars(d.name);
   const ratingHtml = '<div class="dish-rating"><div class="stars">' + ratingData.stars + '</div><div class="rating-value">' + ratingData.rating.toFixed(1) + '</div></div>';
 
-  return '<div class="' + cardClass + '">' + badge + '<div class="dish-image' + noimgClass + '" ' + imgStyle + ' ' + clickFoto + '>' + icono + placeholder + '</div><div class="dish-content"><div class="dish-name">' + d.name + '</div><div class="dish-description">' + d.desc + '</div>' + ratingHtml + priceHtml + avisoHasta3 + '<div class="dish-buttons"><button class="btn-cart btn-cart-animate" ' + btnDisabled + ' onclick="addToCart(\'' + safeProductName + '\', ' + d.price + ', \'' + cat + '\', \'' + (d.icon || icono || '🍽️').replace(/'/g, "\\'") + '\')">' + btnText + '</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\'' + safeCat + '\',' + i + ')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\'' + safeCat + '\',' + i + ')">🗑️ Borrar</button></div></div></div>';
+  return '<div class="' + cardClass + '">' + badge + '<div class="dish-image' + noimgClass + '" ' + imgStyle + ' ' + clickFoto + '>' + icono + placeholder + '</div><div class="dish-content"><div class="dish-name">' + d.name + '</div>' + avisoHtml + '<div class="dish-description">' + d.desc + '</div>' + opcionesHtml + ratingHtml + priceHtml + avisoHasta3 + '<div class="dish-buttons"><button class="btn-cart btn-cart-animate" ' + btnDisabled + ' onclick="addToCart(\'' + safeProductName + '\', ' + d.price + ', \'' + cat + '\', \'' + (d.icon || icono || '🍽️').replace(/'/g, "\\'") + '\')">' + btnText + '</button></div><div class="dish-actions" style="display:none"><button class="edit-btn" onclick="editItem(\'' + safeCat + '\',' + i + ')">✏️ Editar</button><button class="delete-btn" onclick="deleteItem(\'' + safeCat + '\',' + i + ')">🗑️ Borrar</button></div></div></div>';
 }
 
 function galleryHTML(cat, d, i) {
