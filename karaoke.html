@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ========================================
+       ENLACE DE PROMO: cimarestaurante.netlify.app/karaoke
+       ========================================
+       Existe solo para compartir en Facebook / WhatsApp: al pegar este enlace,
+       la red muestra una tarjeta grande con la imagen de la promo, y TODA la
+       tarjeta se puede tocar (en una foto normal eso no se puede gratis).
+       Quien la toca llega aquí y se le manda al instante a la carta, abierta
+       en la categoría Promos.
+       Las redes leen las etiquetas og: de abajo; no ejecutan JavaScript, por
+       eso la redirección va con JS y no con meta refresh (si el lector la
+       siguiera, mostraría la tarjeta de la carta en vez de la del karaoke).
+       Para otra promo: copiar este archivo, cambiar textos e imagen y
+       agregarlo a ARCHIVOS en scripts/publicar.js. -->
+  <title>Jueves de Karaoke · La Cima Restaurante</title>
+  <meta name="description" content="Todos los jueves de 5 p. m. a 9 p. m.: 2 Hamburguesas Reina de la Casa + 2 papas + 2 bebidas por $39.000. Toca y mira la carta.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="La Cima Restaurante">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:url" content="https://cimarestaurante.netlify.app/karaoke">
+  <meta property="og:title" content="🎤 Jueves de Karaoke en La Cima · $39.000">
+  <meta property="og:description" content="Todos los jueves de 5 p. m. a 9 p. m.: 2 Hamburguesas Reina de la Casa + 2 papas + 2 bebidas. Toca y mira la carta.">
+  <meta property="og:image" content="https://cimarestaurante.netlify.app/assets/promos/karaoke-1200x630.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Jueves de Karaoke: 2 hamburguesas con papas y bebidas por $39.000">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://cimarestaurante.netlify.app/assets/promos/karaoke-1200x630.jpg">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://cimarestaurante.netlify.app/">
+  <link rel="icon" href="assets/fotos/marca-logo-la-cima.webp">
+  <script>window.location.replace('/?cat=promos');</script>
+  <style>
+    body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+           background: #2a1a0e; color: #F5E3B5; font-family: Arial, sans-serif; text-align: center; padding: 16px; }
+    a { color: #FFD27A; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <p>Abriendo la carta de La Cima…<br><a href="/?cat=promos">Toca aquí si no abre</a></p>
+</body>
+</html>

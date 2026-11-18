@@ -436,6 +436,27 @@
       if (pantalla) pantalla.classList.add('oculto');
       document.body.style.overflow = '';
       aplicarModoPedido(modo);
+      abrirCategoriaDelEnlace();
+    }
+
+    // Enlaces de promo (p. ej. /karaoke → /?cat=promos): abre esa categoría.
+    // Se llama al entrar desde la bienvenida o al cargar si ya había elegido.
+    // Los botones de categoría se pintan cuando llega el menú, por eso
+    // reintenta unos segundos. Solo actúa una vez por visita.
+    function abrirCategoriaDelEnlace() {
+      let cat = null;
+      try { cat = new URLSearchParams(window.location.search).get('cat'); } catch (e) {}
+      if (!cat || !/^[a-z0-9_-]+$/i.test(cat) || window.__catAbierta) return;
+      let intentos = 0;
+      (function probar() {
+        const btn = document.querySelector('.filter-btn[onclick*="\'' + cat + '\'"]');
+        if (btn && typeof filterMenu === 'function') {
+          window.__catAbierta = true;
+          filterMenu(cat, btn);
+        } else if (++intentos < 20) {
+          setTimeout(probar, 300);
+        }
+      })();
     }
 
     // Modo "local": la carta se ve igual, pero sin carrito ni botones de agregar.
@@ -518,6 +539,7 @@
         // Los textos de la carta aún no existen en este punto: se aplica al cargar.
         document.addEventListener('DOMContentLoaded', function () {
           aplicarModoPedido(modoGuardado);
+          abrirCategoriaDelEnlace();
         });
       } else {
         // Evitar que se pueda desplazar la carta por detrás de la pantalla.
