@@ -863,7 +863,7 @@ window.defaultMenu = {
       img: "https://i.ibb.co/yFKyHBLG/file-0000000061d8820e818a50957d349b33.png?v=20260905"
     },
     {
-      name: "Jueves de Karaoke (12pm - 9pm)",
+      name: "Jueves de Karaoke (5pm - 9pm)",
       desc: "¡La promo estrella de los jueves! Disfruta de 2 Hamburguesas Reinas de la Casa + 2 Papas doradas + 2 Bebidas",
       price: 39000,
       icon: "🎤",
